@@ -175,14 +175,20 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             log.info(clientsList.size());
             Iterator it = clientsList.iterator();
             
+            //generate activeButtonSet
+            
+            
+            
             while(it.hasNext())
             {
                 Client unique = (Client)it.next();
                 ArrayList<Loan> currentClientLoans =  new ArrayList<Loan>();
                 currentClientLoans = (ArrayList<Loan>)session.createCriteria(Loan.class)
                         .add(Restrictions.eq("client_id", unique.getClientId()))
+                       // .add(Restrictions.eq)
                         .list();
                 log.info("SOME LOG");
+                FrameBuilder clienFrame = new FrameBuilder();
                 
             }
         } catch (Exception ex) {

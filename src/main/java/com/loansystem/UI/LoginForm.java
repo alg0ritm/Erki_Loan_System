@@ -1,7 +1,7 @@
 package com.loansystem.UI;
 
 import com.loansystem.hibernate.HibernateUtil;
-import com.loansystem.model.Client;
+import com.loansystem.model.*;
 import com.loansystem.validator.LoginValidator;
 import java.sql.*;
 import java.util.ArrayList;
@@ -160,10 +160,14 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
             session = sessionFactory.openSession();
             session.beginTransaction();
-            clientsList = (ArrayList<Client>) session.createQuery("from Client")
-                    /*.add(Restrictions.eq("mail", loginText))
-                    .add(Restrictions.eq("password", passwordText))*/
+            clientsList = (ArrayList<Client>) session.createCriteria(Client.class)
+                    .add(Restrictions.eq("mail", loginText))
+                    .add(Restrictions.eq("password", passwordText))
                     .list();
+            
+            
+            
+            //TODO add emloyee login
             
             log.info(loginText);
             log.info(passwordText);
@@ -173,6 +177,11 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             
             while(it.hasNext())
             {
+                Client unique = (Client)it.next();
+                ArrayList<Loan> currentClientLoans =  new ArrayList<Loan>();
+                currentClientLoans = (ArrayList<Loan>)session.createCriteria(Loan.class)
+                        .add(Restrictions.eq("client_id", unique.getClientId()))
+                        .list();
                 log.info("SOME LOG");
                 
             }

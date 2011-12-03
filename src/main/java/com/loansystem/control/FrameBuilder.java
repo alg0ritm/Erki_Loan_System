@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 public interface FrameBuilder {
     
     
-    public JPanel addNewLoanRequestTab();
+    
     public JPanel addLoanRequestTab();
     public JPanel addLoanPaybackTab();
     public JPanel addLoanPostponeRequestTab();

@@ -38,9 +38,10 @@ public class AddNewLoanRequestTabJPanel extends javax.swing.JPanel {
         jList1 = new javax.swing.JList();
         jButton3 = new javax.swing.JButton();
 
-        setPreferredSize(new java.awt.Dimension(400, 400));
+        setName("AddNewLoanRequestTabJPanel"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(400, 300));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Loan Request");
         jLabel1.setName("jLabel1"); // NOI18N
 
@@ -124,7 +125,7 @@ public class AddNewLoanRequestTabJPanel extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, 0, 0, Short.MAX_VALUE))
-                .addContainerGap(211, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2});

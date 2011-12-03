@@ -10,7 +10,7 @@
     <property name="connection.username"/>
     <property name="connection.password"/>
     <property name="current_session_context_class">thread</property>
-    <property name="connection.pool_size">2</property>
+    <property name="connection.pool_size">10</property>
     <mapping resource="Client.hbm.xml"/>
     <mapping resource="CientGroup.hbm.xml"/>
     <mapping resource="ClientHistory.hbm.xml"/>

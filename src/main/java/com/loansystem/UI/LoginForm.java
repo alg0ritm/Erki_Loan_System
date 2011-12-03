@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.persistence.criteria.Order;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
@@ -14,6 +15,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import javax.swing.*;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /*
@@ -140,6 +144,7 @@ private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
     ArrayList<Client> clientsList;
+    ArrayList<Loan> loansList;
     try {
         log.info("START");
         log.info("MIDDLE");
@@ -156,41 +161,69 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         try {
             String loginText = jTextField1.getText();
             String passwordText = jTextField2.getText();
-           
+
             SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
             session = sessionFactory.openSession();
             session.beginTransaction();
-            clientsList = (ArrayList<Client>) session.createCriteria(Client.class)
+            
+            Client loginClient = new Client();
+            loansList = new ArrayList<Loan>();
+            
+            loginClient = (Client)session.createCriteria(Client.class)
                     .add(Restrictions.eq("mail", loginText))
                     .add(Restrictions.eq("password", passwordText))
+                    .uniqueResult();
+            
+            //check if client logged in
+            if(loginClient!=null)
+            {
+                loansList = (ArrayList<Loan>) session.createCriteria(Loan.class)
+                    .add(Restrictions.eq("client_id", loginClient.getClientId()))
+                    .createCriteria("loanStatus")
                     .list();
+                
+            }
+            
+           
+           
             
             
             
+            
+            
+            
+
+
             //TODO add emloyee login
-            
+
             log.info(loginText);
             log.info(passwordText);
-            
-            log.info(clientsList.size());
-            Iterator it = clientsList.iterator();
-            
-            //generate activeButtonSet
-            
-            
+
+            log.info(loansList.size());
+            Iterator it = loansList.iterator();
             
             while(it.hasNext())
             {
-                Client unique = (Client)it.next();
-                ArrayList<Loan> currentClientLoans =  new ArrayList<Loan>();
-                currentClientLoans = (ArrayList<Loan>)session.createCriteria(Loan.class)
-                        .add(Restrictions.eq("client_id", unique.getClientId()))
-                       // .add(Restrictions.eq)
-                        .list();
-                log.info("SOME LOG");
-                FrameBuilder clienFrame = new FrameBuilder();
-                
+                Loan currClientLoan = (Loan)it.next();
+                log.info(currClientLoan);
             }
+
+            //generate activeButtonSet
+
+
+
+
+           // Client currClient = (Client) it.next();
+            //List currentClientLoans = new ArrayList();
+           // currentClientLoans = session.createQuery("Select id from Loan loan inner join LoanHistory.loan_id as lh").list();
+           // Criteria lastLoan = lastLoanHistory..add(Restrictions.eq("client_id", new Integer(4)));
+            //currentClientLoans = (ArrayList<LoanHistoryId>) lastLoanHistory.list();
+
+           // .list();
+            log.info("SOME LOG");
+            //FrameBuilder clienFrame = new FrameBuilder();
+
+
         } catch (Exception ex) {
             log.error(ex);
         } finally {

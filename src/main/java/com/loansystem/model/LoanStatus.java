@@ -8,7 +8,7 @@ package com.loansystem.model;
  */
 public class LoanStatus implements java.io.Serializable {
 
-	private String id;
+	private String loanStatusId;
 	private String name;
 	private String description;
 
@@ -16,22 +16,22 @@ public class LoanStatus implements java.io.Serializable {
 	}
 
 	public LoanStatus(String id, String name) {
-		this.id = id;
+		this.loanStatusId = id;
 		this.name = name;
 	}
 
 	public LoanStatus(String id, String name, String description) {
-		this.id = id;
+		this.loanStatusId = id;
 		this.name = name;
 		this.description = description;
 	}
 
-	public String getId() {
-		return this.id;
+	public String getLoanStatusId() {
+		return this.loanStatusId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setLoanStatusId(String id) {
+		this.loanStatusId = id;
 	}
 
 	public String getName() {

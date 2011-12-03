@@ -1,6 +1,13 @@
 package com.loansystem.model;
 
 // default package
+
+import java.util.HashSet;
+import java.util.Set;
+
+
+
+
 // Generated Nov 13, 2011 9:49:21 PM by Hibernate Tools 3.4.0.CR1
 
 /**
@@ -8,52 +15,52 @@ package com.loansystem.model;
  */
 public class Loan implements java.io.Serializable {
 
-	private String id;
+	private int loanId;
 	private String dueDate;
 	private String baseDueDate;
 	private String apr;
 	private String debt;
-	private int clientId;
+	private Client client;
 	private String employeeId;
-	private String status;
 	private String offerId;
 	private String postponeRequestId;
+        private Set<LoanStatus> loanStatusSet;
 
 	public Loan() {
 	}
 
-	public Loan(String id, String dueDate, String baseDueDate, String apr, String debt, int clientId, String status,
+	public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId, Set<LoanStatus> loanStatusSet,
 			String offerId) {
-		this.id = id;
+		this.loanId = id;
 		this.dueDate = dueDate;
 		this.baseDueDate = baseDueDate;
 		this.apr = apr;
 		this.debt = debt;
-		this.clientId = clientId;
-		this.status = status;
+		this.client = client;
+		this.loanStatusSet = loanStatusSet;
 		this.offerId = offerId;
 	}
 
-	public Loan(String id, String dueDate, String baseDueDate, String apr, String debt, int clientId,
-			String employeeId, String status, String offerId, String postponeRequestId) {
-		this.id = id;
+	public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId,
+			String employeeId, Set<LoanStatus> loanStatusSet, String offerId, String postponeRequestId) {
+		this.loanId = id;
 		this.dueDate = dueDate;
 		this.baseDueDate = baseDueDate;
 		this.apr = apr;
 		this.debt = debt;
-		this.clientId = clientId;
+		this.client = client;
 		this.employeeId = employeeId;
-		this.status = status;
+		this.loanStatusSet = loanStatusSet;
 		this.offerId = offerId;
 		this.postponeRequestId = postponeRequestId;
 	}
 
-	public String getId() {
-		return this.id;
+	public int getLoanId() {
+		return this.loanId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setLoanId(int id) {
+		this.loanId = id;
 	}
 
 	public String getDueDate() {
@@ -88,12 +95,12 @@ public class Loan implements java.io.Serializable {
 		this.debt = debt;
 	}
 
-	public int getClientId() {
-		return this.clientId;
+	public Client getClient() {
+		return this.client;
 	}
 
-	public void setClientId(int clientId) {
-		this.clientId = clientId;
+	public void setClient(Client client) {
+		this.client = client;
 	}
 
 	public String getEmployeeId() {
@@ -104,12 +111,12 @@ public class Loan implements java.io.Serializable {
 		this.employeeId = employeeId;
 	}
 
-	public String getStatus() {
-		return this.status;
+	public Set<LoanStatus> getLoanStatusSet() {
+		return this.loanStatusSet;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setLoanStatusSet(Set<LoanStatus> loanStatusSet) {
+		this.loanStatusSet = loanStatusSet;
 	}
 
 	public String getOfferId() {

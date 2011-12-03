@@ -9,6 +9,7 @@ package com.loansystem.model;
 public class LoanHistory implements java.io.Serializable {
 
 	private LoanHistoryId id;
+        private int loan_id;
 
 	public LoanHistory() {
 	}

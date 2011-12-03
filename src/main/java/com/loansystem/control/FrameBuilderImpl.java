@@ -6,6 +6,7 @@ package com.loansystem.control;
 
 import com.loansystem.classificator.LoanStatusClassificator;
 import com.loansystem.model.Client;
+import com.loansystem.model.Loan;
 import javax.swing.JPanel;
 
 /**
@@ -21,6 +22,10 @@ public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
 
             public JPanel addNewMyLoansTab() {
                 return addNewMyLoansTab();
+            }
+            
+             public JPanel addNewLoanRequestTab() {
+                return addNewLoanRequestTab();
             }
         },
         LAST_REJECTED {
@@ -75,8 +80,8 @@ public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
         }
     }
 
-    public FrameBuilderImpl(Client Client) {
-        int hasActiveLoan;
+    public FrameBuilderImpl(Client client, Loan loan) {
+        
 
     }
 

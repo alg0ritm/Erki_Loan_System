@@ -4,7 +4,7 @@
 <hibernate-mapping>
     <class name="com.loansystem.model.Loan" table="loan">
         <id name="loanId" type="int">
-            <column length="2000000000" name="loan_id"/>
+            <column length="2000000000" name="id"/>
             <generator class="assigned"/>
         </id>
         <property name="dueDate" type="string">
@@ -31,12 +31,8 @@
         <many-to-one class="com.loansystem.model.Client" fetch="select" name="client">
             <column length="2000000000" name="client_id" not-null="true" unique="true"/>
         </many-to-one>
-        <set name="loanStatusSet" table="loan_status" 
-				inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="loan_status_id" not-null="true" />
-            </key>
-            <one-to-many class="com.loansystem.model.LoanStatus" />
-        </set>
+         <many-to-one class="com.loansystem.model.LoanStatus" fetch="select" name="loanStatus">
+            <column length="2000000000" name="status" not-null="true" unique="true"/>
+        </many-to-one>
     </class>
 </hibernate-mapping>

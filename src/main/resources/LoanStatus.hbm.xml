@@ -4,7 +4,7 @@
 <hibernate-mapping>
     <class name="com.loansystem.model.LoanStatus" table="loan_status">
         <id name="loanStatusId" type="string">
-            <column length="2000000000" name="loan_status_id"/>
+            <column length="2000000000" name="id"/>
             <generator class="assigned"/>
         </id>
         <property name="name" type="string">
@@ -13,8 +13,5 @@
         <property name="description" type="string">
             <column length="2000000000" name="description"/>
         </property>
-        <many-to-one name="loanStatusId" class="com.loansystem.model.Loan" fetch="select">
-            <column name="loan_id" not-null="true" />
-        </many-to-one>
     </class>
 </hibernate-mapping>

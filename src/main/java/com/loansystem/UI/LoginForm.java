@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.persistence.criteria.Order;
+import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
@@ -16,7 +16,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import javax.swing.*;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.*;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
@@ -143,21 +143,11 @@ private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 }//GEN-LAST:event_jTextField1ActionPerformed
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    ArrayList<Client> clientsList;
+
     ArrayList<Loan> loansList;
     try {
-        log.info("START");
-        log.info("MIDDLE");
         Session session = null;
-        /*User user = new User();
-        user.setName("apple");
-        user.setPassword("123456");
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        session.save(user);
-        tx.commit();
-        session.close();
-        HibernateUtil.shutdown();*/
+
         try {
             String loginText = jTextField1.getText();
             String passwordText = jTextField2.getText();
@@ -177,23 +167,27 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             //check if client logged in
             if(loginClient!=null)
             {
-                loansList = (ArrayList<Loan>) session.createCriteria(Loan.class)
-                    .add(Restrictions.eq("client_id", loginClient.getClientId()))
-                    .createCriteria("loanStatus")
-                    .list();
+                //getting last loan status & loan history object for logging in client
+                ArrayList<LoanHistory> loanHistoryList = new ArrayList<LoanHistory>();
+                loanHistoryList =  (ArrayList<LoanHistory>)session.createCriteria(LoanHistory.class)
+                       .addOrder(Order.desc("rowId"))
+                       .setMaxResults(1)
+                       .createCriteria("loan")
+                       .add(Restrictions.eq("client", loginClient))
+                       .list();
+                    
+                Iterator it = loanHistoryList.iterator();
+                while(it.hasNext()) {
+                    LoanHistory current = (LoanHistory)it.next();
+                    log.info(current.getDate());
+                    log.info(current.getLoan().getLoanStatus().getDescription());
+                   
+                    
+                }
+                
+                
                 
             }
-            
-           
-           
-            
-            
-            
-            
-            
-            
-
-
             //TODO add emloyee login
 
             log.info(loginText);
@@ -208,19 +202,6 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 log.info(currClientLoan);
             }
 
-            //generate activeButtonSet
-
-
-
-
-           // Client currClient = (Client) it.next();
-            //List currentClientLoans = new ArrayList();
-           // currentClientLoans = session.createQuery("Select id from Loan loan inner join LoanHistory.loan_id as lh").list();
-           // Criteria lastLoan = lastLoanHistory..add(Restrictions.eq("client_id", new Integer(4)));
-            //currentClientLoans = (ArrayList<LoanHistoryId>) lastLoanHistory.list();
-
-           // .list();
-            log.info("SOME LOG");
             //FrameBuilder clienFrame = new FrameBuilder();
 
 

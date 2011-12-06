@@ -1,5 +1,7 @@
 package com.loansystem.UI;
 
+import com.loansystem.control.FrameBuilder;
+import com.loansystem.control.FrameBuilderImpl;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.*;
 import com.loansystem.validator.LoginValidator;
@@ -145,6 +147,7 @@ private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
     ArrayList<Loan> loansList;
+    LoanHistory loanHistory = null;
     try {
         Session session = null;
 
@@ -174,13 +177,16 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                        .setMaxResults(1)
                        .createCriteria("loan")
                        .add(Restrictions.eq("client", loginClient))
+                       .createCriteria("loanStatus")
                        .list();
                     
                 Iterator it = loanHistoryList.iterator();
+                
                 while(it.hasNext()) {
-                    LoanHistory current = (LoanHistory)it.next();
-                    log.info(current.getDate());
-                    log.info(current.getLoan().getLoanStatus().getDescription());
+                    loanHistory = (LoanHistory)it.next();
+                    log.info(loanHistory.getDate());
+                    log.info(loanHistory.getLoan().getLoanStatus().getDescription());
+                    log.info(loanHistory.getLoan().getLoanStatus().getName());
                    
                     
                 }
@@ -190,20 +196,8 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             }
             //TODO add emloyee login
 
-            log.info(loginText);
-            log.info(passwordText);
-
-            log.info(loansList.size());
-            Iterator it = loansList.iterator();
-            
-            while(it.hasNext())
-            {
-                Loan currClientLoan = (Loan)it.next();
-                log.info(currClientLoan);
-            }
-
-            //FrameBuilder clienFrame = new FrameBuilder();
-
+            FrameBuilder clienFrame = new FrameBuilderImpl(loanHistory);
+            this.setVisible(false);
 
         } catch (Exception ex) {
             log.error(ex);

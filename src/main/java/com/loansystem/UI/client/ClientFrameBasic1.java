@@ -11,6 +11,7 @@
 package com.loansystem.UI.client;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import org.apache.commons.logging.Log;
@@ -29,6 +30,11 @@ public class ClientFrameBasic1 extends JFrame {
 
     /** Creates new form ClientFrameBasic */
     public ClientFrameBasic1(JPanel[] panels) {
+        //if no sent to debt collection show notification
+        if(panels == null)
+        {
+            JOptionPane.showMessageDialog(this, "Sorry we doesn't allow login for clients with blacklisted status");
+        }
         basicFrame = new JFrame("LOGGED USER FRAME");
         log.info("Creating basic frame with tabs");
         

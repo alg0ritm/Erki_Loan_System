@@ -47,76 +47,105 @@ public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
 
     public enum LoanStatusEnum {
 
-        REQUESTED,
+        PENDING,
         REJECTED,
+        POSTPONE_REQUESTED,
+        OVERDUE,
         ISSUED,
-        REPAID,
+        PAYED_BACK,
         POSTPONED,
         SENT_TO_DEBT_COLLECTION;
 
         public void createFrame() {
-            
-            if (equals(REQUESTED)) {
+            log.info("createFrame");
+            if (equals(PENDING)) {
                 createRequestedFrame();
-            }
-            if (equals(REPAID)) {
-                createRepaidFrame();
             }
             if (equals(REJECTED)) {
                 createRejectedFrame();
             }
+            if (equals(POSTPONE_REQUESTED)) {
+                createPostponeReuqestedFrame();
+            }
+              if (equals(OVERDUE)) {
+                createOverdueFrame();
+            }
             if (equals(ISSUED)) {
                 createIssuedFrame();
+            }
+            if (equals(PAYED_BACK)) {
+                createPayedBackFrame();
             }
             if (equals(POSTPONED)) {
                 createPostponedFrame();
             }
-            if(equals(SENT_TO_DEBT_COLLECTION))
-            {
+            if (equals(SENT_TO_DEBT_COLLECTION)) {
                 createSentToDebtColletionFrame();
             }
-            
 
         }
-        
+
         public void createRequestedFrame() {
-            JPanel[] panels = new JPanel[1];            
-            panels[0] = new addMyLoansTabJPanel();          
-            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-        }
-        
-        public void createRejectedFrame()
-        {
-            JPanel[] panels = new JPanel[2];            
-            panels[0] = new AddNewLoanRequestTabJPanel();          
+           JPanel[] panels = new JPanel[2];
+            panels[0] = new AddNewLoanRequestTabJPanel();
             panels[1] = new addMyLoansTabJPanel();
             ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-            
+        }
+
+        public void createRejectedFrame() {
+            JPanel[] panels = new JPanel[2];
+            panels[0] = new AddNewLoanRequestTabJPanel();
+            panels[1] = new addMyLoansTabJPanel();
+            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+
         }
 
         public void createRepaidFrame() {
-            JPanel[] panels = new JPanel[2];            
-            panels[0] = new AddNewLoanRequestTabJPanel();          
+            JPanel[] panels = new JPanel[2];
+            panels[0] = new AddNewLoanRequestTabJPanel();
             panels[1] = new addMyLoansTabJPanel();
             ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
         }
-        
-        public void  createIssuedFrame() {
-            JPanel[] panels = new JPanel[2];            
-            panels[0] = new addLoanPostponeRequestTabJPanel();          
+
+        public void createIssuedFrame() {
+            JPanel[] panels = new JPanel[2];
+            panels[0] = new addLoanPostponeRequestTabJPanel();
             panels[1] = new addLoanPaybackTabJPanel();
             ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
         }
 
         public void createPostponedFrame() {
             JPanel[] panels = new JPanel[2];
-            panels[1] = new AddNewLoanRequestTabJPanel();
-            panels[2] = new addMyLoansTabJPanel();
+            panels[0] = new AddNewLoanRequestTabJPanel();
+            panels[1] = new addMyLoansTabJPanel();
             ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
         }
-        
+
         public void createSentToDebtColletionFrame() {
             JPanel[] panels = null;
+            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+        }
+
+        private void createPostponeReuqestedFrame() {
+            JPanel[] panels = new JPanel[2];
+            panels[0] = new AddNewLoanRequestTabJPanel();
+            panels[1] = new addMyLoansTabJPanel();
+            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+        }
+
+        private void createOverdueFrame() {
+            JPanel[] panels = new JPanel[2];
+            panels[0] = new AddNewLoanRequestTabJPanel();
+            panels[1] = new addMyLoansTabJPanel();
+            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+        }
+
+        private void createPayedBackFrame() {
+            log.info("createFrame1");
+            JPanel[] panels = new JPanel[2];
+            panels[0] = new AddNewLoanRequestTabJPanel();
+            log.info("createFrame1");
+            panels[1] = new addMyLoansTabJPanel();
             ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
         }
     }

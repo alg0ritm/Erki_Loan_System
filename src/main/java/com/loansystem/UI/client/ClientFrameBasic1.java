@@ -36,6 +36,7 @@ public class ClientFrameBasic1 extends JFrame {
             JOptionPane.showMessageDialog(this, "Sorry we doesn't allow login for clients with blacklisted status");
         }
         basicFrame = new JFrame("LOGGED USER FRAME");
+        basicFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         log.info("Creating basic frame with tabs");
         
         this.panels = new JPanel[panels.length];

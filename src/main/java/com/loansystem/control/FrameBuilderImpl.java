@@ -5,7 +5,6 @@
 package com.loansystem.control;
 
 import com.loansystem.UI.client.AddNewLoanRequestTabJPanel;
-import com.loansystem.UI.client.ClientFrameBasic;
 import com.loansystem.UI.client.ClientFrameBasic1;
 import com.loansystem.UI.client.addMyLoansTabJPanel;
 import com.loansystem.classificator.LoanStatusClassificator;
@@ -71,7 +70,7 @@ public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
             JPanel[] panels = new JPanel[2];
             panels[1] = new AddNewLoanRequestTabJPanel();
             panels[2] = new addMyLoansTabJPanel();
-            ClientFrameBasic basicFrame = new ClientFrameBasic(panels);
+            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
         }
     }
 

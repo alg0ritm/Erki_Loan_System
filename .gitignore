@@ -1,3 +1,3 @@
 target/*
-hibernate*xml
+hibernate.cfg.xml
 *.tf

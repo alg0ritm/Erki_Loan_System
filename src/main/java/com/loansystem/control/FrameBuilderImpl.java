@@ -4,45 +4,54 @@
  */
 package com.loansystem.control;
 
+import com.loansystem.UI.client.ClientFrameBasic1;
+import com.loansystem.UI.client.LoanPostponeRequestCTab;
 import com.loansystem.UI.client.LoanRequestCTab;
+import com.loansystem.UI.client.MyLoansTab;
+import com.loansystem.UI.client.NewLoanRequestPanel;
+import com.loansystem.model.Client;
+import com.loansystem.model.Loan;
+import com.loansystem.model.LoanHistory;
+import com.loansystem.model.LoanOffer;
+import com.loansystem.model.LoanStatus;
+import com.loansystem.service.LoanOfferService;
+import com.loansystem.service.LoanOfferServiceImpl;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import javax.swing.JPanel;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/*import com.loansystem.UI.client.LoanRequestCTab;
 import com.loansystem.UI.client.ClientFrameBasic1;
 import com.loansystem.UI.client.LoanPostponeRequestCTab;
 import com.loansystem.UI.client.MyLoansTab;
+import com.loansystem.UI.client.NewLoanRequestPanel;
 import com.loansystem.classificator.LoanStatusClassificator;
 import com.loansystem.control.FrameBuilderImpl.LoanStatusEnum;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanHistory;
+import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.apache.commons.logging.LogFactory;*/
 /**
  *
  * @author antonve
  */
-public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
+public class FrameBuilderImpl implements FrameBuilder {
 
     private static final Log log = LogFactory.getLog(FrameBuilderImpl.class);
     private static LoanStatusEnum LoanStatusEnum;
-    private Client client;
-    private Loan loan;
-    private LoanHistory loanHistory;
-
-    interface GetLoanStatusEnumInterface {
-
-        LoanStatusEnum getLoanStatusEnum(String loanStatus);
-    }
-
-    public class StringValJoiner implements GetLoanStatusEnumInterface {
-
-        public LoanStatusEnum getLoanStatusEnum(String loanStatus) {
-            //throw new UnsupportedOperationException("Not supported yet.");
-            return LoanStatusEnum;
-        }
-    }
+    private static Client client;
+    private static Loan loan;
+    private static LoanHistory loanHistory;
+    private static Set<LoanOffer> loanOffers;
 
     public enum LoanStatusEnum {
 
@@ -55,8 +64,7 @@ public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
         POSTPONED,
         SENT_TO_DEBT_COLLECTION;
 
-        public void createFrame() {
-            log.info("createFrame");
+        public void createFrame(Loan loan) {
             if (equals(PENDING)) {
                 createRequestedFrame();
             }
@@ -66,7 +74,7 @@ public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
             if (equals(POSTPONE_REQUESTED)) {
                 createPostponeReuqestedFrame();
             }
-              if (equals(OVERDUE)) {
+            if (equals(OVERDUE)) {
                 createOverdueFrame();
             }
             if (equals(ISSUED)) {
@@ -85,25 +93,28 @@ public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
         }
 
         public void createRequestedFrame() {
-           JPanel[] panels = new JPanel[2];
-            panels[0] = new LoanRequestCTab();
+            JPanel[] loanRequestCTabPanels = new JPanel[1];
+
+            loanRequestCTabPanels[0] = new NewLoanRequestPanel();
+            JPanel[] panels = new JPanel[2];
+
+            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
             panels[1] = new MyLoansTab();
             ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
         }
 
         public void createRejectedFrame() {
+            JPanel[] loanRequestCTabPanels = new JPanel[1];
+            loanRequestCTabPanels[0] = new NewLoanRequestPanel();
             JPanel[] panels = new JPanel[2];
-            panels[0] = new LoanRequestCTab();
+
+            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
             panels[1] = new MyLoansTab();
             ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
 
         }
 
         public void createRepaidFrame() {
-            JPanel[] panels = new JPanel[2];
-            panels[0] = new LoanRequestCTab();
-            panels[1] = new MyLoansTab();
-            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
         }
 
         public void createIssuedFrame() {
@@ -113,8 +124,11 @@ public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
         }
 
         public void createPostponedFrame() {
+            JPanel[] loanRequestCTabPanels = new JPanel[1];
+            loanRequestCTabPanels[0] = new NewLoanRequestPanel();
             JPanel[] panels = new JPanel[2];
-            panels[0] = new LoanRequestCTab();
+
+            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
             panels[1] = new MyLoansTab();
             ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
         }
@@ -125,35 +139,45 @@ public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
         }
 
         private void createPostponeReuqestedFrame() {
+            JPanel[] loanRequestCTabPanels = new JPanel[1];
+            loanRequestCTabPanels[0] = new NewLoanRequestPanel();
             JPanel[] panels = new JPanel[2];
-            panels[0] = new LoanRequestCTab();
+
+            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
             panels[1] = new MyLoansTab();
             ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
         }
 
         private void createOverdueFrame() {
+            JPanel[] loanRequestCTabPanels = new JPanel[1];
+            loanRequestCTabPanels[0] = new NewLoanRequestPanel();
             JPanel[] panels = new JPanel[2];
-            panels[0] = new LoanRequestCTab();
+
+            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
             panels[1] = new MyLoansTab();
             ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
         }
 
         private void createPayedBackFrame() {
-            log.info("createFrame1");
+            JPanel[] loanRequestCTabPanels = new JPanel[1];
+            ArrayList<LoanOffer> availLoanOffers = new ArrayList<LoanOffer>();
+            log.info("LOANOFFERS SIZE" + loanOffers.size());
+            loanRequestCTabPanels[0] = new NewLoanRequestPanel(loanOffers);
             JPanel[] panels = new JPanel[2];
-            panels[0] = new LoanRequestCTab();
-            log.info("createFrame1");
+
+            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
             panels[1] = new MyLoansTab();
             ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
         }
     }
 
-    public FrameBuilderImpl(LoanHistory loanHistory) {
-        if (loanHistory != null) {
-            this.loanHistory = loanHistory;
-            this.loan = loanHistory.getLoan();
+    public FrameBuilderImpl(Loan loan) {
+        if (loan != null) {
+            this.loan = loan;
             this.client = loan.getClient();
+            this.loanOffers = client.getCientGroup().getLoanOffers();
 
+            //this.loanOffer = loan.get
             String lastStatus = null;
 
             LoanStatus lastLoanStatus = loan.getLoanStatus();
@@ -163,7 +187,7 @@ public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
                 try {
                     LoanStatusEnum elem = LoanStatusEnum.valueOf(lastStatus.toUpperCase());
                     log.info(elem.name());
-                    elem.createFrame();
+                    elem.createFrame(loan);
                 } catch (Exception e) {
                     log.info("Error occured when casting to enum" + e.getMessage());
                 }
@@ -171,22 +195,6 @@ public class FrameBuilderImpl implements FrameBuilder, LoanStatusClassificator {
             }
         }
 
-    }
-
-    public JPanel addNewLoanRequestTab() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public JPanel addLoanRequestTab() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public JPanel addLoanPaybackTab() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public JPanel addLoanPostponeRequestTab() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public JPanel addMyLoansTab() {

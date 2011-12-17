@@ -2,7 +2,6 @@ package com.loansystem.model;
 
 // default package
 // Generated Nov 13, 2011 9:49:21 PM by Hibernate Tools 3.4.0.CR1
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,56 +10,65 @@ import java.util.Set;
  */
 public class CientGroup implements java.io.Serializable {
 
-	private String id;
-	private String name;
-	private String description;
-	private Set clients = new HashSet(0);
+    private String id;
+    private String name;
+    private String description;
+    private Set<Client> clients;
+    private Set<LoanOffer> loanOffers;
 
-	public CientGroup() {
-	}
+    public Set<LoanOffer> getLoanOffers() {
+        return loanOffers;
+    }
 
-	public CientGroup(String id, String name) {
-		this.id = id;
-		this.name = name;
-	}
+    public void setLoanOffers(Set<LoanOffer> loanOffers) {
+        this.loanOffers = loanOffers;
+    }
 
-	public CientGroup(String id, String name, String description, Set clients) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.clients = clients;
-	}
+    public CientGroup() {
+    }
 
-	public String getId() {
-		return this.id;
-	}
+    public CientGroup(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public CientGroup(String id, String name, String description, Set<Client> clients, Set<LoanOffer> loanOffers) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.clients = clients;
+        this.loanOffers = loanOffers;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public String getId() {
+        return this.id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Set getClients() {
-		return this.clients;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setClients(Set clients) {
-		this.clients = clients;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
+    public Set<Client> getClients() {
+        return this.clients;
+    }
+
+    public void setClients(Set<Client> clients) {
+        this.clients = clients;
+    }
 }

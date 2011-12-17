@@ -20,5 +20,11 @@
             </key>
             <one-to-many class="com.loansystem.model.Client" />
         </set>
+        <set name="loanOffers" table="loan_offer" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="client_group_id" length="2000000000" not-null="true" />
+            </key>
+            <one-to-many class="com.loansystem.model.LoanOffer" />
+        </set>
     </class>
 </hibernate-mapping>

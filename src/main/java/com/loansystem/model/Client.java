@@ -23,15 +23,15 @@ public class Client implements java.io.Serializable {
 
 	public Client(int clientId, CientGroup cientGroup, ClientStatus clientStatus, String persCode, String name,
 			String lastName, String password, String mail, String rating) {
-		this.clientId = clientId;
-		this.cientGroup = cientGroup;
-		this.clientStatus = clientStatus;
-		this.persCode = persCode;
-		this.name = name;
-		this.lastName = lastName;
-		this.password = password;
-		this.mail = mail;
-		this.rating = rating;
+            this.clientId = clientId;
+            this.cientGroup = cientGroup;
+            this.clientStatus = clientStatus;
+            this.persCode = persCode;
+            this.name = name;
+            this.lastName = lastName;
+            this.password = password;
+            this.mail = mail;
+            this.rating = rating;
 	}
 
 	public int getClientId() {

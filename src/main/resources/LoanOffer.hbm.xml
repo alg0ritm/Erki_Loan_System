@@ -26,8 +26,8 @@
         <property name="statusId" type="string">
             <column name="status_id" length="2000000000" not-null="true" />
         </property>
-        <property name="clientGroupId" type="string">
-            <column name="client_group_id" length="2000000000" not-null="true" />
-        </property>
+        <many-to-one class="com.loansystem.model.CientGroup" fetch="select" name="clientGroup">
+            <column length="2000000000" name="rowid" not-null="true" unique="true"/>
+        </many-to-one>
     </class>
 </hibernate-mapping>

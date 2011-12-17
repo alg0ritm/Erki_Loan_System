@@ -7,6 +7,7 @@ import com.loansystem.model.*;
 import com.loansystem.validator.LoginValidator;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -148,6 +149,8 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     ArrayList<Loan> loansList;
     LoanHistory loanHistory = null;
+    Loan loan = null;
+    
     try {
         Session session = null;
 
@@ -161,17 +164,22 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             
             Client loginClient = new Client();
             loansList = new ArrayList<Loan>();
-            
+                    
             loginClient = (Client)session.createCriteria(Client.class)
                     .add(Restrictions.eq("mail", loginText))
                     .add(Restrictions.eq("password", passwordText))
+                
                     .uniqueResult();
+            
+           
             
             //check if client logged in
             if(loginClient!=null)
             {
                 //getting last loan status & loan history object for logging in client
                 ArrayList<LoanHistory> loanHistoryList = new ArrayList<LoanHistory>();
+                
+                //example query
                 loanHistoryList =  (ArrayList<LoanHistory>)session.createCriteria(LoanHistory.class)
                        .addOrder(Order.desc("rowId"))
                        .setMaxResults(1)
@@ -187,16 +195,29 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     log.info(loanHistory.getDate());
                     log.info(loanHistory.getLoan().getLoanStatus().getDescription());
                     log.info(loanHistory.getLoan().getLoanStatus().getName());
-                   
-                    
                 }
                 
+                loan = (Loan)session.createCriteria(Loan.class)
+                       .add(Restrictions.eq("client", loginClient))
+                       .addOrder(Order.desc("id"))
+                       .createCriteria("loanStatus")
+                       .uniqueResult();
+                       
+               
+                 //ex query
+                 loansList = (ArrayList<Loan>)session.createCriteria(Loan.class)
+                       .add(Restrictions.eq("client", loginClient))
+                       .addOrder(Order.desc("id"))
+                       .setMaxResults(1)
+                       .createCriteria("loanStatus")
+                       .list();
                 
                 
             }
             //TODO add emloyee login
-
-            FrameBuilder clienFrame = new FrameBuilderImpl(loanHistory);
+            log.info("TO FRAME BUILDER " + loan.getLoanStatus());
+            
+            FrameBuilder clientFrame = new FrameBuilderImpl(loan);
             this.setVisible(false);
 
         } catch (Exception ex) {

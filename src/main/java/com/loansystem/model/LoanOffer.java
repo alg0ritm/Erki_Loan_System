@@ -15,13 +15,13 @@ public class LoanOffer implements java.io.Serializable {
 	private String ratingBonus;
 	private String ratingDrop;
 	private String statusId;
-	private String clientGroupId;
+	private CientGroup clientGroup;
 
 	public LoanOffer() {
 	}
 
 	public LoanOffer(String offerId, String sum, String period, String apr, String ratingBonus, String ratingDrop,
-			String statusId, String clientGroupId) {
+			String statusId, CientGroup clientGroup) {
 		this.offerId = offerId;
 		this.sum = sum;
 		this.period = period;
@@ -29,7 +29,7 @@ public class LoanOffer implements java.io.Serializable {
 		this.ratingBonus = ratingBonus;
 		this.ratingDrop = ratingDrop;
 		this.statusId = statusId;
-		this.clientGroupId = clientGroupId;
+		this.clientGroup = clientGroup;
 	}
 
 	public String getOfferId() {
@@ -88,12 +88,12 @@ public class LoanOffer implements java.io.Serializable {
 		this.statusId = statusId;
 	}
 
-	public String getClientGroupId() {
-		return this.clientGroupId;
+	public CientGroup getClientGroup() {
+		return this.clientGroup;
 	}
 
-	public void setClientGroupId(String clientGroupId) {
-		this.clientGroupId = clientGroupId;
+	public void setClientGroup(CientGroup clientGroup) {
+		this.clientGroup = clientGroup;
 	}
 
 }

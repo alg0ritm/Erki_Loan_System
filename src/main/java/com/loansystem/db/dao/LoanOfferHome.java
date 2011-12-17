@@ -3,14 +3,18 @@ package com.loansystem.db.dao;
 // default package
 // Generated Nov 13, 2011 9:49:24 PM by Hibernate Tools 3.4.0.CR1
 
+import com.loansystem.model.Client;
 import com.loansystem.model.LoanOffer;
+import java.util.ArrayList;
 import java.util.List;
 import javax.naming.InitialContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Home object for domain model class LoanOffer.
@@ -22,6 +26,7 @@ public class LoanOfferHome {
 	private static final Log log = LogFactory.getLog(LoanOfferHome.class);
 
 	private final SessionFactory sessionFactory = getSessionFactory();
+        private Session session;
 
 	protected SessionFactory getSessionFactory() {
 		try {
@@ -116,4 +121,15 @@ public class LoanOfferHome {
 			throw re;
 		}
 	}
+        
+        //public ArrayList<LoanOffer> getAvailableLoanOffers()
+
+    public ArrayList<LoanOffer> getAvailableLoanOffers(Client client) {
+         session = sessionFactory.openSession();
+         session.beginTransaction();
+         ArrayList<LoanOffer> avLoanOffersList = (ArrayList<LoanOffer>)session.createCriteria(LoanOffer.class)
+                 .add(Restrictions.eq("client_group_id", client.getCientGroup().getId()))
+                 .list();
+         return avLoanOffersList;
+    }
 }

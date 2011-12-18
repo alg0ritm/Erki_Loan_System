@@ -18,6 +18,8 @@ import com.loansystem.service.LoanOfferService;
 import com.loansystem.service.LoanOfferServiceImpl;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import javax.swing.JPanel;
 import org.apache.commons.logging.Log;
@@ -51,7 +53,7 @@ public class FrameBuilderImpl implements FrameBuilder {
     private static Client client;
     private static Loan loan;
     private static LoanHistory loanHistory;
-    private static Set<LoanOffer> loanOffers;
+    private static List<LoanOffer> loanOffers;
 
     public enum LoanStatusEnum {
 
@@ -64,7 +66,7 @@ public class FrameBuilderImpl implements FrameBuilder {
         POSTPONED,
         SENT_TO_DEBT_COLLECTION;
 
-        public void createFrame(Loan loan) {
+        public void createFrame() {
             if (equals(PENDING)) {
                 createRequestedFrame();
             }
@@ -160,7 +162,6 @@ public class FrameBuilderImpl implements FrameBuilder {
 
         private void createPayedBackFrame() {
             JPanel[] loanRequestCTabPanels = new JPanel[1];
-            ArrayList<LoanOffer> availLoanOffers = new ArrayList<LoanOffer>();
             log.info("LOANOFFERS SIZE" + loanOffers.size());
             loanRequestCTabPanels[0] = new NewLoanRequestPanel(loanOffers);
             JPanel[] panels = new JPanel[2];
@@ -171,11 +172,24 @@ public class FrameBuilderImpl implements FrameBuilder {
         }
     }
 
-    public FrameBuilderImpl(Loan loan) {
-        if (loan != null) {
-            this.loan = loan;
-            this.client = loan.getClient();
-            this.loanOffers = client.getCientGroup().getLoanOffers();
+    public FrameBuilderImpl(Client client) {
+        if (client != null) {
+            try{
+                this.loanOffers = client.getCientGroup().getLoanOffers();
+                this.loan = client.getLoans().get(0);
+                
+            }catch(Exception e)
+            {   
+                log.info("No loans exist for the client");
+                log.error(e);
+                LoanStatusEnum elem = LoanStatusEnum.PAYED_BACK;
+                elem.createFrame();
+                return;
+            }
+            //loans exist for the client
+            log.info("HELLO WORLD");
+                
+            
 
             //this.loanOffer = loan.get
             String lastStatus = null;
@@ -187,7 +201,7 @@ public class FrameBuilderImpl implements FrameBuilder {
                 try {
                     LoanStatusEnum elem = LoanStatusEnum.valueOf(lastStatus.toUpperCase());
                     log.info(elem.name());
-                    elem.createFrame(loan);
+                    elem.createFrame();
                 } catch (Exception e) {
                     log.info("Error occured when casting to enum" + e.getMessage());
                 }

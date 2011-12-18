@@ -14,6 +14,7 @@ import com.loansystem.model.LoanOffer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,14 +28,14 @@ public class NewLoanRequestPanel extends javax.swing.JPanel {
      private static final Log log = LogFactory.getLog(NewLoanRequestPanel.class);
 
     /** Creates new form NewLoanRequestPanel */
-    public NewLoanRequestPanel(Set<LoanOffer> loanOffersSet) {
+    public NewLoanRequestPanel(List<LoanOffer> loanOffersList) {
         initComponents();
         LoanOffer currentLoanOffer;
         int i = 0;
-        Object[][] tableObject = new Object[loanOffersSet.size()][4];
+        Object[][] tableObject = new Object[loanOffersList.size()][4];
 
 
-        Iterator loanOfferSet = loanOffersSet.iterator();
+        Iterator loanOfferSet = loanOffersList.iterator();
         while (loanOfferSet.hasNext()) {
 
             currentLoanOffer = (LoanOffer) loanOfferSet.next();

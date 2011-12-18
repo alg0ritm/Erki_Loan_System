@@ -51,6 +51,7 @@ public class ClientFrameBasic1 extends JFrame {
         basicFrame.add(jTabbedPane1);
         basicFrame.setSize(400, 400);
         basicFrame.setVisible(true);
+        log.info("Created basic frame with tabs");
     }
 
     /** This method is called from within the constructor to

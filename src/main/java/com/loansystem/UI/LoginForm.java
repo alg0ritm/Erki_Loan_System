@@ -200,24 +200,27 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 loan = (Loan)session.createCriteria(Loan.class)
                        .add(Restrictions.eq("client", loginClient))
                        .addOrder(Order.desc("id"))
-                       .createCriteria("loanStatus")
+                       .setMaxResults(1) 
                        .uniqueResult();
+                       //.createCriteria("loanStatus");
+                       
                        
                
                  //ex query
-                 loansList = (ArrayList<Loan>)session.createCriteria(Loan.class)
+                 /*loansList = (ArrayList<Loan>)session.createCriteria(Loan.class)
                        .add(Restrictions.eq("client", loginClient))
                        .addOrder(Order.desc("id"))
                        .setMaxResults(1)
                        .createCriteria("loanStatus")
-                       .list();
+                       .list();*/
                 
                 
             }
             //TODO add emloyee login
-            log.info("TO FRAME BUILDER " + loan.getLoanStatus());
+            log.info("TO FRAME BUILDER ");
             
-            FrameBuilder clientFrame = new FrameBuilderImpl(loan);
+            FrameBuilder clientFrame = new FrameBuilderImpl(loginClient);
+             log.info("FROM FRAME BUILDER ");
             this.setVisible(false);
 
         } catch (Exception ex) {

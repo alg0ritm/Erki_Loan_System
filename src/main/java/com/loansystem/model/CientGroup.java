@@ -3,6 +3,7 @@ package com.loansystem.model;
 // default package
 // Generated Nov 13, 2011 9:49:21 PM by Hibernate Tools 3.4.0.CR1
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,14 +14,14 @@ public class CientGroup implements java.io.Serializable {
     private String id;
     private String name;
     private String description;
-    private Set<Client> clients;
-    private Set<LoanOffer> loanOffers;
+    private List<Client> clients;
+    private List<LoanOffer> loanOffers;
 
-    public Set<LoanOffer> getLoanOffers() {
+    public List<LoanOffer> getLoanOffers() {
         return loanOffers;
     }
 
-    public void setLoanOffers(Set<LoanOffer> loanOffers) {
+    public void setLoanOffers(List<LoanOffer> loanOffers) {
         this.loanOffers = loanOffers;
     }
 
@@ -32,7 +33,7 @@ public class CientGroup implements java.io.Serializable {
         this.name = name;
     }
 
-    public CientGroup(String id, String name, String description, Set<Client> clients, Set<LoanOffer> loanOffers) {
+    public CientGroup(String id, String name, String description, List<Client> clients, List<LoanOffer> loanOffers) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -64,11 +65,11 @@ public class CientGroup implements java.io.Serializable {
         this.description = description;
     }
 
-    public Set<Client> getClients() {
+    public List<Client> getClients() {
         return this.clients;
     }
 
-    public void setClients(Set<Client> clients) {
+    public void setClients(List<Client> clients) {
         this.clients = clients;
     }
 }

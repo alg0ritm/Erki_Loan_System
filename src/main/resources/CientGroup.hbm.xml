@@ -14,17 +14,17 @@
         <property name="description" type="string">
             <column name="description" length="2000000000" />
         </property>
-        <set name="clients" table="client" inverse="true" lazy="true" fetch="select">
+        <bag name="clients" cascade="all" order-by="client_id">
             <key>
                 <column name="client_group_id" length="2000000000" not-null="true" />
             </key>
             <one-to-many class="com.loansystem.model.Client" />
-        </set>
-        <set name="loanOffers" table="loan_offer" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="loanOffers" cascade="all" order-by="offer_id">
             <key>
                 <column name="client_group_id" length="2000000000" not-null="true" />
             </key>
             <one-to-many class="com.loansystem.model.LoanOffer" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

@@ -4,6 +4,7 @@ package com.loansystem.model;
 // Generated Nov 13, 2011 9:49:21 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,7 +15,7 @@ public class ClientStatus implements java.io.Serializable {
 	private String id;
 	private String name;
 	private String description;
-	private Set clients = new HashSet(0);
+	private List<Client> clients;
 
 	public ClientStatus() {
 	}
@@ -24,7 +25,7 @@ public class ClientStatus implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public ClientStatus(String id, String name, String description, Set clients) {
+	public ClientStatus(String id, String name, String description, List<Client> clients) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -55,11 +56,11 @@ public class ClientStatus implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public Set getClients() {
+	public List<Client> getClients() {
 		return this.clients;
 	}
 
-	public void setClients(Set clients) {
+	public void setClients(List<Client> clients) {
 		this.clients = clients;
 	}
 

@@ -13,11 +13,11 @@
     <property name="description" type="string">
       <column length="2000000000" name="description"/>
     </property>
-    <set fetch="select" inverse="true" lazy="true" name="clients" table="client">
+    <bag name="clients" cascade="all" order-by="client_id">
       <key>
         <column length="2000000000" name="status_id" not-null="true"/>
       </key>
       <one-to-many class="com.loansystem.model.Client"/>
-    </set>
+    </bag>
   </class>
 </hibernate-mapping>

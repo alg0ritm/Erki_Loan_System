@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import javax.swing.ListSelectionModel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -33,6 +34,8 @@ public class NewLoanRequestPanel extends javax.swing.JPanel {
         LoanOffer currentLoanOffer;
         int i = 0;
         Object[][] tableObject = new Object[loanOffersList.size()][4];
+        
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 
         Iterator loanOfferSet = loanOffersList.iterator();
@@ -57,6 +60,21 @@ public class NewLoanRequestPanel extends javax.swing.JPanel {
     public NewLoanRequestPanel() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+    
+     private void displayRowValues(int rowIndex)  
+    {  
+        int columns = jTable1.getColumnCount();  
+        String s = "";  
+        for(int col = 0; col < columns; col++)  
+        {  
+            Object o = jTable1.getValueAt(rowIndex, col);  
+            s += o.toString();  
+            if(col < columns - 1)  
+                s += ", ";  
+                log.info(s);
+        }  
+        //readRow.label.setText(s);  
+    }  
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -93,6 +111,11 @@ public class NewLoanRequestPanel extends javax.swing.JPanel {
 
         jButton1.setText("Request a loan");
         jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -122,6 +145,16 @@ public class NewLoanRequestPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //Create loan Request
+        
+      int rowIndex = jTable1.getSelectedRow();
+      
+      displayRowValues(rowIndex);
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

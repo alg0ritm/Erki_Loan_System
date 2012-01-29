@@ -1,16 +1,21 @@
 package com.loansystem.UI;
 
+import com.loansystem.backend.model.UserLoginInput;
 import com.loansystem.control.FrameBuilder;
 import com.loansystem.control.FrameBuilderImpl;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.*;
 import com.loansystem.validator.LoginValidator;
+import com.loansystem.control.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import javax.naming.InitialContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Query;
@@ -37,15 +42,60 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author antonve
  */
-public class LoginForm extends javax.swing.JFrame {
+public class LoginForm extends javax.swing.JFrame implements Observable {
 
     private static final Log log = LogFactory.getLog(LoginForm.class);
+    private LoanSystemObserver observer;
+    public HibernateUtil hu;
+    private UserLoginInput userLoginInput;
 
-    /** Creates new form LoginForm */
-    public LoginForm() {
-        initComponents();
+    public UserLoginInput getUserLoginInput() {
+        return userLoginInput;
     }
 
+    public void setUserLoginInput(UserLoginInput userLoginInput) {
+        this.userLoginInput = userLoginInput;
+    }
+
+    /** Creates new form LoginForm */
+    public LoginForm(LoanSystemObserver observer) {
+        initComponents();
+        this.observer = observer;
+       
+
+    }
+
+    public JTextField getjTextField1() {
+        return jTextField1;
+    }
+
+    public void setjTextField1(JTextField jTextField1) {
+        this.jTextField1 = jTextField1;
+    }
+
+    public JTextField getjTextField2() {
+        return jTextField2;
+    }
+
+    public void setjTextField2(JTextField jTextField2) {
+        this.jTextField2 = jTextField2;
+    }
+
+    /*public void actionPerformed(ActionEvent evt) {
+       
+    }*/
+
+    /*public String[] getUserInput()
+    {
+    return 
+    }*/
+    /*class LoginCredentialsListener implements ActionListener {
+    
+    public void actionPerformed(ActionEvent evt) {
+    observer.notifyMsg("event has been held");
+    }
+    }//end inner class MultiplyListener
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -147,129 +197,50 @@ private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-    ArrayList<Loan> loansList;
-    LoanHistory loanHistory = null;
-    Loan loan = null;
-    
-    try {
-        Session session = null;
-
-        try {
-            String loginText = jTextField1.getText();
-            String passwordText = jTextField2.getText();
-
-            SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            
-            Client loginClient = new Client();
-            loansList = new ArrayList<Loan>();
-                    
-            loginClient = (Client)session.createCriteria(Client.class)
-                    .add(Restrictions.eq("mail", loginText))
-                    .add(Restrictions.eq("password", passwordText))
-                
-                    .uniqueResult();
-            
-           
-            
-            //check if client logged in
-            if(loginClient!=null)
-            {
-                //getting last loan status & loan history object for logging in client
-                ArrayList<LoanHistory> loanHistoryList = new ArrayList<LoanHistory>();
-                
-                //example query
-                loanHistoryList =  (ArrayList<LoanHistory>)session.createCriteria(LoanHistory.class)
-                       .addOrder(Order.desc("rowId"))
-                       .setMaxResults(1)
-                       .createCriteria("loan")
-                       .add(Restrictions.eq("client", loginClient))
-                       .createCriteria("loanStatus")
-                       .list();
-                    
-                Iterator it = loanHistoryList.iterator();
-                
-                while(it.hasNext()) {
-                    loanHistory = (LoanHistory)it.next();
-                    log.info(loanHistory.getDate());
-                    log.info(loanHistory.getLoan().getLoanStatus().getDescription());
-                    log.info(loanHistory.getLoan().getLoanStatus().getName());
-                }
-                
-                loan = (Loan)session.createCriteria(Loan.class)
-                       .add(Restrictions.eq("client", loginClient))
-                       .addOrder(Order.desc("id"))
-                       .setMaxResults(1) 
-                       .uniqueResult();
-                       //.createCriteria("loanStatus");
-                       
-                       
-               
-                 //ex query
-                 /*loansList = (ArrayList<Loan>)session.createCriteria(Loan.class)
-                       .add(Restrictions.eq("client", loginClient))
-                       .addOrder(Order.desc("id"))
-                       .setMaxResults(1)
-                       .createCriteria("loanStatus")
-                       .list();*/
-                
-                
-            }
-            //TODO add emloyee login
-            log.info("TO FRAME BUILDER ");
-            
-            FrameBuilder clientFrame = new FrameBuilderImpl(loginClient);
-             log.info("FROM FRAME BUILDER ");
-            this.setVisible(false);
-
-        } catch (Exception ex) {
-            log.error(ex);
-        } finally {
-            session.close();
-        }
-    } catch (Exception e) {
-        log.error("jButton1ActionPerformed" + e);
-    }
-    LoginValidator loginValidator = new LoginValidator();
+    //not used
 }//GEN-LAST:event_jButton1ActionPerformed
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    //public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-
-
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new LoginForm().setVisible(true);
-            }
-        });
+     * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+     */
+    /*try {
+    for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+    if ("Nimbus".equals(info.getName())) {
+    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+    break;
+    
+    
     }
+    }
+    } catch (ClassNotFoundException ex) {
+    java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+    java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+    java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+    java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    }
+    //</editor-fold>
+    
+    /* Create and display the form */
+    /*java.awt.EventQueue.invokeLater(new Runnable() {
+    
+    public void run() {
+    /*SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    Session session;
+    session = sessionFactory.openSession();
+    session.beginTransaction();*/
+    /* HibernateUtil hu = new HibernateUtil();
+    new LoginForm().setVisible(true);
+    }
+    });
+    }*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -278,4 +249,23 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void observerActionPerformed() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void updateComponent() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void deleteComponent() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public void addLoginListener(ActionListener mal) {
+        jButton1.addActionListener(mal);
+    }
 }

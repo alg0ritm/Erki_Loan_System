@@ -2,17 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.loansystem.control;
-
-import javax.swing.JPanel;
+package com.loansystem.backend.model;
 
 /**
  *
  * @author antonve
  */
-public class FrameBuilder {
-    
-    
-   
+class BaseDueDate {
     
 }

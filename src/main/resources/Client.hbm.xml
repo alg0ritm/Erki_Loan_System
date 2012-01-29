@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Nov 13, 2011 9:49:22 PM by Hibernate Tools 3.4.0.CR1 -->
-<hibernate-mapping>
+<hibernate-mapping default-lazy="false">
     <class name="com.loansystem.model.Client" table="client">
         <id name="clientId" type="int">
             <column name="client_id"/>
@@ -31,7 +31,7 @@
         <property name="rating" type="string">
             <column length="2000000000" name="rating" not-null="true"/>
         </property>
-        <bag name="loans" cascade="all" order-by="id">
+        <bag name="loans" cascade="all" order-by="id desc" lazy="false">
             <key column="client_id"/>
             <one-to-many class="com.loansystem.model.Loan"/>
         </bag>

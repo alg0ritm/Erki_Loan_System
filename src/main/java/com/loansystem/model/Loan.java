@@ -1,6 +1,10 @@
 package com.loansystem.model;
 
 // default package
+import com.loansystem.util.DateUtil;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,15 +22,16 @@ public class Loan implements java.io.Serializable {
     private Client client;
     private LoanStatus loanStatus;
     private String employeeId;
-    private String offerId;
     private String postponeRequestId;
+    private LoanOffer loanOffer;
+    private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     
 
     public Loan() {
     }
 
     public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId, LoanStatus loanStatus,
-            String offerId) {
+            LoanOffer loanOffer) {
         this.loanId = id;
         this.dueDate = dueDate;
         this.baseDueDate = baseDueDate;
@@ -34,11 +39,11 @@ public class Loan implements java.io.Serializable {
         this.debt = debt;
         this.client = client;
         this.loanStatus = loanStatus;
-        this.offerId = offerId;
+        this.loanOffer = loanOffer;
     }
 
     public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId,
-            String employeeId,  LoanStatus loanStatus, String offerId, String postponeRequestId) {
+            String employeeId,  LoanStatus loanStatus, LoanOffer loanOffer, String postponeRequestId) {
         this.loanId = id;
         this.dueDate = dueDate;
         this.baseDueDate = baseDueDate;
@@ -47,8 +52,44 @@ public class Loan implements java.io.Serializable {
         this.client = client;
         this.employeeId = employeeId;
         this.loanStatus = loanStatus;
-        this.offerId = offerId;
+        this.loanOffer = loanOffer;
         this.postponeRequestId = postponeRequestId;
+    }
+    
+    
+    //custom constructor
+    
+    public Loan(Client client,  LoanOffer loanOffer,  LoanStatus loanStatus) {
+        //log.info("LoanInsertRequest " + loanStatus);
+
+        Date now = new Date();
+
+        Date insertDate = DateUtil.getDatePlusDays(now, Integer.parseInt(loanOffer.getPeriod()));
+
+
+        //get current date time with Date()
+
+
+        //setDateFormat(dateFormat);
+        this.client=client;
+        this.loanOffer=loanOffer;
+        this.apr= loanOffer.getApr();
+        this.dueDate = dateFormat.format(insertDate);
+        this.baseDueDate = dateFormat.format(insertDate);
+        this.debt = loanOffer.getSum();
+        this.loanStatus = loanStatus;
+
+    }
+    
+    
+    
+
+    public LoanOffer getLoanOffer() {
+        return loanOffer;
+    }
+
+    public void setLoanOffer(LoanOffer loanOffer) {
+        this.loanOffer = loanOffer;
     }
 
     public int getLoanId() {
@@ -113,14 +154,6 @@ public class Loan implements java.io.Serializable {
 
     public void setLoanStatus(LoanStatus loanStatus) {
         this.loanStatus = loanStatus;
-    }
-
-    public String getOfferId() {
-        return this.offerId;
-    }
-
-    public void setOfferId(String offerId) {
-        this.offerId = offerId;
     }
 
     public String getPostponeRequestId() {

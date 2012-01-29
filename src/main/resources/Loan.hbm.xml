@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Nov 13, 2011 9:49:22 PM by Hibernate Tools 3.4.0.CR1 -->
-<hibernate-mapping>
+<hibernate-mapping default-lazy="false">
     <class name="com.loansystem.model.Loan" table="loan">
         <id name="loanId" type="int">
             <column length="2000000000" name="id"/>
-            <generator class="assigned"/>
+            <generator class="increment"/>
         </id>
         <property name="dueDate" type="string">
             <column length="2000000000" name="due_date" not-null="true"/>
@@ -22,9 +22,6 @@
         <property name="employeeId" type="string">
             <column length="2000000000" name="employee_id"/>
         </property>
-        <property name="offerId" type="string">
-            <column length="2000000000" name="offer_id" not-null="true"/>
-        </property>
         <property name="postponeRequestId" type="string">
             <column length="2000000000" name="postpone_request_id" unique="true"/>
         </property>
@@ -33,6 +30,9 @@
         </many-to-one>
          <many-to-one class="com.loansystem.model.LoanStatus" fetch="select" name="loanStatus">
             <column length="2000000000" name="status" not-null="true" unique="true"/>
+        </many-to-one>
+        <many-to-one class="com.loansystem.model.LoanOffer" fetch="select" name="loanOffer">
+            <column length="2000000000" name="offer_id" not-null="true" unique="true"/>
         </many-to-one>
     </class>
 </hibernate-mapping>

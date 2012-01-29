@@ -1,3 +1,4 @@
 target/*
 hibernate.cfg.xml
+*rebel.xml
 *.tf

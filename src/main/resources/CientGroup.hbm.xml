@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Nov 13, 2011 9:49:22 PM by Hibernate Tools 3.4.0.CR1 -->
-<hibernate-mapping>
+<hibernate-mapping default-lazy="false">
     <class name="com.loansystem.model.CientGroup" table="cient_group">
         <id name="id" type="string">
             <column name="id" length="2000000000" />
@@ -14,13 +14,13 @@
         <property name="description" type="string">
             <column name="description" length="2000000000" />
         </property>
-        <bag name="clients" cascade="all" order-by="client_id">
+        <bag name="clients" cascade="all" order-by="client_id" lazy="false">
             <key>
                 <column name="client_group_id" length="2000000000" not-null="true" />
             </key>
             <one-to-many class="com.loansystem.model.Client" />
         </bag>
-        <bag name="loanOffers" cascade="all" order-by="offer_id">
+        <bag name="loanOffers" cascade="all" order-by="offer_id" lazy="false">
             <key>
                 <column name="client_group_id" length="2000000000" not-null="true" />
             </key>

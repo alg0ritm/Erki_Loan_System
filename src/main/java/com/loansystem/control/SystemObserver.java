@@ -4,15 +4,10 @@
  */
 package com.loansystem.control;
 
-import javax.swing.JPanel;
-
 /**
  *
  * @author antonve
  */
-public class FrameBuilder {
-    
-    
-   
+class SystemObserver {
     
 }

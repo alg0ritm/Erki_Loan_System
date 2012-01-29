@@ -4,15 +4,15 @@
  */
 package com.loansystem.control;
 
-import javax.swing.JPanel;
-
 /**
  *
  * @author antonve
  */
-public class FrameBuilder {
+public interface Observable {
     
+    public void observerActionPerformed();
+    public void updateComponent();
+    public void deleteComponent();
     
-   
     
 }

@@ -5,17 +5,21 @@
 package com.loansystem.control;
 
 import com.loansystem.UI.client.ClientFrameBasic1;
+import com.loansystem.UI.client.ExistingLoanRequestPanel;
 import com.loansystem.UI.client.LoanPostponeRequestCTab;
 import com.loansystem.UI.client.LoanRequestCTab;
 import com.loansystem.UI.client.MyLoansTab;
 import com.loansystem.UI.client.NewLoanRequestPanel;
+import com.loansystem.backend.model.LoanTabModel;
+import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanHistory;
 import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
-import com.loansystem.service.LoanOfferService;
-import com.loansystem.service.LoanOfferServiceImpl;
+import com.loansystem.service.LoanService;
+import com.loansystem.service.LoanServiceImpl;
+import com.loansystem.view.LoanTabView;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -24,6 +28,8 @@ import java.util.Set;
 import javax.swing.JPanel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 /*import com.loansystem.UI.client.LoanRequestCTab;
 import com.loansystem.UI.client.ClientFrameBasic1;
@@ -46,14 +52,73 @@ import org.apache.commons.logging.LogFactory;*/
  *
  * @author antonve
  */
-public class FrameBuilderImpl implements FrameBuilder {
+public class FrameBuilderImpl extends FrameBuilder {
 
     private static final Log log = LogFactory.getLog(FrameBuilderImpl.class);
     private static LoanStatusEnum LoanStatusEnum;
     private static Client client;
     private static Loan loan;
     private static LoanHistory loanHistory;
+
+    public static LoanStatusEnum getLoanStatusEnum() {
+        return LoanStatusEnum;
+    }
+
+    public static void setLoanStatusEnum(LoanStatusEnum LoanStatusEnum) {
+        FrameBuilderImpl.LoanStatusEnum = LoanStatusEnum;
+    }
+
+    public static Client getClient() {
+        return client;
+    }
+
+    public static void setClient(Client client) {
+        FrameBuilderImpl.client = client;
+    }
+
+    public static Loan getLoan() {
+        return loan;
+    }
+
+    public static void setLoan(Loan loan) {
+        FrameBuilderImpl.loan = loan;
+    }
+
+    public static LoanHistory getLoanHistory() {
+        return loanHistory;
+    }
+
+    public static void setLoanHistory(LoanHistory loanHistory) {
+        FrameBuilderImpl.loanHistory = loanHistory;
+    }
+
+    public static List<LoanOffer> getLoanOffers() {
+        return loanOffers;
+    }
+
+    public static void setLoanOffers(List<LoanOffer> loanOffers) {
+        FrameBuilderImpl.loanOffers = loanOffers;
+    }
+
+    public LoanStatusEnum getLoanStatus() {
+        return loanStatus;
+    }
+
+    public void setLoanStatus(LoanStatusEnum loanStatus) {
+        this.loanStatus = loanStatus;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
+    }
     private static List<LoanOffer> loanOffers;
+    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    private Session session;
+    private LoanStatusEnum loanStatus;
 
     public enum LoanStatusEnum {
 
@@ -66,130 +131,29 @@ public class FrameBuilderImpl implements FrameBuilder {
         POSTPONED,
         SENT_TO_DEBT_COLLECTION;
 
-        public void createFrame() {
-            if (equals(PENDING)) {
-                createRequestedFrame();
-            }
-            if (equals(REJECTED)) {
-                createRejectedFrame();
-            }
-            if (equals(POSTPONE_REQUESTED)) {
-                createPostponeReuqestedFrame();
-            }
-            if (equals(OVERDUE)) {
-                createOverdueFrame();
-            }
-            if (equals(ISSUED)) {
-                createIssuedFrame();
-            }
-            if (equals(PAYED_BACK)) {
-                createPayedBackFrame();
-            }
-            if (equals(POSTPONED)) {
-                createPostponedFrame();
-            }
-            if (equals(SENT_TO_DEBT_COLLECTION)) {
-                createSentToDebtColletionFrame();
-            }
-
-        }
-
-        public void createRequestedFrame() {
-            JPanel[] loanRequestCTabPanels = new JPanel[1];
-
-            loanRequestCTabPanels[0] = new NewLoanRequestPanel();
-            JPanel[] panels = new JPanel[2];
-
-            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-            panels[1] = new MyLoansTab();
-            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-        }
-
-        public void createRejectedFrame() {
-            JPanel[] loanRequestCTabPanels = new JPanel[1];
-            loanRequestCTabPanels[0] = new NewLoanRequestPanel();
-            JPanel[] panels = new JPanel[2];
-
-            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-            panels[1] = new MyLoansTab();
-            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-
-        }
-
-        public void createRepaidFrame() {
-        }
-
-        public void createIssuedFrame() {
-            JPanel[] panels = new JPanel[2];
-            panels[0] = new LoanPostponeRequestCTab();
-            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-        }
-
-        public void createPostponedFrame() {
-            JPanel[] loanRequestCTabPanels = new JPanel[1];
-            loanRequestCTabPanels[0] = new NewLoanRequestPanel();
-            JPanel[] panels = new JPanel[2];
-
-            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-            panels[1] = new MyLoansTab();
-            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-        }
-
-        public void createSentToDebtColletionFrame() {
-            JPanel[] panels = null;
-            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-        }
-
-        private void createPostponeReuqestedFrame() {
-            JPanel[] loanRequestCTabPanels = new JPanel[1];
-            loanRequestCTabPanels[0] = new NewLoanRequestPanel();
-            JPanel[] panels = new JPanel[2];
-
-            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-            panels[1] = new MyLoansTab();
-            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-        }
-
-        private void createOverdueFrame() {
-            JPanel[] loanRequestCTabPanels = new JPanel[1];
-            loanRequestCTabPanels[0] = new NewLoanRequestPanel();
-            JPanel[] panels = new JPanel[2];
-
-            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-            panels[1] = new MyLoansTab();
-            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-        }
-
-        private void createPayedBackFrame() {
-            JPanel[] loanRequestCTabPanels = new JPanel[1];
-            log.info("LOANOFFERS SIZE" + loanOffers.size());
-            loanRequestCTabPanels[0] = new NewLoanRequestPanel(loanOffers);
-            JPanel[] panels = new JPanel[2];
-
-            panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-            panels[1] = new MyLoansTab();
-            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-        }
+       
     }
 
     public FrameBuilderImpl(Client client) {
         if (client != null) {
-            try{
+            try {
+                session = sessionFactory.getCurrentSession();
+                //session.beginTransaction();
+                this.client = client;
                 this.loanOffers = client.getCientGroup().getLoanOffers();
                 this.loan = client.getLoans().get(0);
-                
-            }catch(Exception e)
-            {   
+
+            } catch (Exception e) {
                 log.info("No loans exist for the client");
                 log.error(e);
                 LoanStatusEnum elem = LoanStatusEnum.PAYED_BACK;
-                elem.createFrame();
+                //elem.createFrame();
                 return;
             }
             //loans exist for the client
-            log.info("HELLO WORLD");
-                
-            
+
+
+
 
             //this.loanOffer = loan.get
             String lastStatus = null;
@@ -199,9 +163,9 @@ public class FrameBuilderImpl implements FrameBuilder {
                 lastStatus = lastLoanStatus.getName();
                 log.info("LAST LOAN STATUS " + lastStatus.toUpperCase());
                 try {
-                    LoanStatusEnum elem = LoanStatusEnum.valueOf(lastStatus.toUpperCase());
-                    log.info(elem.name());
-                    elem.createFrame();
+                    loanStatus = LoanStatusEnum.valueOf(lastStatus.toUpperCase());
+                    log.info(loanStatus.name());
+                    //elem.createFrame(); to front controller
                 } catch (Exception e) {
                     log.info("Error occured when casting to enum" + e.getMessage());
                 }

@@ -39,6 +39,8 @@ import org.hibernate.Transaction;
 public class LoanTabController {
 
     private static final Log log = LogFactory.getLog(LoanTabController.class);
+
+    
     NewLoanRequestPanel newLoanRequestPanel;
     ExistingLoanRequestPanel existingLoanRequestPanel;
     LoanTabView loanTabView;
@@ -53,6 +55,7 @@ public class LoanTabController {
         this.client = client;
         this.hu = hu;
         loanTabView.addLoanStateChangeToPendingListener(new LoanStateChangeToPendingListener());
+        loanTabView.addLoanStateChangeToRejectedListener(new LoanStateToRejectedListener());
         loanTabView.addLoanStateChangeToPayedListener(new LoanStateToPayedListener());
         this.loanTabView.setVisible(true);
     }
@@ -108,6 +111,27 @@ public class LoanTabController {
 
 
 
+        }
+    }
+    
+    private class LoanStateToRejectedListener implements ActionListener {
+
+        public LoanStateToRejectedListener() 
+        {
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            log.info("LoanStateChangeToPayedListener actionPerformed");
+
+            loanService = new LoanServiceImpl();
+            loanService.removeExistingLoanRequest(client);
+
+            loanTabView.removeExisitingLoanTab(client);
+            loanTabView.showNewLoanTab(client);
+            //loanTabView.pack();
+            //loanTabView.repaint();
         }
     }
 

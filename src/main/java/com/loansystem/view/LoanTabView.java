@@ -67,10 +67,16 @@ public class LoanTabView extends JPanel {
     /* public void addLoginListener(ActionListener mal) {
     loginForm.addLoginListener(mal);
     }*/
-    public void addLoanStateChangeToPayedListener(ActionListener mal) {
+    public void addLoanStateChangeToRejectedListener(ActionListener mal) {
         setActiveView(existingLoanRequestPanel);
-        log.info("VIEW : LoanStateChangeToPayedListener registered ");
-        existingLoanRequestPanel.addLoginListener(mal);
+        log.info("VIEW : addLoanStateChangeToRejectedListener registered ");
+        existingLoanRequestPanel.addRejectListener(mal);
+    }
+    
+     public void addLoanStateChangeToPayedListener(ActionListener mal) {
+        setActiveView(existingLoanRequestPanel);
+        log.info("VIEW : addLoanStateChangeToPayedListener registered ");
+        existingLoanRequestPanel.addPayBackListener(mal);
     }
 
     public JPanel getActivePanel() {

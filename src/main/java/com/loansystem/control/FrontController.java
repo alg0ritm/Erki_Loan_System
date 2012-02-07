@@ -8,11 +8,13 @@ package com.loansystem.control;
 import com.loansystem.view.LoanSystemView;
 import com.loansystem.UI.LoginForm;
 import com.loansystem.UI.client.ClientFrameBasic1;
+import com.loansystem.UI.client.ExistingLoanRequestControls;
 import com.loansystem.UI.client.ExistingLoanRequestPanel;
 import com.loansystem.UI.client.LoanPostponeRequestCTab;
 import com.loansystem.UI.client.LoanRequestCTab;
 import com.loansystem.UI.client.MyLoansTab;
 import com.loansystem.UI.client.NewLoanRequestPanel;
+import com.loansystem.UI.client.PostponeRequestPanel;
 import com.loansystem.backend.model.LoanSystemModel;
 import com.loansystem.backend.model.LoanTabModel;
 import com.loansystem.backend.model.UserLoginInput;
@@ -210,16 +212,21 @@ public class FrontController {
 
     //vqnesti metodq v controller
     public void createPendingFrame() {
-
-        JPanel[] loanRequestCTabPanels = new JPanel[2];
+        LoanTabModel loanTabModel = new LoanTabModel(loginClient);
+        JPanel[] loanRequestCTabPanels = new JPanel[4];
         ExistingLoanRequestPanel existingLoanRequestPanel = new ExistingLoanRequestPanel(loginClient, true); //client to upper level
         NewLoanRequestPanel newLoanRequestPanel = new NewLoanRequestPanel(loginClient, false);
+        PostponeRequestPanel postponeRequestPanel = new PostponeRequestPanel(false, loanTabModel);
+        ExistingLoanRequestControls existingLoanRequestControls = new ExistingLoanRequestControls();
         loanRequestCTabPanels[0] = existingLoanRequestPanel;
         loanRequestCTabPanels[1] = newLoanRequestPanel;
+        loanRequestCTabPanels[2] = existingLoanRequestControls;
+        loanRequestCTabPanels[3] = postponeRequestPanel;
+
         JPanel[] panels = new JPanel[1];
 
-        LoanTabModel loanTabModel = new LoanTabModel();
-        LoanTabView loanTabView = new LoanTabView(existingLoanRequestPanel, newLoanRequestPanel);
+
+        LoanTabView loanTabView = new LoanTabView(existingLoanRequestPanel, newLoanRequestPanel, existingLoanRequestControls, postponeRequestPanel);
         LoanTabController loanTabController = new LoanTabController(loanTabView, loanTabModel, loginClient);
 
 
@@ -307,23 +314,29 @@ public class FrontController {
     }
 
     private void createPayedBackFrame() {
-        
+        LoanTabModel loanTabModel = new LoanTabModel(loginClient);
         log.info("LOANOFFERS SIZE" + loginClient.getCientGroup().getLoanOffers().size());
-         JPanel[] loanRequestCTabPanels = new JPanel[2];
+        JPanel[] loanRequestCTabPanels = new JPanel[4];
         ExistingLoanRequestPanel existingLoanRequestPanel = new ExistingLoanRequestPanel(loginClient, false); //client to upper level
         NewLoanRequestPanel newLoanRequestPanel = new NewLoanRequestPanel(loginClient, true);
+        PostponeRequestPanel postponeRequestPanel = new PostponeRequestPanel(false, loanTabModel);
+        ExistingLoanRequestControls existingLoanRequestControls = new ExistingLoanRequestControls();
         loanRequestCTabPanels[0] = existingLoanRequestPanel;
         loanRequestCTabPanels[1] = newLoanRequestPanel;
-        JPanel[] panels = new JPanel[1];
+        loanRequestCTabPanels[2] = existingLoanRequestControls;
+        loanRequestCTabPanels[3] = postponeRequestPanel;
 
-        LoanTabModel loanTabModel = new LoanTabModel();
-        LoanTabView loanTabView = new LoanTabView(existingLoanRequestPanel, newLoanRequestPanel);
+        JPanel[] panels = new JPanel[2];
+
+
+        LoanTabView loanTabView = new LoanTabView(existingLoanRequestPanel, newLoanRequestPanel, existingLoanRequestControls, postponeRequestPanel);
         LoanTabController loanTabController = new LoanTabController(loanTabView, loanTabModel, loginClient);
 
 
 
 
         panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
+        panels[1] = new MyLoansTab();
 
         ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
     }

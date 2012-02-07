@@ -19,5 +19,7 @@ public interface LoanService {
     public int createNewLoan(Client client, LoanOffer loanOffer);
     
     public int removeExistingLoanRequest(Client client);
+
+    public Loan getLastLoan(Client client);
     
 }

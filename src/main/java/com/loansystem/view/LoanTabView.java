@@ -4,15 +4,18 @@
  */
 package com.loansystem.view;
 
+import com.loansystem.UI.client.ExistingLoanRequestControls;
 import com.loansystem.UI.client.ExistingLoanRequestPanel;
 import com.loansystem.UI.client.LoanRequestCTab;
 import com.loansystem.UI.client.NewLoanRequestPanel;
+import com.loansystem.UI.client.PostponeRequestPanel;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
@@ -26,15 +29,27 @@ public class LoanTabView extends JPanel {
     private static final Log log = LogFactory.getLog(LoanTabView.class);
     public ExistingLoanRequestPanel existingLoanRequestPanel;
     public NewLoanRequestPanel newLoanRequestPanel;
+    private PostponeRequestPanel postponeRequestPanel;
     SessionFactory sf =  HibernateUtil.getSessionFactory();
+    private final ExistingLoanRequestControls existingLoanRequestControls;
+
+    public PostponeRequestPanel getPostponeRequestPanel() {
+        return postponeRequestPanel;
+    }
+
+    public void setPostponeRequestPanel(PostponeRequestPanel postponeRequestPanel) {
+        this.postponeRequestPanel = postponeRequestPanel;
+    }
     private JPanel activePanel;
 
-    public LoanTabView(ExistingLoanRequestPanel existingLoanRequestPanel, NewLoanRequestPanel newLoanRequestPanel )
+    public LoanTabView(ExistingLoanRequestPanel existingLoanRequestPanel, NewLoanRequestPanel newLoanRequestPanel,ExistingLoanRequestControls existingLoanRequestControls, PostponeRequestPanel postponeRequestPanel )
     {
         
         this.getContainerListeners();
         this.existingLoanRequestPanel = existingLoanRequestPanel;
         this.newLoanRequestPanel = newLoanRequestPanel;
+        this.postponeRequestPanel = postponeRequestPanel;
+        this.existingLoanRequestControls = existingLoanRequestControls;
         this.revalidate();
         
         
@@ -70,13 +85,19 @@ public class LoanTabView extends JPanel {
     public void addLoanStateChangeToRejectedListener(ActionListener mal) {
         setActiveView(existingLoanRequestPanel);
         log.info("VIEW : addLoanStateChangeToRejectedListener registered ");
-        existingLoanRequestPanel.addRejectListener(mal);
+        existingLoanRequestControls.addRejectListener(mal);
     }
     
      public void addLoanStateChangeToPayedListener(ActionListener mal) {
         setActiveView(existingLoanRequestPanel);
         log.info("VIEW : addLoanStateChangeToPayedListener registered ");
-        existingLoanRequestPanel.addPayBackListener(mal);
+        existingLoanRequestControls.addPayBackListener(mal);
+    }
+     
+     public void addLoanStateChangeToPostponedListener(ActionListener mal) {
+        setActiveView(existingLoanRequestPanel);
+        log.info("VIEW : addLoanStateChangeToPostponedListener registered ");
+        existingLoanRequestControls.addPostponeListener(mal);
     }
 
     public JPanel getActivePanel() {
@@ -116,5 +137,26 @@ public class LoanTabView extends JPanel {
 
     private void setActiveView(JPanel activePanel) {
         this.activePanel = activePanel; 
+    }
+
+    public void showPostponeControls() {
+        postponeRequestPanel.setVisible(true);
+    }
+
+    public void removeExistingLoanTabControls(Client client) {
+        existingLoanRequestPanel.setVisible(false);
+        existingLoanRequestControls.setVisible(false);
+        postponeRequestPanel.setVisible(false);
+        
+    }
+
+    public void showExistingLoanTabControls(Client client) {
+        existingLoanRequestPanel.setVisible(true);
+        existingLoanRequestControls.setVisible(true);
+        //postponeRequestPanel.setVisible(false);
+    }
+
+    public void addSliderListener(ChangeListener sliderStateChangedListener) {
+        postponeRequestPanel.addSliderListener(sliderStateChangedListener);
     }
 }

@@ -79,4 +79,20 @@ public class LoanServiceImpl implements LoanService {
         return 1;
         
     }
+
+    @Override
+    public Loan getLastLoan(Client client) {
+        LoanHome loanHome = new LoanHome();
+        Loan lastLoan = loanHome.findLastLoanForClient(client);
+        return lastLoan;
+        
+        //return createPostponedLoan(lastLoan);
+    }
+
+    private int createPostponedLoan(Loan lastLoan) {
+        
+        return 0;
+    }
+    
+    
 }

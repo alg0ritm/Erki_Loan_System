@@ -61,6 +61,7 @@ public class LoginForm extends javax.swing.JFrame implements Observable {
     public LoginForm(LoanSystemObserver observer) {
         initComponents();
         this.observer = observer;
+        setResizable(false);
        
 
     }

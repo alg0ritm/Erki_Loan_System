@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 18, 2012 4:26:52 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+  <class name="com.loansystem.model.User" table="user">
+    <id name="id" type="int">
+      <column name="id"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="persCode" type="int">
+      <column length="2000000000" name="pers_code" />
+    </property>
+    <property name="name" type="string">
+      <column length="2000000000" name="name"/>
+    </property>
+    <property name="lastName" type="string">
+      <column length="2000000000" name="last_name"/>
+    </property>
+    <property name="mail" type="string">
+      <column length="2000000000" name="mail" unique="true"/>
+    </property>
+    <property name="password" type="string">
+      <column length="2000000000" name="password" unique="true"/>
+    </property>
+  </class>
+</hibernate-mapping>

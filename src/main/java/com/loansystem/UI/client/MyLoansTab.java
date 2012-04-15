@@ -4,21 +4,32 @@
  */
 
 /*
- * addMyLoansTabJPanel.java
+ * MyLoansTab.java
  *
- * Created on 03.12.2011, 13:32:17
+ * Created on Apr 14, 2012, 1:08:06 PM
  */
 package com.loansystem.UI.client;
 
+import java.util.ArrayList;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+
 /**
  *
- * @author Andrey Andrievski
+ * @author Antonve
  */
 public class MyLoansTab extends javax.swing.JPanel {
 
-    /** Creates new form addMyLoansTabJPanel */
-    public MyLoansTab() {
+    /** Creates new form MyLoansTab */
+    public MyLoansTab(ArrayList<JPanel> myLoansTabPanels) {
         initComponents();
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS) );
+        //JPanel testPanel = new NewLoanRequestPanel();
+        //add(testPanel);
+        for(JPanel panel : myLoansTabPanels) 
+        {
+            add(panel);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -30,41 +41,19 @@ public class MyLoansTab extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-
-        setName("addMyloansJPanel"); // NOI18N
-
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jList1.setName("jList1"); // NOI18N
-        jScrollPane1.setViewportView(jList1);
+        setName("My Loans"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(235, 235, 235)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
-                .addContainerGap(61, Short.MAX_VALUE))
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(111, 111, 111)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(189, Short.MAX_VALUE))
+            .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList jList1;
-    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

@@ -9,6 +9,7 @@ import com.loansystem.UI.client.ExistingLoanRequestPanel;
 import com.loansystem.UI.client.LoanRequestCTab;
 import com.loansystem.UI.client.NewLoanRequestPanel;
 import com.loansystem.UI.client.PostponeRequestPanel;
+import com.loansystem.backend.model.LoanTabModel;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import java.awt.event.ActionListener;
@@ -30,8 +31,18 @@ public class LoanTabView extends JPanel {
     public ExistingLoanRequestPanel existingLoanRequestPanel;
     public NewLoanRequestPanel newLoanRequestPanel;
     private PostponeRequestPanel postponeRequestPanel;
-    SessionFactory sf =  HibernateUtil.getSessionFactory();
-    private final ExistingLoanRequestControls existingLoanRequestControls;
+    SessionFactory sf = HibernateUtil.getSessionFactory();
+    private ExistingLoanRequestControls existingLoanRequestControls;
+    private JPanel activePanel;
+    private final LoanTabModel loanTabModel;
+
+    public LoanTabView(NewLoanRequestPanel newLoanRequestPanel, LoanTabModel loanTabModel) {
+        setLayout(new java.awt.BorderLayout());
+        this.getContainerListeners();
+        this.newLoanRequestPanel = newLoanRequestPanel;
+        this.loanTabModel = loanTabModel;
+        //this.revalidate();
+    }
 
     public PostponeRequestPanel getPostponeRequestPanel() {
         return postponeRequestPanel;
@@ -40,23 +51,20 @@ public class LoanTabView extends JPanel {
     public void setPostponeRequestPanel(PostponeRequestPanel postponeRequestPanel) {
         this.postponeRequestPanel = postponeRequestPanel;
     }
-    private JPanel activePanel;
 
-    public LoanTabView(ExistingLoanRequestPanel existingLoanRequestPanel, NewLoanRequestPanel newLoanRequestPanel,ExistingLoanRequestControls existingLoanRequestControls, PostponeRequestPanel postponeRequestPanel )
-    {
-        
+    public LoanTabView(ExistingLoanRequestPanel existingLoanRequestPanel, NewLoanRequestPanel newLoanRequestPanel, LoanTabModel loanTabModel) {
+        setLayout(new java.awt.BorderLayout());
         this.getContainerListeners();
         this.existingLoanRequestPanel = existingLoanRequestPanel;
         this.newLoanRequestPanel = newLoanRequestPanel;
-        this.postponeRequestPanel = postponeRequestPanel;
-        this.existingLoanRequestControls = existingLoanRequestControls;
-        this.revalidate();
-        
-        
+        this.loanTabModel = loanTabModel;
+       // this.revalidate();
+
+
     }
 
     public ExistingLoanRequestPanel getExistingLoanRequestPanel() {
-        return existingLoanRequestPanel;
+        return loanTabModel.getExistingLoanRequestPanel();
     }
 
     public void setExistingLoanRequestPanel(ExistingLoanRequestPanel existingLoanRequestPanel) {
@@ -64,7 +72,7 @@ public class LoanTabView extends JPanel {
     }
 
     public NewLoanRequestPanel getNewLoanRequestPanel() {
-        return newLoanRequestPanel;
+       return loanTabModel.getNewLoanRequestPanel();
     }
 
     public void setNewLoanRequestPanel(NewLoanRequestPanel newLoanRequestPanel) {
@@ -85,19 +93,25 @@ public class LoanTabView extends JPanel {
     public void addLoanStateChangeToRejectedListener(ActionListener mal) {
         setActiveView(existingLoanRequestPanel);
         log.info("VIEW : addLoanStateChangeToRejectedListener registered ");
-        existingLoanRequestControls.addRejectListener(mal);
+        loanTabModel.getExistingLoanRequestControls().addRejectListener(mal);
     }
-    
-     public void addLoanStateChangeToPayedListener(ActionListener mal) {
+
+    public void addLoanStateChangeToPayedListener(ActionListener mal) {
         setActiveView(existingLoanRequestPanel);
         log.info("VIEW : addLoanStateChangeToPayedListener registered ");
-        existingLoanRequestControls.addPayBackListener(mal);
+        loanTabModel.getExistingLoanRequestControls().addPayBackListener(mal);
     }
-     
-     public void addLoanStateChangeToPostponedListener(ActionListener mal) {
+
+    public void addLoanStateChangeToPostponedListener(ActionListener mal) {
         setActiveView(existingLoanRequestPanel);
         log.info("VIEW : addLoanStateChangeToPostponedListener registered ");
-        existingLoanRequestControls.addPostponeListener(mal);
+        loanTabModel.getExistingLoanRequestControls().addPostponeListener(mal);
+    }
+
+    public void addLoanPostponeConfirmedListener(ActionListener mal) {
+        setActiveView(existingLoanRequestPanel);
+        log.info("VIEW : addLoanPOstponeConfirmedListener registered ");
+        loanTabModel.getPostponeRequestPanel().addPostponeConfirmListener(mal);
     }
 
     public JPanel getActivePanel() {
@@ -110,53 +124,63 @@ public class LoanTabView extends JPanel {
 
     public void addLoanStateChangeToPendingListener(ActionListener mal) {
         log.info("VIEW : LoanStateChangeToPendingListener registered ");
-        newLoanRequestPanel.addLoginListener(mal);
+        loanTabModel.getNewLoanRequestPanel().addLoginListener(mal);
     }
 
     public void removeExisitingLoanTab(Client client) {
         //this.removeAll();
-	//this.repaint();	
-        existingLoanRequestPanel.setVisible(false);
+        //this.repaint();	
+        loanTabModel.getExistingLoanRequestPanel().setVisible(false);
     }
 
     public void showNewLoanTab(Client client) {
         //newLoanRequestPanel = new NewLoanRequestPanel(client, true); 
         //existingLoanRequestPanel.setVisible(true);
-        newLoanRequestPanel.setVisible(true);
+        loanTabModel.getNewLoanRequestPanel().setVisible(true);
         //this.revalidate();
         //this.repaint();
     }
 
     public void removeNewLoanTab(Client client) {
-       newLoanRequestPanel.setVisible(false);
+        loanTabModel.getNewLoanRequestPanel().setVisible(false);
+        this.revalidate();
     }
 
     public void showExisitingLoanTab(Client client) {
-       existingLoanRequestPanel.setVisible(true);
+        
+        loanTabModel.getExistingLoanRequestPanel().setVisible(true);
+        this.revalidate();
     }
 
     private void setActiveView(JPanel activePanel) {
-        this.activePanel = activePanel; 
+        this.activePanel = activePanel;
     }
 
     public void showPostponeControls() {
-        postponeRequestPanel.setVisible(true);
+        loanTabModel.getPostponeRequestPanel().setVisible(true);
+        this.revalidate();
     }
 
     public void removeExistingLoanTabControls(Client client) {
-        existingLoanRequestPanel.setVisible(false);
-        existingLoanRequestControls.setVisible(false);
-        postponeRequestPanel.setVisible(false);
-        
+        loanTabModel.getExistingLoanRequestPanel().setVisible(false);
+        loanTabModel.getExistingLoanRequestControls().setVisible(false);
+        loanTabModel.getPostponeRequestPanel().setVisible(false);
+        this.revalidate();
+
     }
 
     public void showExistingLoanTabControls(Client client) {
-        existingLoanRequestPanel.setVisible(true);
-        existingLoanRequestControls.setVisible(true);
+        loanTabModel.getExistingLoanRequestPanel().setVisible(true);
+        loanTabModel.getExistingLoanRequestControls().setVisible(true);
+        this.revalidate();
         //postponeRequestPanel.setVisible(false);
     }
 
     public void addSliderListener(ChangeListener sliderStateChangedListener) {
-        postponeRequestPanel.addSliderListener(sliderStateChangedListener);
+         loanTabModel.getPostponeRequestPanel().addSliderListener(sliderStateChangedListener);
+    }
+
+    public void addRemoveLoanRequestListener(ActionListener addRemoveLoanRequestListener) {
+        loanTabModel.getExistingLoanRequestControls().addRemoveRequestListener(addRemoveLoanRequestListener);
     }
 }

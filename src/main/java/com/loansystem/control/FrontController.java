@@ -12,18 +12,32 @@ import com.loansystem.UI.client.ExistingLoanRequestControls;
 import com.loansystem.UI.client.ExistingLoanRequestPanel;
 import com.loansystem.UI.client.LoanPostponeRequestCTab;
 import com.loansystem.UI.client.LoanRequestCTab;
+import com.loansystem.UI.client.MyLoansPanel;
 import com.loansystem.UI.client.MyLoansTab;
 import com.loansystem.UI.client.NewLoanRequestPanel;
 import com.loansystem.UI.client.PostponeRequestPanel;
+import com.loansystem.backend.model.LoanModel;
 import com.loansystem.backend.model.LoanSystemModel;
 import com.loansystem.backend.model.LoanTabModel;
+import com.loansystem.backend.model.MyLoansTabModel;
 import com.loansystem.backend.model.UserLoginInput;
-import com.loansystem.control.FrameBuilderImpl.LoanStatusEnum;
 import com.loansystem.db.dao.ClientHome;
+import com.loansystem.db.dao.UserHome;
+import com.loansystem.enums.LoanStatusEnum;
+import com.loansystem.enums.LoanStatusInterface;
+import com.loansystem.enums.UserType;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
+import com.loansystem.model.Employee;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanHistory;
+import com.loansystem.model.LoanOffer;
+import com.loansystem.model.LoanStatus;
+import com.loansystem.model.User;
+import com.loansystem.service.LoanUiService;
+import com.loansystem.service.LoanUiServiceImpl;
+import com.loansystem.service.LoginService;
+import com.loansystem.service.LoginServiceImpl;
 import com.loansystem.validator.LoginValidator;
 import com.loansystem.view.LoanTabView;
 import java.awt.event.ActionEvent;
@@ -63,6 +77,43 @@ public class FrontController {
         //cview.addClearListener(new ClearListener());
     }
 
+    private void createIssuedFrame() {
+        LoanTabModel loanTabModel = new LoanTabModel(loginClient);
+        ArrayList<JPanel> loanRequestCTabPanels = new ArrayList<JPanel>();
+
+
+        JPanel[] panels = new JPanel[2];
+
+        LoanUiService loanUiService = new LoanUiServiceImpl();
+        ExistingLoanRequestPanel existingLoanRequestPanel = loanUiService.createExistingLoanRequestPanel(loginClient, loanTabModel);
+
+
+        NewLoanRequestPanel newLoanRequestPanel = new NewLoanRequestPanel(loginClient, false);
+
+        loanTabModel.setNewLoanRequestPanel(newLoanRequestPanel);
+
+
+        LoanTabView loanTabView = new LoanTabView(existingLoanRequestPanel, newLoanRequestPanel, loanTabModel);
+        LoanTabController loanTabController = new LoanTabController(loanTabView, loanTabModel, loginClient);
+
+        loanRequestCTabPanels = loanTabModel.getCreatedPanels();
+        
+        MyLoansTabModel myLoansTabModel = new MyLoansTabModel();
+        myLoansTabModel.setClient(loginClient);
+        
+        
+        MyLoansPanel  myLoansPanel = new MyLoansPanel(myLoansTabModel, true);
+        myLoansTabModel.setMyLoansPanel(myLoansPanel);
+        
+        ArrayList<JPanel> myLoansTabPanels = new ArrayList<JPanel>();
+        myLoansTabPanels = myLoansTabModel.getCreatedPanels();
+
+        panels[0] = new MyLoansTab(myLoansTabPanels);
+        panels[1] = new LoanRequestCTab(loanRequestCTabPanels);
+
+        ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+    }
+
     ////////////////////////////////////////// inner class MultiplyListener
     /** When a mulitplication is requested.
      *  1. Get the user input number from the View.
@@ -78,61 +129,93 @@ public class FrontController {
             LoanHistory loanHistory = null;
             Loan loan = null;
             Session session = null;
+            boolean hibernateTest = true;
+            LoanModel loanModel;
+            int frameType = 0;
+
 
             try {
                 cobserver.notifyMsg("event has been held");
 
                 SessionFactory sessionFactory = hu.getSessionFactory();
                 session = sessionFactory.openSession();
-                //session.beginTransaction();
-                try {
-                    String loginText = cview.getLoginView().getjTextField1().getText();
-                    String passwordText = cview.getLoginView().getjTextField2().getText();
-                    UserLoginInput userLoginInput = new UserLoginInput(loginText, passwordText);
-                    //setUserLoginInput(userLoginInput);
-                    loginClient = new Client();
-                    loansList = new ArrayList<Loan>();
-                    ClientHome clientHome = new ClientHome();
-                    loginClient = clientHome.findByMailPassword(loginText, passwordText);
 
+                User user = null;
 
+                ArrayList<Client> clientsList = new ArrayList<Client>();
+                //clientsList
+                
+                String loginText = cview.getLoginView().getjTextField1().getText();
+                String passwordText = cview.getLoginView().getjTextField2().getText();
+                
+                UserHome userHome = new UserHome();
+                user = userHome.findByMailPassword(loginText, passwordText);
+                
+                log.info("User " + user.getPersCode());
+                log.info("User " + user.getClients().size());
+                log.info("User " + user.getEmployees().size());
 
-                    //check if client logged in
-                    if (loginClient != null) {
-                        //getting last loan status & loan history object for logging in client
-                        ArrayList<LoanHistory> loanHistoryList = new ArrayList<LoanHistory>();
-                        log.info("INSIDE");
-                        //example query
-                        loanHistoryList = (ArrayList<LoanHistory>) session.createCriteria(LoanHistory.class).addOrder(Order.desc("rowId")).setMaxResults(1).createCriteria("loan").add(Restrictions.eq("client", loginClient)).createCriteria("loanStatus").list();
+                if (user.getEmployees().size() == 1) {
+                    log.info("employee logged in");
+                    frameType = UserType.EMPLOYEE;
 
-                        Iterator it = loanHistoryList.iterator();
+                } else if (user.getClients().size() == 1) {
+                    log.info("client logged in");
+                    frameType = UserType.CLIENT;
+                    String lastStatus = null;
+                    LoanStatus lastLoanStatus = null;
+                    loginClient = user.getClients().get(0);
+                    int loanStatus = 0;
 
-                        while (it.hasNext()) {
-                            loanHistory = (LoanHistory) it.next();
-                            log.info(loanHistory.getDate());
-                            log.info(loanHistory.getLoan().getLoanStatus().getDescription());
-                            log.info(loanHistory.getLoan().getLoanStatus().getName());
+                    try {
+                        session = sessionFactory.getCurrentSession();
+                        loanModel = new LoanModel();
+
+                        ArrayList<LoanOffer> loanOffers = new ArrayList<LoanOffer>();
+
+                        loanOffers.addAll(user.getClients().get(0).getCientGroup().getLoanOffers());
+
+                        if (user.getClients().get(0).getLoans().size() > 0) {
+                            loan = user.getClients().get(0).getLoans().get(0);
                         }
 
-                        loan = (Loan) session.createCriteria(Loan.class).add(Restrictions.eq("client", loginClient)).addOrder(Order.desc("id")).setMaxResults(1).uniqueResult();
-                        //.createCriteria("loanStatus");
+                    } catch (Exception ex) {
+                        log.info("No loans exist for the client");
+                        log.error(ex);
 
-
-                        //log.info("INITIAL CONTEXT" + new InitialContext().lookup("java:hibernate/SessionFactory"));
-
-                        //ex query
-                        loansList = (ArrayList<Loan>) session.createCriteria(Loan.class).add(Restrictions.eq("client", loginClient)).addOrder(Order.desc("id")).setMaxResults(1).createCriteria("loanStatus").list();
                     }
-                    //TODO add emloyee login
-                    log.info("TO FRAME BUILDER ");
 
-                    FrameBuilderImpl clientFrame = new FrameBuilderImpl(loginClient);
-                    LoanStatusEnum loanStatus = clientFrame.getLoanStatus();
+
+                    
+
+                    if (loan != null) {
+                        lastLoanStatus = loan.getLoanStatus();
+                    }
+                    if (lastLoanStatus != null) { //loan exisits
+                        lastStatus = lastLoanStatus.getLoanStatusId();
+                        log.info("LAST LOAN STATUS " + lastStatus.toUpperCase());
+                        try {
+
+                            loanStatus = Integer.parseInt(lastStatus);
+                            log.info(loanStatus);
+                            //elem.createFrame(); to front controller
+                        } catch (Exception exc) {
+                            log.info("Error occured when casting to enum" + exc.getMessage());
+                        }
+
+                    } else { //loan doesn't exist
+                        log.info("NO LOAN EXIST FOR THE CLIENT");
+                        loanStatus = LoanStatusInterface.PAYED_BACK;
+                    }
                     createLoanStatusSpecificFrame(loanStatus);
-                    log.info("SOME 1");
-                    log.info("FROM FRAME BUILDER ");
-                    cview.getLoginView().setVisible(false);
+                } else {
+                    log.info("GHOST logged in");
+                }
 
+
+
+                try {
+                    cview.getLoginView().setVisible(false);
                 } catch (Exception ex) {
                     log.error(ex);
                 } finally {
@@ -143,96 +226,75 @@ public class FrontController {
                 log.error("jButton1ActionPerformed" + ex);
             }
             LoginValidator loginValidator = new LoginValidator();
-            /*String[] userInput = new String[2];
-            int authUser = 0;
-            
-            
-            
-            try {
-            // userLoginInput = cview.getLoginView().getUserLoginInput();
-            JTextField login1 = cview.getLoginView().getjTextField1();
-            log.info("Login info acuired from loginView : " + login1.getText());
-            //log.info("Login info acuired from loginView : " + userLoginInput.getLogin() );
-            // authUser = cmodel.getLoginModel().authUser(userInput);
-            
-            }
-            
-            catch (NumberFormatException nfex
-            
-            
-            ) {
-            cview.showError("Login Failed: '" + userInput + "'");
-            }
-            }
-            }//end inner class MultiplyListener*/
-//////////////////////////////////////////// inner class ClearListener
-            /**  1. Reset model.
-             *   2. Reset View.
-             */
-            /*class ClearListener implements ActionListener {
-            public void actionPerformed(ActionEvent e) {
-            m_model.reset();
-            m_view.reset();
-            }
-            }*/// end inner class ClearListener
+
         }
 
-        private void createLoanStatusSpecificFrame(LoanStatusEnum loanStatusEnum) {
-            createFrame(loanStatusEnum);
+        private void createLoanStatusSpecificFrame(int loanStatus) {
+            createFrame(loanStatus);
         }
     }
 
-    public void createFrame(LoanStatusEnum loanStatusEnum) {
-        if (loanStatusEnum.equals(LoanStatusEnum.PENDING)) {
+    public void createFrame(int loanStatus) {
+        if (loanStatus == LoanStatusInterface.PENDING) {
             createPendingFrame();
         }
-        if (loanStatusEnum.equals(LoanStatusEnum.REJECTED)) {
-            createRejectedFrame();
+        /*if (loanStatusEnum.equals(LoanStatusEnum.REJECTED)) {
+        createRejectedFrame();
         }
         if (loanStatusEnum.equals(LoanStatusEnum.POSTPONE_REQUESTED)) {
-            createPostponeReuqestedFrame();
+        createPostponeReuqestedFrame();
         }
         if (loanStatusEnum.equals(LoanStatusEnum.OVERDUE)) {
-            createOverdueFrame();
-        }
-        if (loanStatusEnum.equals(LoanStatusEnum.ISSUED)) {
+        createOverdueFrame();
+        }*/
+        if (loanStatus == LoanStatusInterface.ISSUED) {
             createIssuedFrame();
         }
-        if (loanStatusEnum.equals(LoanStatusEnum.PAYED_BACK)) {
+        if (loanStatus == LoanStatusInterface.PAYED_BACK || loanStatus == LoanStatusInterface.SENT_TO_DEBT_COLLECTION) {
             createPayedBackFrame();
         }
-        if (loanStatusEnum.equals(LoanStatusEnum.POSTPONED)) {
-            createPostponedFrame();
+        /*if (loanStatusEnum.equals(LoanStatusEnum.POSTPONED)) {
+        createPostponedFrame();
         }
         if (loanStatusEnum.equals(LoanStatusEnum.SENT_TO_DEBT_COLLECTION)) {
-            createSentToDebtColletionFrame();
-        }
+        createSentToDebtColletionFrame();
+        }*/
 
     }
 
-    //vqnesti metodq v controller
     public void createPendingFrame() {
         LoanTabModel loanTabModel = new LoanTabModel(loginClient);
-        JPanel[] loanRequestCTabPanels = new JPanel[4];
-        ExistingLoanRequestPanel existingLoanRequestPanel = new ExistingLoanRequestPanel(loginClient, true); //client to upper level
+        ArrayList<JPanel> loanRequestCTabPanels = new ArrayList<JPanel>();
+
+
+        JPanel[] panels = new JPanel[2];
+
+        LoanUiService loanUiService = new LoanUiServiceImpl();
+        ExistingLoanRequestPanel existingLoanRequestPanel = loanUiService.createExistingLoanRequestPanel(loginClient, loanTabModel);
+
+
         NewLoanRequestPanel newLoanRequestPanel = new NewLoanRequestPanel(loginClient, false);
-        PostponeRequestPanel postponeRequestPanel = new PostponeRequestPanel(false, loanTabModel);
-        ExistingLoanRequestControls existingLoanRequestControls = new ExistingLoanRequestControls();
-        loanRequestCTabPanels[0] = existingLoanRequestPanel;
-        loanRequestCTabPanels[1] = newLoanRequestPanel;
-        loanRequestCTabPanels[2] = existingLoanRequestControls;
-        loanRequestCTabPanels[3] = postponeRequestPanel;
 
-        JPanel[] panels = new JPanel[1];
+        loanTabModel.setNewLoanRequestPanel(newLoanRequestPanel);
 
 
-        LoanTabView loanTabView = new LoanTabView(existingLoanRequestPanel, newLoanRequestPanel, existingLoanRequestControls, postponeRequestPanel);
+        LoanTabView loanTabView = new LoanTabView(existingLoanRequestPanel, newLoanRequestPanel, loanTabModel);
         LoanTabController loanTabController = new LoanTabController(loanTabView, loanTabModel, loginClient);
 
+        loanRequestCTabPanels = loanTabModel.getCreatedPanels();
+        
+        MyLoansTabModel myLoansTabModel = new MyLoansTabModel();
+        myLoansTabModel.setClient(loginClient);
+        
+        
+        MyLoansPanel  myLoansPanel = new MyLoansPanel(myLoansTabModel, true);
+        myLoansTabModel.setMyLoansPanel(myLoansPanel);
+        
+        ArrayList<JPanel> myLoansTabPanels = new ArrayList<JPanel>();
+        myLoansTabPanels = myLoansTabModel.getCreatedPanels();
 
-
-
-        panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
+        panels[0] = new MyLoansTab(myLoansTabPanels);
+        panels[1] = new LoanRequestCTab(loanRequestCTabPanels);
 
         ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
 
@@ -247,96 +309,102 @@ public class FrontController {
         ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);*/
     }
 
-    public void createRequestedFrame() {
-        JPanel[] loanRequestCTabPanels = new JPanel[1];
-
-        loanRequestCTabPanels[0] = new NewLoanRequestPanel();
-        JPanel[] panels = new JPanel[2];
-
-        panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-        panels[1] = new MyLoansTab();
-        ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+    /* public void createRequestedFrame() {
+    JPanel[] loanRequestCTabPanels = new JPanel[1];
+    
+    loanRequestCTabPanels[0] = new NewLoanRequestPanel();
+    JPanel[] panels = new JPanel[2];
+    
+    panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
+    panels[1] = new MyLoansTab();
+    ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
     }
-
+    
     public void createRejectedFrame() {
-        JPanel[] loanRequestCTabPanels = new JPanel[1];
-        loanRequestCTabPanels[0] = new NewLoanRequestPanel();
-        JPanel[] panels = new JPanel[2];
-
-        panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-        panels[1] = new MyLoansTab();
-        ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-
+    JPanel[] loanRequestCTabPanels = new JPanel[1];
+    loanRequestCTabPanels[0] = new NewLoanRequestPanel();
+    JPanel[] panels = new JPanel[2];
+    
+    panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
+    panels[1] = new MyLoansTab();
+    ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+    
     }
-
+    
     public void createRepaidFrame() {
     }
-
+    
     public void createIssuedFrame() {
-        JPanel[] panels = new JPanel[2];
-        panels[0] = new LoanPostponeRequestCTab();
-        ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+    JPanel[] panels = new JPanel[2];
+    panels[0] = new LoanPostponeRequestCTab();
+    ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
     }
-
+    
     public void createPostponedFrame() {
-        JPanel[] loanRequestCTabPanels = new JPanel[1];
-        loanRequestCTabPanels[0] = new NewLoanRequestPanel();
-        JPanel[] panels = new JPanel[2];
-
-        panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-        panels[1] = new MyLoansTab();
-        ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+    JPanel[] loanRequestCTabPanels = new JPanel[1];
+    loanRequestCTabPanels[0] = new NewLoanRequestPanel();
+    JPanel[] panels = new JPanel[2];
+    
+    panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
+    panels[1] = new MyLoansTab();
+    ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
     }
-
+    
     public void createSentToDebtColletionFrame() {
-        JPanel[] panels = null;
-        ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+    JPanel[] panels = null;
+    ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
     }
-
+    
     private void createPostponeReuqestedFrame() {
-        JPanel[] loanRequestCTabPanels = new JPanel[1];
-        loanRequestCTabPanels[0] = new NewLoanRequestPanel();
-        JPanel[] panels = new JPanel[2];
-
-        panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-        panels[1] = new MyLoansTab();
-        ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+    JPanel[] loanRequestCTabPanels = new JPanel[1];
+    loanRequestCTabPanels[0] = new NewLoanRequestPanel();
+    JPanel[] panels = new JPanel[2];
+    
+    panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
+    panels[1] = new MyLoansTab();
+    ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
     }
-
+    
     private void createOverdueFrame() {
-        JPanel[] loanRequestCTabPanels = new JPanel[1];
-        loanRequestCTabPanels[0] = new NewLoanRequestPanel();
-        JPanel[] panels = new JPanel[2];
-
-        panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-        panels[1] = new MyLoansTab();
-        ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
-    }
-
+    JPanel[] loanRequestCTabPanels = new JPanel[1];
+    loanRequestCTabPanels[0] = new NewLoanRequestPanel();
+    JPanel[] panels = new JPanel[2];
+    
+    panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
+    panels[1] = new MyLoansTab();
+    ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+    }*/
     private void createPayedBackFrame() {
         LoanTabModel loanTabModel = new LoanTabModel(loginClient);
         log.info("LOANOFFERS SIZE" + loginClient.getCientGroup().getLoanOffers().size());
-        JPanel[] loanRequestCTabPanels = new JPanel[4];
-        ExistingLoanRequestPanel existingLoanRequestPanel = new ExistingLoanRequestPanel(loginClient, false); //client to upper level
+        LoanUiService loanUiService = new LoanUiServiceImpl();
+        /*ExistingLoanRequestPanel existingLoanRequestPanel = loanUiService.createExistingLoanRequestPanel(loginClient, loanTabModel);*/
+
+
         NewLoanRequestPanel newLoanRequestPanel = new NewLoanRequestPanel(loginClient, true);
-        PostponeRequestPanel postponeRequestPanel = new PostponeRequestPanel(false, loanTabModel);
-        ExistingLoanRequestControls existingLoanRequestControls = new ExistingLoanRequestControls();
-        loanRequestCTabPanels[0] = existingLoanRequestPanel;
-        loanRequestCTabPanels[1] = newLoanRequestPanel;
-        loanRequestCTabPanels[2] = existingLoanRequestControls;
-        loanRequestCTabPanels[3] = postponeRequestPanel;
+        loanTabModel.setNewLoanRequestPanel(newLoanRequestPanel);
+        LoanTabView loanTabView = new LoanTabView(newLoanRequestPanel, loanTabModel);
+        LoanTabController loanTabController = new LoanTabController(loanTabView, loanTabModel, loginClient);
+        ArrayList<JPanel> loanRequestCTabPanels = new ArrayList<JPanel>();
+        loanRequestCTabPanels = loanTabModel.getCreatedPanels();
+        
+        MyLoansTabModel myLoansPanelModel = new MyLoansTabModel();
+        
+        
+        MyLoansPanel  myLoansPanel = new MyLoansPanel(myLoansPanelModel, true);
+        
+        
+
+
+
+
 
         JPanel[] panels = new JPanel[2];
 
 
-        LoanTabView loanTabView = new LoanTabView(existingLoanRequestPanel, newLoanRequestPanel, existingLoanRequestControls, postponeRequestPanel);
-        LoanTabController loanTabController = new LoanTabController(loanTabView, loanTabModel, loginClient);
-
-
-
 
         panels[0] = new LoanRequestCTab(loanRequestCTabPanels);
-        panels[1] = new MyLoansTab();
+        panels[1] = myLoansPanel;
 
         ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
     }

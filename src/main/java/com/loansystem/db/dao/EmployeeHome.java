@@ -3,14 +3,18 @@ package com.loansystem.db.dao;
 // default package
 // Generated Nov 13, 2011 9:49:24 PM by Hibernate Tools 3.4.0.CR1
 
+import com.loansystem.backend.model.UserLoginInput;
 import com.loansystem.model.Employee;
 import java.util.List;
 import javax.naming.InitialContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Home object for domain model class Employee.
@@ -20,6 +24,7 @@ import org.hibernate.criterion.Example;
 public class EmployeeHome {
 
 	private static final Log log = LogFactory.getLog(EmployeeHome.class);
+        Session session;
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
@@ -116,4 +121,21 @@ public class EmployeeHome {
 			throw re;
 		}
 	}
+
+    public Employee findByNamePassword(UserLoginInput userLoginInput) {
+        log.debug("finding Client instance by login/password");
+        Employee loginEmployee = null;
+        try {
+            session = sessionFactory.getCurrentSession();
+            Transaction transaction   = session.beginTransaction();
+            loginEmployee = (Employee) session.createCriteria(Employee.class).add(Restrictions.eq("mail", userLoginInput.getLogin())).add(Restrictions.eq("password", userLoginInput.getPassword())).uniqueResult();
+
+        } catch (RuntimeException re) {
+            log.error("findByMailPassword failed", re);
+            throw re;
+        } finally {
+           session.close();
+        }
+        return loginEmployee;
+    }
 }

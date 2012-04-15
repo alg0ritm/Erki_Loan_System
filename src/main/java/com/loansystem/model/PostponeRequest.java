@@ -8,7 +8,7 @@ package com.loansystem.model;
  */
 public class PostponeRequest implements java.io.Serializable {
 
-	private String id;
+	private int id;
 	private String statusId;
 	private String date;
 	private String employeeId;
@@ -17,13 +17,13 @@ public class PostponeRequest implements java.io.Serializable {
 	public PostponeRequest() {
 	}
 
-	public PostponeRequest(String id, String statusId, String date) {
+	public PostponeRequest(int id, String statusId, String date) {
 		this.id = id;
 		this.statusId = statusId;
 		this.date = date;
 	}
 
-	public PostponeRequest(String id, String statusId, String date, String employeeId, String comment) {
+	public PostponeRequest(int id, String statusId, String date, String employeeId, String comment) {
 		this.id = id;
 		this.statusId = statusId;
 		this.date = date;
@@ -31,11 +31,11 @@ public class PostponeRequest implements java.io.Serializable {
 		this.comment = comment;
 	}
 
-	public String getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

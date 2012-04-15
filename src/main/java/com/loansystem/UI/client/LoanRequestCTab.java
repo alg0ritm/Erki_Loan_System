@@ -11,6 +11,7 @@
 package com.loansystem.UI.client;
 
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -21,7 +22,7 @@ import javax.swing.JPanel;
 public class LoanRequestCTab extends javax.swing.JPanel {
 
     /** Creates new form AddNewLoanRequestTabJPanel */
-    public LoanRequestCTab(JPanel[] panels) {
+    public LoanRequestCTab(ArrayList<JPanel> panels) {
         initComponents();
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS) );
         //JPanel testPanel = new NewLoanRequestPanel();
@@ -42,18 +43,18 @@ public class LoanRequestCTab extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setName("AddNewLoanRequestTabJPanel"); // NOI18N
+        setName("Active Info"); // NOI18N
         setPreferredSize(new java.awt.Dimension(400, 300));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 657, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

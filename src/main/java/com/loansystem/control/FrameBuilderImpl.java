@@ -11,12 +11,17 @@ import com.loansystem.UI.client.LoanRequestCTab;
 import com.loansystem.UI.client.MyLoansTab;
 import com.loansystem.UI.client.NewLoanRequestPanel;
 import com.loansystem.backend.model.LoanTabModel;
+
+import com.loansystem.enums.LoanStatusEnum;
+import com.loansystem.enums.LoanStatusInterface;
+import com.loansystem.enums.UserType;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanHistory;
 import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
+import com.loansystem.model.User;
 import com.loansystem.service.LoanService;
 import com.loansystem.service.LoanServiceImpl;
 import com.loansystem.view.LoanTabView;
@@ -100,16 +105,16 @@ public class FrameBuilderImpl extends FrameBuilder {
         FrameBuilderImpl.loanOffers = loanOffers;
     }
 
-    public LoanStatusEnum getLoanStatus() {
+    public Session getSession() {
+        return session;
+    }
+
+    public int getLoanStatus() {
         return loanStatus;
     }
 
-    public void setLoanStatus(LoanStatusEnum loanStatus) {
+    public void setLoanStatus(int loanStatus) {
         this.loanStatus = loanStatus;
-    }
-
-    public Session getSession() {
-        return session;
     }
 
     public void setSession(Session session) {
@@ -118,61 +123,10 @@ public class FrameBuilderImpl extends FrameBuilder {
     private static List<LoanOffer> loanOffers;
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     private Session session;
-    private LoanStatusEnum loanStatus;
+    private int loanStatus;
 
-    public enum LoanStatusEnum {
-
-        PENDING,
-        REJECTED,
-        POSTPONE_REQUESTED,
-        OVERDUE,
-        ISSUED,
-        PAYED_BACK,
-        POSTPONED,
-        SENT_TO_DEBT_COLLECTION;
-
-       
-    }
-
-    public FrameBuilderImpl(Client client) {
-        if (client != null) {
-            try {
-                session = sessionFactory.getCurrentSession();
-                //session.beginTransaction();
-                this.client = client;
-                this.loanOffers = client.getCientGroup().getLoanOffers();
-                this.loan = client.getLoans().get(0);
-
-            } catch (Exception e) {
-                log.info("No loans exist for the client");
-                log.error(e);
-                LoanStatusEnum elem = LoanStatusEnum.PAYED_BACK;
-                //elem.createFrame();
-                return;
-            }
-            //loans exist for the client
-
-
-
-
-            //this.loanOffer = loan.get
-            String lastStatus = null;
-
-            LoanStatus lastLoanStatus = loan.getLoanStatus();
-            if (lastLoanStatus.getName() != null) {
-                lastStatus = lastLoanStatus.getName();
-                log.info("LAST LOAN STATUS " + lastStatus.toUpperCase());
-                try {
-                    loanStatus = LoanStatusEnum.valueOf(lastStatus.toUpperCase());
-                    log.info(loanStatus.name());
-                    //elem.createFrame(); to front controller
-                } catch (Exception e) {
-                    log.info("Error occured when casting to enum" + e.getMessage());
-                }
-
-            }
-        }
-
+    public FrameBuilderImpl(User user, int userType) {
+        
     }
 
     public JPanel addMyLoansTab() {

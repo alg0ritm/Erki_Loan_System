@@ -22,7 +22,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class LoanInsertRequest {
 
-    private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    
     private static final Log log = LogFactory.getLog(LoanInsertRequest.class);
     private Client client;
     private LoanOffer loanOffer;
@@ -47,8 +47,8 @@ public class LoanInsertRequest {
         this.client=client;
         this.loanOffer=loanOffer;
         this.apr=loanOffer.getApr();
-        this.dueDate = dateFormat.format(insertDate);
-        this.baseDueDate = dateFormat.format(insertDate);
+        this.dueDate = DateUtil.dateFormat.format(insertDate);
+        this.baseDueDate = DateUtil.dateFormat.format(insertDate);
         this.debt = loanOffer.getSum();
         this.loanStatus = loanStatus;
 

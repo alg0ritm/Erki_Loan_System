@@ -9,81 +9,42 @@ package com.loansystem.model;
 public class Employee implements java.io.Serializable {
 
 	private String emloyeeId;
-	private String persCode;
-	private String name;
-	private String lastName;
-	private String password;
-	private String mail;
-	private String id;
+	private int persCode;
+	private int employeeType;
 
 	public Employee() {
 	}
 
-	public Employee(String emloyeeId, String persCode, String name, String lastName, String password, String mail,
-			String id) {
+	public Employee(int persCode, String name, int employeeType) {
 		this.emloyeeId = emloyeeId;
 		this.persCode = persCode;
-		this.name = name;
-		this.lastName = lastName;
-		this.password = password;
-		this.mail = mail;
-		this.id = id;
+		this.employeeType = employeeType;
 	}
 
-	public String getEmloyeeId() {
-		return this.emloyeeId;
-	}
-
-	public void setEmloyeeId(String emloyeeId) {
-		this.emloyeeId = emloyeeId;
-	}
-
-	public String getPersCode() {
+	
+	public int getPersCode() {
 		return this.persCode;
 	}
 
-	public void setPersCode(String persCode) {
+	public void setPersCode(int persCode) {
 		this.persCode = persCode;
 	}
 
-	public String getName() {
-		return this.name;
-	}
+    public String getEmloyeeId() {
+        return emloyeeId;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setEmloyeeId(String emloyeeId) {
+        this.emloyeeId = emloyeeId;
+    }
 
-	public String getLastName() {
-		return this.lastName;
-	}
+    public int getEmployeeType() {
+        return employeeType;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setEmployeeType(int employeeType) {
+        this.employeeType = employeeType;
+    }
 
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getMail() {
-		return this.mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-
-	public String getId() {
-		return this.id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
+	
 }

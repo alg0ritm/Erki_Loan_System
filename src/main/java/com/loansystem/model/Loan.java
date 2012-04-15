@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 // Generated Nov 13, 2011 9:49:21 PM by Hibernate Tools 3.4.0.CR1
@@ -24,14 +25,13 @@ public class Loan implements java.io.Serializable {
     private String employeeId;
     private String postponeRequestId;
     private LoanOffer loanOffer;
+    private List<LoanHistory> loanHistory;
     private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-    
 
     public Loan() {
     }
 
-    public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId, LoanStatus loanStatus,
-            LoanOffer loanOffer) {
+    public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId, LoanStatus loanStatus, LoanOffer loanOffer, List<LoanHistory> loanHistory) {
         this.loanId = id;
         this.dueDate = dueDate;
         this.baseDueDate = baseDueDate;
@@ -40,10 +40,11 @@ public class Loan implements java.io.Serializable {
         this.client = client;
         this.loanStatus = loanStatus;
         this.loanOffer = loanOffer;
+        this.loanHistory = loanHistory;
     }
 
     public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId,
-            String employeeId,  LoanStatus loanStatus, LoanOffer loanOffer, String postponeRequestId) {
+            String employeeId, LoanStatus loanStatus, LoanOffer loanOffer, String postponeRequestId, List<LoanHistory> loanHistory) {
         this.loanId = id;
         this.dueDate = dueDate;
         this.baseDueDate = baseDueDate;
@@ -54,12 +55,11 @@ public class Loan implements java.io.Serializable {
         this.loanStatus = loanStatus;
         this.loanOffer = loanOffer;
         this.postponeRequestId = postponeRequestId;
+        this.loanHistory = loanHistory;
     }
-    
-    
+
     //custom constructor
-    
-    public Loan(Client client,  LoanOffer loanOffer,  LoanStatus loanStatus) {
+    public Loan(Client client, LoanOffer loanOffer, LoanStatus loanStatus) {
         //log.info("LoanInsertRequest " + loanStatus);
 
         Date now = new Date();
@@ -71,18 +71,24 @@ public class Loan implements java.io.Serializable {
 
 
         //setDateFormat(dateFormat);
-        this.client=client;
-        this.loanOffer=loanOffer;
-        this.apr= loanOffer.getApr();
+        this.client = client;
+        this.loanOffer = loanOffer;
+        this.apr = loanOffer.getApr();
         this.dueDate = dateFormat.format(insertDate);
         this.baseDueDate = dateFormat.format(insertDate);
         this.debt = loanOffer.getSum();
         this.loanStatus = loanStatus;
 
     }
-    
-    
-    
+
+    public List<LoanHistory> getLoanHistory() {
+        return loanHistory;
+    }
+
+    public void setLoanHistory(List<LoanHistory> loanHistory) {
+        this.loanHistory = loanHistory;
+    }
+
 
     public LoanOffer getLoanOffer() {
         return loanOffer;

@@ -13,7 +13,6 @@ package com.loansystem.UI.client;
 import com.loansystem.classificator.LoanStatusClassificator;
 import com.loansystem.util.JLabeledTextField;
 import com.loansystem.classificator.NewLoanRequestConstants;
-import com.loansystem.control.FrameBuilderImpl.LoanStatusEnum;
 import com.loansystem.db.dao.LoanStatusHome;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;

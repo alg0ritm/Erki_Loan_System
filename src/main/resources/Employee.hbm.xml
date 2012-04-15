@@ -7,23 +7,11 @@
       <column length="2000000000" name="emloyee_id"/>
       <generator class="assigned"/>
     </id>
-    <property name="persCode" type="string">
+    <property name="persCode" type="int">
       <column length="2000000000" name="pers_code" not-null="true" unique="true"/>
     </property>
-    <property name="name" type="string">
-      <column length="2000000000" name="name" not-null="true"/>
-    </property>
-    <property name="lastName" type="string">
-      <column length="2000000000" name="last_name" not-null="true"/>
-    </property>
-    <property name="password" type="string">
-      <column length="2000000000" name="password" not-null="true"/>
-    </property>
-    <property name="mail" type="string">
-      <column length="2000000000" name="mail" not-null="true"/>
-    </property>
-    <property name="id" type="string">
-      <column length="2000000000" name="ID" not-null="true"/>
+    <property name="employeeType" type="int">
+      <column length="2000000000" name="employee_type" not-null="true"/>
     </property>
   </class>
 </hibernate-mapping>

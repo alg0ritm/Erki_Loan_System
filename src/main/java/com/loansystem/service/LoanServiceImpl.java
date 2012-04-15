@@ -5,14 +5,17 @@
 package com.loansystem.service;
 
 import com.loansystem.backend.model.LoanInsertRequest;
+
 import com.loansystem.db.dao.ClientHome;
 import com.loansystem.db.dao.LoanHome;
 import com.loansystem.db.dao.LoanOfferHome;
 import com.loansystem.db.dao.LoanStatusHome;
+import com.loansystem.db.dao.PostponeRequestHome;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
+import com.loansystem.model.PostponeRequest;
 import com.loansystem.util.DateUtil;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,7 +40,7 @@ public class LoanServiceImpl implements LoanService {
         return availableLoanOffers;
     }
 
-    public int createNewLoan(Client client, LoanOffer loanOffer) {
+    public Loan createNewLoan(Client client, LoanOffer loanOffer) {
         LoanStatus loanStatus = new LoanStatus();
         LoanStatusHome loanStatusHome = new LoanStatusHome();
         loanStatus = loanStatusHome.findByName("Pending");
@@ -54,12 +57,14 @@ public class LoanServiceImpl implements LoanService {
         }
         catch(Exception e)
         {
+            
             log.info("LoanServiceImpl : createNewLoan failed " + e.getStackTrace() );
+            return null;
         }
         
         
         //LoanStatus instance = (LoanStatus) session.createCriteria("LoanStatus").add(Restrictions.eq("name", "Pending"));
-        return 1;
+        return insertLoan;
     }
 
     @Override
@@ -67,10 +72,12 @@ public class LoanServiceImpl implements LoanService {
         /*ClientHome clientHome = new ClientHome();
         clientHome.*/
         LoanHome loanHome = new LoanHome();
-        Loan lastLoan = loanHome.findLastLoanForClient(client);
+        //Loan lastLoan = loanHome.findLastLoanForClient(client);
+        
+        //log.info("LoanServiceImpl : removeExistingLoanRequest error occured " + lastLoan.getDueDate() );
         
         try {
-            loanHome.delete(lastLoan);
+            //loanHome.delete(lastLoan);
         }catch(Exception e)
         {
             log.info("LoanServiceImpl : removeExistingLoanRequest error occured "+ e );
@@ -83,15 +90,22 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public Loan getLastLoan(Client client) {
         LoanHome loanHome = new LoanHome();
-        Loan lastLoan = loanHome.findLastLoanForClient(client);
-        return lastLoan;
+        //Loan lastLoan = loanHome.findLastLoanForClient(client);
+        return null;
         
         //return createPostponedLoan(lastLoan);
     }
 
     private int createPostponedLoan(Loan lastLoan) {
-        
         return 0;
+    }
+
+    @Override
+    public int createPostponeRequest(PostponeRequest postponeRequest) {
+          
+          PostponeRequestHome postponeRequestHome = new PostponeRequestHome();
+          int result = postponeRequestHome.savePostponeRequest(postponeRequest);
+          return result;
     }
     
     

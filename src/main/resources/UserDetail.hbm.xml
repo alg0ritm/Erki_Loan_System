@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Feb 18, 2012 4:26:52 PM by Hibernate Tools 3.4.0.CR1 -->
-<hibernate-mapping>
-  <class name="com.loansystem.model.UserDetail" table="user_detail">
-    <id name="id" type="string">
-      <column length="2000000000" name="id"/>
-      <generator class="assigned"/>
-    </id>
-    <property name="persCode" type="java.lang.Integer">
-      <column name="pers_code"/>
-    </property>
-    <property name="isClient" type="string">
-      <column length="2000000000" name="is_client"/>
-    </property>
-    <property name="isEmployee" type="string">
-      <column length="2000000000" name="is_employee"/>
-    </property>
-    <property name="employeeType" type="java.lang.Integer">
-      <column name="employee_type"/>
-    </property>
-    <many-to-one class="com.loansystem.model.User" fetch="select" name="user">
-      <column length="2000000000" name="id" not-null="true"/>
-    </many-to-one>
-  </class>
+<hibernate-mapping default-lazy="false">
+    <class name="com.loansystem.model.UserDetail" table="user_detail">
+        <id name="userDetailId" type="int">
+            <column length="2000000000" name="user_detail_id"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="persCode" type="int" insert="false" update="false">
+            <column name="pers_code"/>
+        </property>
+        <property name="isClient" type="string">
+            <column length="2000000000" name="is_client"/>
+        </property>
+        <property name="isEmployee" type="string">
+            <column length="2000000000" name="is_employee"/>
+        </property>
+        <property name="employeeType" type="int">
+            <column name="employee_type"/>
+        </property>
+        <many-to-one class="com.loansystem.model.Client" fetch="select" name="client">
+            <column length="2000000000" name="pers_code" not-null="true"/>
+        </many-to-one> 
+        <many-to-one class="com.loansystem.model.Employee" fetch="select" name="employee">
+            <column length="2000000000" name="pers_code" not-null="true"/>
+        </many-to-one> 
+    </class>
 </hibernate-mapping>

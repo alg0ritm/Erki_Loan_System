@@ -154,7 +154,7 @@ public class LoanHome {
 
     }
     
-     public Loan findLastLoanForClient(Client client) {
+     /*public Loan findLastLoanForClient(Client client) {
         log.debug("getting last Loan instance for Client  " + client.getLastName());
         Session session = null;
         try {
@@ -175,5 +175,5 @@ public class LoanHome {
         } finally {
             session.close();
         }
-    }
+    }*/
 }

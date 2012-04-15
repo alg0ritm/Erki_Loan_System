@@ -27,10 +27,20 @@ public class ClientFrameBasic1 extends JFrame {
 
     public static JFrame basicFrame;
     JPanel[] panels;
+    
+    public static JPanel newLoanRequestPanel;
+    public static JPanel exisitingLoanRequestPanel;
+    public static JPanel myLoansTab;
 
     /** Creates new form ClientFrameBasic */
     public ClientFrameBasic1(JPanel[] panels) {
         //if no sent to debt collection show notification
+        initComponents(panels);
+    }
+    
+    
+    public void initComponents(JPanel[] panels)
+    {
         if(panels == null)
         {
             JOptionPane.showMessageDialog(this, "Sorry we doesn't allow login for clients with blacklisted status");
@@ -44,16 +54,38 @@ public class ClientFrameBasic1 extends JFrame {
         
         jTabbedPane1 = new JTabbedPane();
         
-        for (JPanel panel : this.panels) {
-            jTabbedPane1.add(panel);
+        for(int i=0; i<panels.length; i++) {
+           if(panels[i].getName().contains("Loans")) {
+               myLoansTab = panels[i];
+           }
+           if(panels[i].getName().contains("Active")) {
+               exisitingLoanRequestPanel = panels[i];
+           }
+           jTabbedPane1.add(panels[i]);
         }
+        
+        /*if(panels.length>1)
+        {
+            newLoanRequestPanel = panels[1];
+            jTabbedPane1.add(newLoanRequestPanel);
+
+            exisitingLoanRequestPanel = panels[0];
+            jTabbedPane1.add(exisitingLoanRequestPanel);
+        }
+        else {
+           exisitingLoanRequestPanel = panels[0];
+            jTabbedPane1.add(exisitingLoanRequestPanel); 
+        }*/
+        
+       
         
         basicFrame.add(jTabbedPane1);
         basicFrame.setSize(600, 600);
         basicFrame.setVisible(true);
-        basicFrame.setResizable(false);
+        basicFrame.setResizable(true);
         log.info("Created basic frame with tabs");
     }
+    
 
     /** This method is called from within the constructor to
      * initialize the form.

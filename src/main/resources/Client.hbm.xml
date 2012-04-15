@@ -13,20 +13,8 @@
         <many-to-one class="com.loansystem.model.ClientStatus" fetch="select" name="clientStatus">
             <column length="2000000000" name="status_id" not-null="true"/>
         </many-to-one>
-        <property name="persCode" type="string">
-            <column length="2000000000" name="pers_code" not-null="true" unique="true"/>
-        </property>
-        <property name="name" type="string">
-            <column length="2000000000" name="name" not-null="true"/>
-        </property>
-        <property name="lastName" type="string">
-            <column length="2000000000" name="last_name" not-null="true"/>
-        </property>
-        <property name="password" type="string">
-            <column length="2000000000" name="password" not-null="true"/>
-        </property>
-        <property name="mail" type="string">
-            <column length="2000000000" name="mail" not-null="true" unique="true"/>
+        <property name="persCode" type="int">
+            <column length="2000000000" name="pers_code" not-null="true"/>
         </property>
         <property name="rating" type="string">
             <column length="2000000000" name="rating" not-null="true"/>

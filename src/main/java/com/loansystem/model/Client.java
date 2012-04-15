@@ -13,27 +13,19 @@ public class Client implements java.io.Serializable {
     private int clientId;
     private CientGroup cientGroup;
     private ClientStatus clientStatus;
-    private String persCode;
-    private String name;
-    private String lastName;
-    private String password;
-    private String mail;
+    private int persCode;
     private String rating;
     private List<Loan> loans;
 
     public Client() {
     }
 
-    public Client(int clientId, CientGroup cientGroup, ClientStatus clientStatus, String persCode, String name,
-            String lastName, String password, String mail, String rating, List<Loan> loans) {
+    public Client(int clientId, CientGroup cientGroup, ClientStatus clientStatus, int persCode, String rating, List<Loan> loans) {
         this.clientId = clientId;
         this.cientGroup = cientGroup;
         this.clientStatus = clientStatus;
         this.persCode = persCode;
-        this.name = name;
-        this.lastName = lastName;
-        this.password = password;
-        this.mail = mail;
+
         this.rating = rating;
         this.loans = loans;
     }
@@ -62,44 +54,12 @@ public class Client implements java.io.Serializable {
         this.clientStatus = clientStatus;
     }
 
-    public String getPersCode() {
-        return this.persCode;
+    public int getPersCode() {
+        return persCode;
     }
 
-    public void setPersCode(String persCode) {
+    public void setPersCode(int persCode) {
         this.persCode = persCode;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getMail() {
-        return this.mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
     }
 
     public String getRating() {

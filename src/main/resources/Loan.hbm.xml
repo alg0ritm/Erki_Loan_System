@@ -34,5 +34,9 @@
         <many-to-one class="com.loansystem.model.LoanOffer" fetch="select" name="loanOffer">
             <column length="2000000000" name="offer_id" not-null="true" unique="true"/>
         </many-to-one>
+        <bag name="loanHistory" cascade="all" order-by="date desc" lazy="false">
+            <key column="loan_id"/>
+            <one-to-many class="com.loansystem.model.LoanHistory"/>
+        </bag>
     </class>
 </hibernate-mapping>

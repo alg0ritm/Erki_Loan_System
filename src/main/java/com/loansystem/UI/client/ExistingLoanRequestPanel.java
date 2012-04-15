@@ -10,6 +10,7 @@
  */
 package com.loansystem.UI.client;
 
+import com.loansystem.backend.model.LoanTabModel;
 import com.loansystem.db.dao.LoanHome;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
@@ -31,16 +32,20 @@ public class ExistingLoanRequestPanel extends javax.swing.JPanel {
     private Client client;
     private Loan loan;
     private Session session;
+    private final LoanTabModel loanTabModel;
+   
     
     
 
     /** Creates new form ExistingLoanRequestPanel */
-    public ExistingLoanRequestPanel(Client client, boolean visibility) {
+    public ExistingLoanRequestPanel(LoanTabModel loanTabModel, boolean visibility) {
         initComponents();
-        this.client = client;
-        this.loan = client.getLoans().get(0);
+        this.loanTabModel = loanTabModel;
+        this.client = loanTabModel.getClient();
+        this.loan = loanTabModel.getLastLoan();
         jLabel8.setText(loan.getDebt());
         jLabel9.setText(loan.getDueDate());
+        jLabel10.setText(loan.getLoanStatus().getDescription());
         setBorder(BorderFactory.createTitledBorder("Exisiting Loan details"));
         this.setVisible(visibility);
     }
@@ -61,8 +66,7 @@ public class ExistingLoanRequestPanel extends javax.swing.JPanel {
         this.jLabel1 = jLabel1;
     }
 
-    
-
+  
     public JLabel getjLabel3() {
         return jLabel3;
     }
@@ -89,6 +93,14 @@ public class ExistingLoanRequestPanel extends javax.swing.JPanel {
 
     public JLabel getjLabel6() {
         return jLabel6;
+    }
+
+    public JLabel getjLabel10() {
+        return jLabel10;
+    }
+
+    public void setjLabel10(JLabel jLabel10) {
+        this.jLabel10 = jLabel10;
     }
 
     public void setjLabel6(JLabel jLabel6) {
@@ -127,6 +139,14 @@ public class ExistingLoanRequestPanel extends javax.swing.JPanel {
         this.loan = loan;
     }
 
+    public JLabel getjLabel2() {
+        return jLabel2;
+    }
+
+    public void setjLabel2(JLabel jLabel2) {
+        this.jLabel2 = jLabel2;
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -144,6 +164,8 @@ public class ExistingLoanRequestPanel extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
 
         jLabel1.setText("jLabel1");
         jLabel1.setName("jLabel1"); // NOI18N
@@ -166,27 +188,37 @@ public class ExistingLoanRequestPanel extends javax.swing.JPanel {
 
         jLabel9.setName("jLabel9"); // NOI18N
 
+        jLabel2.setText("Status:");
+        jLabel2.setName("jLabel2"); // NOI18N
+
+        jLabel10.setText("jLabel10");
+        jLabel10.setName("jLabel10"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel5))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel5))
+                    .addComponent(jLabel2))
                 .addGap(74, 74, 74)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(83, 83, 83)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(83, 83, 83)))
+                    .addComponent(jLabel10))
                 .addContainerGap(316, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -209,12 +241,18 @@ public class ExistingLoanRequestPanel extends javax.swing.JPanel {
                             .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel9)))
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel10))
+                .addGap(69, 69, 69))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

@@ -11,6 +11,8 @@ import java.util.Map;
 import org.apache.commons.lang.time.DateUtils;
 
 public class DateUtil {
+        public static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    
 	public static int dayDifference(final Calendar from, final Calendar to) {
 		Calendar toTruncated = DateUtils.truncate(to, Calendar.DAY_OF_MONTH);
 		Calendar fromTruncated = DateUtils.truncate(from, Calendar.DAY_OF_MONTH);

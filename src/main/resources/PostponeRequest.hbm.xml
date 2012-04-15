@@ -3,9 +3,9 @@
 <!-- Generated Nov 13, 2011 9:49:22 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping default-lazy="false">
   <class name="com.loansystem.model.PostponeRequest" table="postpone_request">
-    <id name="id" type="string">
+    <id name="id" type="int">
       <column length="2000000000" name="id"/>
-      <generator class="assigned"/>
+      <generator class="increment"/>
     </id>
     <property name="statusId" type="string">
       <column length="2000000000" name="status_id" not-null="true"/>

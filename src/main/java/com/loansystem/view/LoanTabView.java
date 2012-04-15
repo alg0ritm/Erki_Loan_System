@@ -160,6 +160,11 @@ public class LoanTabView extends JPanel {
         loanTabModel.getPostponeRequestPanel().setVisible(true);
         this.revalidate();
     }
+    
+     public void hidePostponeControls() {
+        loanTabModel.getPostponeRequestPanel().setVisible(false);
+        this.revalidate();
+    }
 
     public void removeExistingLoanTabControls(Client client) {
         loanTabModel.getExistingLoanRequestPanel().setVisible(false);
@@ -183,4 +188,13 @@ public class LoanTabView extends JPanel {
     public void addRemoveLoanRequestListener(ActionListener addRemoveLoanRequestListener) {
         loanTabModel.getExistingLoanRequestControls().addRemoveRequestListener(addRemoveLoanRequestListener);
     }
+
+    public void updateExistingLoanPanel() {
+        loanTabModel.getExistingLoanRequestPanel().updateExitingLoanPanel();
+    }
+
+    public void addRemovePostponeRequestListener(ActionListener removePostponeRequestListener) {
+       loanTabModel.getExistingLoanRequestControls().addRemovePostponeRequestListener(removePostponeRequestListener);
+    }
+
 }

@@ -15,6 +15,7 @@ import com.loansystem.backend.model.LoanInsertRequest;
 import com.loansystem.backend.model.LoanTabModel;
 import com.loansystem.db.dao.LoanHome;
 import com.loansystem.db.dao.LoanStatusHome;
+import com.loansystem.enums.LoanStatusInterface;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
@@ -55,6 +56,29 @@ import org.hibernate.Transaction;
 public class LoanTabController {
 
     private static final Log log = LogFactory.getLog(LoanTabController.class);
+
+    private class RemovePostponeRequestListener implements ActionListener {
+
+        public RemovePostponeRequestListener() {
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            log.info("RemovePostponeRequestListener actionPerformed");
+
+            loanService = new LoanServiceImpl();
+            loanService.removeExistingLoanRequest(client);
+
+            loanTabView.removeExistingLoanTabControls(client);
+
+            // loanTabView.removeExisitingLoanTab(client);
+
+            loanTabView.showNewLoanTab(client);
+            //loanTabView.pack();
+            //loanTabView.repaint();
+
+        }
+    }
 
     private class removeLoanRequestListener implements ActionListener {
 
@@ -106,6 +130,28 @@ public class LoanTabController {
             switch(response) {
                 case 1: //ok 
                     loanService.createPostponeRequest(postponeRequest);
+                    loanTabView.hidePostponeControls();
+                    /*this.loanId = id;
+                    this.dueDate = dueDate;
+                    this.baseDueDate = baseDueDate;
+                    this.apr = apr;
+                    this.debt = debt;
+                    this.client = client;
+                    this.employeeId = employeeId;
+                    this.loanStatus = loanStatus;
+                    this.loanOffer = loanOffer;
+                    this.postponeRequestId = postponeRequestId;
+                    this.loanHistory = loanHistory;*/
+                    loanService.updateLastLoanToPostponeRequesed(loanTabModel, dueDate, sum);
+                    loanTabView.updateExistingLoanPanel();
+                   
+                    
+                     /*jLabel8.setText(loan.getDebt());
+                     jLabel9.setText(loan.getDueDate());
+                     jLabel10.setText(loan.getLoanStatus().getDescription());
+                    loanTabModel.updateLastLoan();
+                    */
+                   
                     break;
                 default:
                     break;
@@ -178,9 +224,11 @@ public class LoanTabController {
     private void initExisitingLoanListeners() {
         loanTabView.addLoanStateChangeToPayedListener(new LoanStateToPayedListener());
         loanTabView.addRemoveLoanRequestListener(new removeLoanRequestListener());
+        loanTabView.addRemovePostponeRequestListener(new RemovePostponeRequestListener());
         loanTabView.addLoanStateChangeToPostponedListener(new LoanStateChangeToPostponedListener());
         loanTabView.addSliderListener(new SliderStateChangedListener());
         loanTabView.addLoanPostponeConfirmedListener(new LoanPostponeRequestedListener());
+        
     }
 
     private class LoanStateChangeToPendingListener implements ActionListener {
@@ -228,6 +276,8 @@ public class LoanTabController {
                     loanTabModel.setLastLoan(lastLoan);
                     loanTabView.showExistingLoanTabControls(client);
                     loanTabView.showExisitingLoanTab(client);
+                    
+                   
 
                     ArrayList<JPanel> loanRequestCTabPanels = loanTabModel.getCreatedPanels();
                     //loanTabModel.getExistingLoanRequestPanel()

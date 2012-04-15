@@ -99,7 +99,9 @@ public class LoanStatusHome {
     public LoanStatus findById(java.lang.String id) {
         log.debug("getting LoanStatus instance with id: " + id);
         try {
-            LoanStatus instance = (LoanStatus) sessionFactory.getCurrentSession().get("LoanStatus", id);
+            session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+            LoanStatus instance = (LoanStatus) session.get("com.loansystem.model.LoanStatus", id);
             if (instance == null) {
                 log.debug("get successful, no instance found");
             } else {

@@ -6,6 +6,7 @@ package com.loansystem.service;
 
 import com.loansystem.backend.model.LoanInsertRequest;
 
+import com.loansystem.backend.model.LoanTabModel;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanOffer;
@@ -25,5 +26,7 @@ public interface LoanService {
     public Loan getLastLoan(Client client);
 
     public int createPostponeRequest(PostponeRequest postponeRequest);
+
+    public int updateLastLoanToPostponeRequesed(LoanTabModel loanTabModel, String dueDate, String sum);
     
 }

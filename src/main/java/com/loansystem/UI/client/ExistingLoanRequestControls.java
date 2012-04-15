@@ -12,6 +12,7 @@ package com.loansystem.UI.client;
 
 import com.loansystem.backend.model.ButtonPlace;
 import com.loansystem.backend.model.LoanTabModel;
+import com.loansystem.db.dao.LoanStatusHome;
 import com.loansystem.enums.LoanStatusInterface;
 
 import java.awt.GridLayout;
@@ -33,6 +34,7 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
     private final ButtonPlace removeRequestLocation = new ButtonPlace(1, 0);
     private final ButtonPlace postponeButtonLocation = new ButtonPlace(0, 1);
     private final ButtonPlace removePostponeButtonLocation = new ButtonPlace(1, 1);*/
+    private JButton jButton4;
 
     /** Creates new form ExistingLoanRequestControls */
     public ExistingLoanRequestControls(LoanTabModel loanTabModel) {
@@ -47,9 +49,11 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
 
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         jButton1.setText("Remove Loan Request");
         jButton1.setName("jButton1"); // NOI18N
+        jButton1.setVisible(false);
 
 
 
@@ -63,6 +67,10 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
         jButton3.setText("Postpone payback");
         jButton3.setName("jButton3"); // NOI18N
         jButton3.setVisible(false);
+        
+        jButton4.setText("Cancel Postpone payback request");
+        jButton4.setName("jButton4"); // NOI18N
+        jButton4.setVisible(false);
 
         GridLayout layout = new GridLayout(2, 2);
          
@@ -72,8 +80,12 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
         add(jButton1, 0);
         add(jButton2, 1);
         add(jButton3, 2);
+        add(jButton4, 3);
 
-
+        boolean showRemoveLoanRequestButton = showRemoveLoanRequestButton(loanTabModel.getLastLoan().getLoanStatus().getLoanStatusId());
+        if (showRemoveLoanRequestButton) {
+            jButton1.setVisible(true);
+        }
 
 
         boolean showPayButton = showPayButton(loanTabModel.getLastLoan().getLoanStatus().getLoanStatusId());
@@ -85,6 +97,11 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
         boolean showPostponeButton = showPostponeButton(loanTabModel.getLastLoan().getLoanStatus().getLoanStatusId());
         if (showPostponeButton) {
             jButton3.setVisible(true);
+        }
+        
+        boolean showRemovePostponeRequestButton = showRemovePostponeRequestButton(loanTabModel.getLastLoan().getLoanStatus().getLoanStatusId());
+        if (showRemovePostponeRequestButton) {
+            jButton4.setVisible(true);
         }
     }
 
@@ -125,6 +142,10 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
     public void addRemoveRequestListener(ActionListener removeRequestListener) {
         jButton1.addActionListener(removeRequestListener);
     }
+    
+    public void addRemovePostponeRequestListener(ActionListener removePostponeRequestListener) {
+         jButton4.addActionListener(removePostponeRequestListener);
+    }
 
     private boolean showPayButton(String statusId) {
         int status = Integer.parseInt(statusId);
@@ -132,7 +153,12 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
         switch (status) {
             case LoanStatusInterface.ISSUED:
             case LoanStatusInterface.POSTPONED:
+            case LoanStatusInterface.OVERDUE:
                 return true;
+            case LoanStatusInterface.POSTPONE_REQUESTED:
+            case LoanStatusInterface.SENT_TO_DEBT_COLLECTION:
+            case LoanStatusInterface.REJECTED:
+                return false;
             default:
                 return false;
         }
@@ -145,8 +171,36 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
         switch (status) {
             case LoanStatusInterface.ISSUED:
                 return true;
+            case LoanStatusInterface.POSTPONE_REQUESTED:
+            case LoanStatusInterface.POSTPONED:
+            case LoanStatusInterface.PENDING:
+                return false;
             default:
                 return false;
         }
     }
+    
+    private boolean showRemovePostponeRequestButton(String loanStatusId) {
+        int status = Integer.parseInt(loanStatusId);
+
+        switch (status) {
+           case LoanStatusInterface.POSTPONE_REQUESTED:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private boolean showRemoveLoanRequestButton(String loanStatusId) {
+        int status = Integer.parseInt(loanStatusId);
+
+        switch (status) {
+           case LoanStatusInterface.PENDING:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    
 }

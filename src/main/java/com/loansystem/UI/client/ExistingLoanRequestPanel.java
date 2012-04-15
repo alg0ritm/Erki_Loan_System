@@ -262,4 +262,10 @@ public class ExistingLoanRequestPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 
+    public void updateExitingLoanPanel() {
+        jLabel8.setText(loanTabModel.getLastLoan().getDebt());
+        jLabel9.setText(loanTabModel.getLastLoan().getDueDate());
+        jLabel10.setText(loanTabModel.getLastLoan().getLoanStatus().getDescription());
+    }
+
 }

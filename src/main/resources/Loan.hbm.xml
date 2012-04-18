@@ -22,9 +22,9 @@
         <property name="employeeId" type="string">
             <column length="2000000000" name="employee_id"/>
         </property>
-        <property name="postponeRequestId" type="string">
-            <column length="2000000000" name="postpone_request_id" unique="true"/>
-        </property>
+        <many-to-one class="com.loansystem.model.PostponeRequest" fetch="select" name="postponeRequest">
+            <column length="2000000000" name="postpone_request_id" not-null="false" unique="true"/>
+        </many-to-one>
         <many-to-one class="com.loansystem.model.Client" fetch="select" name="client">
             <column length="2000000000" name="client_id" not-null="true" unique="true"/>
         </many-to-one>

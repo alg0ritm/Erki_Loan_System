@@ -70,7 +70,8 @@ public class LoanTabController {
             loanService.removeExistingLoanRequest(client);
 
             loanTabView.removeExistingLoanTabControls(client);
-
+             String[] opts = {"No", "Yes"};
+             PostponeRequest postponeRequst = loanTabModel.getLastLoan().getPostponeRequest();
             // loanTabView.removeExisitingLoanTab(client);
 
             loanTabView.showNewLoanTab(client);
@@ -90,6 +91,10 @@ public class LoanTabController {
             log.info("RemoveLoanRequestListener actionPerformed");
 
             loanService = new LoanServiceImpl();
+            
+             String[] opts = {"No", "Yes"};
+             PostponeRequest postponeRequst = loanTabModel.getLastLoan().getPostponeRequest();
+            /*int response = LoanUIutils.createQuestionPopup(opts, postponeRequest, "Are You sure you want to cancel initiated postpone request?");*/
             loanService.removeExistingLoanRequest(client);
 
             loanTabView.removeExistingLoanTabControls(client);
@@ -120,11 +125,9 @@ public class LoanTabController {
             String dueDate = loanTabModel.getPostponeRequestPanel().getjLabel3().getText();
             postponeRequest.setDate(dueDate);
             postponeRequest.setStatusId("1");
-
-
-            LoanUIutils loanUiUtils = new LoanUIutils();
+            
             String[] opts = {"No", "Yes"};
-            int response = loanUiUtils.createQuestionPopup(opts, postponeRequest, "Are You sure to postpone request with next parameters?");
+            int response = LoanUIutils.createQuestionPopup(opts, postponeRequest, "Are You sure to postpone request with next parameters?");
 
             postponeRequest.setComment("Postpone is requested");
             switch(response) {

@@ -23,7 +23,7 @@ public class Loan implements java.io.Serializable {
     private Client client;
     private LoanStatus loanStatus;
     private String employeeId;
-    private String postponeRequestId;
+    private PostponeRequest postponeRequest;
     private LoanOffer loanOffer;
     private List<LoanHistory> loanHistory;
     private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -31,7 +31,7 @@ public class Loan implements java.io.Serializable {
     public Loan() {
     }
 
-    public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId, LoanStatus loanStatus, LoanOffer loanOffer, List<LoanHistory> loanHistory) {
+    public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId, LoanStatus loanStatus, LoanOffer loanOffer, List<LoanHistory> loanHistory, PostponeRequest postponeRequest) {
         this.loanId = id;
         this.dueDate = dueDate;
         this.baseDueDate = baseDueDate;
@@ -41,10 +41,11 @@ public class Loan implements java.io.Serializable {
         this.loanStatus = loanStatus;
         this.loanOffer = loanOffer;
         this.loanHistory = loanHistory;
+        this.postponeRequest = postponeRequest;
     }
 
     public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId,
-            String employeeId, LoanStatus loanStatus, LoanOffer loanOffer, String postponeRequestId, List<LoanHistory> loanHistory) {
+            String employeeId, LoanStatus loanStatus, LoanOffer loanOffer, PostponeRequest postponeRequest, List<LoanHistory> loanHistory) {
         this.loanId = id;
         this.dueDate = dueDate;
         this.baseDueDate = baseDueDate;
@@ -54,7 +55,7 @@ public class Loan implements java.io.Serializable {
         this.employeeId = employeeId;
         this.loanStatus = loanStatus;
         this.loanOffer = loanOffer;
-        this.postponeRequestId = postponeRequestId;
+        this.postponeRequest = postponeRequest;
         this.loanHistory = loanHistory;
     }
 
@@ -162,11 +163,11 @@ public class Loan implements java.io.Serializable {
         this.loanStatus = loanStatus;
     }
 
-    public String getPostponeRequestId() {
-        return this.postponeRequestId;
+    public PostponeRequest getPostponeRequest() {
+        return this.postponeRequest;
     }
 
-    public void setPostponeRequestId(String postponeRequestId) {
-        this.postponeRequestId = postponeRequestId;
+    public void setPostponeRequest(PostponeRequest postponeRequest) {
+        this.postponeRequest = postponeRequest;
     }
 }

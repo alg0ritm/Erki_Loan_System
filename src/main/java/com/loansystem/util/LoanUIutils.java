@@ -19,7 +19,7 @@ public class LoanUIutils {
 
     private static final Log log = LogFactory.getLog(LoanUIutils.class);
 
-    public int createQuestionPopup(String[] opts, Object requestObject, String initialQuestion) {
+    public static int createQuestionPopup(String[] opts, Object requestObject, String initialQuestion) {
 
         String s = initialQuestion + '\n';
         try {
@@ -114,7 +114,7 @@ public class LoanUIutils {
         return true;
     }
 
-    private String eliminateGet(Method method) {
+    private static String eliminateGet(Method method) {
         log.info(method.getName().substring(method.getName().indexOf("get") + 3));
         return method.getName().substring(method.getName().indexOf("get") + 3);
     }

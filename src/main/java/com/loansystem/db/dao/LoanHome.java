@@ -3,9 +3,12 @@ package com.loansystem.db.dao;
 // default package
 // Generated Nov 13, 2011 9:49:24 PM by Hibernate Tools 3.4.0.CR1
 import com.loansystem.backend.model.LoanInsertRequest;
+import com.loansystem.enums.LoanStatusEnum;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
+import com.loansystem.model.LoanStatus;
+import java.util.ArrayList;
 import java.util.List;
 import javax.naming.InitialContext;
 import org.hibernate.Transaction;
@@ -90,14 +93,18 @@ public class LoanHome {
         }
     }
 
-    public Loan merge(Loan detachedInstance) {
+    public Loan merge(Loan detachedInstance, Session session) {
         log.debug("merging Loan instance");
-         Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
+        Session sessionLoc = null;
+        if (session == null) {
+            sessionLoc = sessionFactory.getCurrentSession();
+            Transaction transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
         try {
-            Loan result = (Loan) session.merge(detachedInstance);
+            Loan result = (Loan) sessionLoc.merge(detachedInstance);
             log.debug("merge successful");
-            transaction.commit();
             return result;
         } catch (RuntimeException re) {
             log.error("merge failed", re);
@@ -105,20 +112,30 @@ public class LoanHome {
         }
     }
 
-    public Loan findById(java.lang.String id) {
+    public Loan findById(int id, Session session) {
         log.debug("getting Loan instance with id: " + id);
+        Session sessionLoc = null;
+        if (session == null) {
+            sessionLoc = sessionFactory.getCurrentSession();
+            Transaction transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
         try {
-            Loan instance = (Loan) sessionFactory.getCurrentSession().get("Loan", id);
+            session = sessionFactory.getCurrentSession();
+            session.beginTransaction();
+            Loan instance = (Loan) sessionLoc.get("com.loansystem.model.Loan", id);
             if (instance == null) {
                 log.debug("get successful, no instance found");
             } else {
                 log.debug("get successful, instance found");
             }
             return instance;
-        } catch (RuntimeException re) {
-            log.error("get failed", re);
+            } catch (RuntimeException re) {
+            log.error("find by example failed", re);
             throw re;
         }
+            
     }
 
     public List findByExample(Loan instance) {
@@ -179,4 +196,26 @@ public class LoanHome {
             session.close();
         }
     }*/
+
+    public ArrayList<Loan> getLoansByStatus(LoanStatus loanStatus, Session session) {
+        log.debug("merging Loan instance");
+        Session sessionLoc = null;
+        if (session == null) {
+            sessionLoc = sessionFactory.getCurrentSession();
+            Transaction transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
+        try {
+            ArrayList<Loan> results = new ArrayList<Loan>();
+             // = sessionLoc.createCriteria("Loan").add(Example.create(instance)).list();
+             results = (ArrayList<Loan>) sessionLoc.createCriteria(Loan.class).add(Restrictions.eq("loanStatus", loanStatus)).list();
+            log.debug("merge successful");
+            return results;
+        } catch (RuntimeException re) {
+            log.error("merge failed", re);
+            throw re;
+        }
+    }
+
 }

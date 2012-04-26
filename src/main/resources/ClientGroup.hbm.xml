@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 13, 2011 9:49:22 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping default-lazy="false">
+    <class name="com.loansystem.model.ClientGroup" table="client_group">
+        <id name="groupId" type="string">
+            <column name="group_id" length="2000000000" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" length="2000000000" not-null="true" unique="true" />
+        </property>
+        <property name="description" type="string" >
+            <column name="description" length="2000000000" />
+        </property>
+        <property name="minRating" type="int" >
+            <column name="min_rating" length="2000000000" not-null="false"/>
+        </property>
+        <property name="maxRating" type="int">
+            <column name="max_rating" length="2000000000" not-null="false"/>
+        </property>
+        <bag name="clients" cascade="all" order-by="client_id" lazy="false">
+            <key>
+                <column name="client_group_id" length="2000000000" not-null="true" />
+            </key>
+            <one-to-many class="com.loansystem.model.Client" />
+        </bag>
+        <bag name="loanOffers" cascade="all" order-by="offer_id" lazy="false">
+            <key>
+                <column name="client_group_id" length="2000000000" not-null="true" />
+            </key>
+            <one-to-many class="com.loansystem.model.LoanOffer" />
+        </bag>
+    </class>
+</hibernate-mapping>

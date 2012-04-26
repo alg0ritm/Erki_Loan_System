@@ -197,4 +197,8 @@ public class LoanTabView extends JPanel {
        loanTabModel.getExistingLoanRequestControls().addRemovePostponeRequestListener(removePostponeRequestListener);
     }
 
+    public void hideUnnecessaryButtons() {
+       loanTabModel.getExistingLoanRequestControls().hideUnnecessaryButtons();
+    }
+
 }

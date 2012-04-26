@@ -7,6 +7,7 @@ package com.loansystem.service;
 import com.loansystem.backend.model.LoanInsertRequest;
 
 import com.loansystem.backend.model.LoanTabModel;
+import com.loansystem.enums.LoanStatusInterface;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanOffer;
@@ -21,12 +22,16 @@ public interface LoanService {
     public ArrayList<LoanOffer> getAvailableLoanOffers(Client client);
     public Loan createNewLoan(Client client, LoanOffer loanOffer);
     
-    public int removeExistingLoanRequest(Client client);
+    public int removeExistingLoanRequest(LoanTabModel loanTaModel, Client client);
 
     public Loan getLastLoan(Client client);
 
     public int createPostponeRequest(PostponeRequest postponeRequest);
 
-    public int updateLastLoanToPostponeRequesed(LoanTabModel loanTabModel, String dueDate, String sum);
+    public PostponeRequest updateLastPostponedLoan(LoanTabModel loanTabModel, String dueDate, String sum, int postponeRequestStatus);
+
+    public void cancelExistingPostponeRequest(LoanTabModel loanTabModel, Client client);
+
+    public Loan getLoanById(Loan selectedLoan);
     
 }

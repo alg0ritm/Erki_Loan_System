@@ -64,7 +64,7 @@ public class NewLoanRequestPanel extends javax.swing.JPanel {
         session.beginTransaction();
         initComponents();
         this.client = client;
-        this.loanOffersList = client.getCientGroup().getLoanOffers();
+        this.loanOffersList = client.getClientGroup().getLoanOffers();
         Map<String, String> newLoanRequestTable = new HashMap<String, String>();
         //newLoanRequestTable.put(NewLoanRequestConstants.COL_1, Loan.class.getDeclaredField(TOOL_TIP_TEXT_KEY));
         LoanOffer currentLoanOffer;

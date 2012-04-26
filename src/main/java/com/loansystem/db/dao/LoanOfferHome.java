@@ -130,7 +130,7 @@ public class LoanOfferHome {
     public ArrayList<LoanOffer> getAvailableLoanOffers(Client client) {
         session = sessionFactory.getCurrentSession();
         //session.beginTransaction();
-        ArrayList<LoanOffer> avLoanOffersList = (ArrayList<LoanOffer>) session.createCriteria(LoanOffer.class).add(Restrictions.eq("client_group_id", client.getCientGroup().getId())).list();
+        ArrayList<LoanOffer> avLoanOffersList = (ArrayList<LoanOffer>) session.createCriteria(LoanOffer.class).add(Restrictions.eq("client_group_id", client.getClientGroup().getGroupId())).list();
         session.close();
         return avLoanOffersList;
     }
@@ -161,7 +161,7 @@ public class LoanOfferHome {
         <property name="statusId" type="string">
         <column name="status_id" length="2000000000" not-null="true" />
         </property>
-        <many-to-one class="com.loansystem.model.CientGroup" fetch="select" name="clientGroup">
+        <many-to-one class="com.loansystem.model.ClientGroup" fetch="select" name="clientGroup">
         <column length="2000000000" name="rowid" not-null="true" unique="true"/>
         </many-to-one>*/
         //Create dynamic search create after not fully initilaized object 

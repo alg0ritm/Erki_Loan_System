@@ -3,13 +3,16 @@ package com.loansystem.db.dao;
 // default package
 // Generated Nov 13, 2011 9:49:24 PM by Hibernate Tools 3.4.0.CR1
 
+import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.PostponeRequestStatus;
 import java.util.List;
 import javax.naming.InitialContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 
 /**
@@ -24,13 +27,18 @@ public class PostponeRequestStatusHome {
 	private final SessionFactory sessionFactory = getSessionFactory();
 
 	protected SessionFactory getSessionFactory() {
-		try {
-			return (SessionFactory) new InitialContext().lookup("SessionFactory");
-		} catch (Exception e) {
-			log.error("Could not locate SessionFactory in JNDI", e);
-			throw new IllegalStateException("Could not locate SessionFactory in JNDI");
-		}
-	}
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            //session = sessionFactory.openSession();
+
+            return sessionFactory;
+
+            //return (SessionFactory) new InitialContext().lookup("SessionFactory");
+        } catch (Exception e) {
+            log.error("Could not locate SessionFactory in JNDI", e);
+            throw new IllegalStateException("Could not locate SessionFactory in JNDI");
+        }
+    }
 
 	public void persist(PostponeRequestStatus transientInstance) {
 		log.debug("persisting PostponeRequestStatus instance");
@@ -90,10 +98,12 @@ public class PostponeRequestStatusHome {
 	}
 
 	public PostponeRequestStatus findById(java.lang.String id) {
+                Session session = sessionFactory.getCurrentSession();
+                Transaction transaction = session.beginTransaction();
 		log.debug("getting PostponeRequestStatus instance with id: " + id);
 		try {
-			PostponeRequestStatus instance = (PostponeRequestStatus) sessionFactory.getCurrentSession().get(
-					"PostponeRequestStatus", id);
+			PostponeRequestStatus instance = (PostponeRequestStatus) session.get(
+					"com.loansystem.model.PostponeRequestStatus", id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {

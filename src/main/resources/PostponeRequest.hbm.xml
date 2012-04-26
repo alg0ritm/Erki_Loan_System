@@ -2,22 +2,22 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Nov 13, 2011 9:49:22 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping default-lazy="false">
-  <class name="com.loansystem.model.PostponeRequest" table="postpone_request">
-    <id name="id" type="int">
-      <column length="2000000000" name="id"/>
-      <generator class="increment"/>
-    </id>
-    <property name="statusId" type="string">
-      <column length="2000000000" name="status_id" not-null="true"/>
-    </property>
-    <property name="date" type="string">
-      <column length="2000000000" name="date" not-null="true"/>
-    </property>
-    <property name="employeeId" type="string">
-      <column length="2000000000" name="employee_id"/>
-    </property>
-    <property name="comment" type="string">
-      <column length="2000000000" name="comment"/>
-    </property>
-  </class>
+    <class name="com.loansystem.model.PostponeRequest" table="postpone_request">
+        <id name="postponeRequestId" type="int">
+            <column length="2000000000" name="postpone_request_id"/>
+            <generator class="increment"/>
+        </id>
+        <property name="date" type="string">
+            <column length="2000000000" name="date" not-null="true"/>
+        </property>
+        <property name="employeeId" type="string">
+            <column length="2000000000" name="employee_id"/>
+        </property>
+        <property name="comment" type="string">
+            <column length="2000000000" name="comment"/>
+        </property>
+        <many-to-one class="com.loansystem.model.PostponeRequestStatus" fetch="select" name="postponeRequestStatus">
+            <column length="2000000000" name="status_id" not-null="false" unique="true"/>
+        </many-to-one>
+    </class>
 </hibernate-mapping>

@@ -8,8 +8,8 @@ package com.loansystem.model;
  */
 public class PostponeRequest implements java.io.Serializable {
 
-	private int id;
-	private String statusId;
+	private int postponeRequestId;
+	private PostponeRequestStatus postponeRequestStatus;
 	private String date;
 	private String employeeId;
 	private String comment;
@@ -17,34 +17,42 @@ public class PostponeRequest implements java.io.Serializable {
 	public PostponeRequest() {
 	}
 
-	public PostponeRequest(int id, String statusId, String date) {
-		this.id = id;
-		this.statusId = statusId;
+    public PostponeRequestStatus getPostponeRequestStatus() {
+        return postponeRequestStatus;
+    }
+
+    public void setPostponeRequestStatus(PostponeRequestStatus postponeRequestStatus) {
+        this.postponeRequestStatus = postponeRequestStatus;
+    }
+
+    public int getPostponeRequestId() {
+        return postponeRequestId;
+    }
+
+    public void setPostponeRequestId(int postponeRequestId) {
+        this.postponeRequestId = postponeRequestId;
+    }
+
+	public PostponeRequest(int postponeRequestId, PostponeRequestStatus postponeRequestStatus, String date) {
+		this.postponeRequestId = postponeRequestId;
+		this.postponeRequestStatus = postponeRequestStatus;
 		this.date = date;
 	}
 
-	public PostponeRequest(int id, String statusId, String date, String employeeId, String comment) {
-		this.id = id;
-		this.statusId = statusId;
+	public PostponeRequest(int postponeRequestId, PostponeRequestStatus postponeRequestStatus, String date, String employeeId, String comment) {
+		this.postponeRequestId = postponeRequestId;
+		this.postponeRequestStatus = postponeRequestStatus;
 		this.date = date;
 		this.employeeId = employeeId;
 		this.comment = comment;
 	}
 
-	public int getId() {
-		return this.id;
+	public PostponeRequestStatus getPostponeRequestStatusId() {
+		return this.postponeRequestStatus;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getStatusId() {
-		return this.statusId;
-	}
-
-	public void setStatusId(String statusId) {
-		this.statusId = statusId;
+	public void setStatusId(PostponeRequestStatus postponeRequestStatus) {
+		this.postponeRequestStatus = postponeRequestStatus;
 	}
 
 	public String getDate() {

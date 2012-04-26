@@ -15,6 +15,7 @@ import com.loansystem.db.dao.LoanHome;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
+import com.loansystem.model.PostponeRequest;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -43,9 +44,11 @@ public class ExistingLoanRequestPanel extends javax.swing.JPanel {
         this.loanTabModel = loanTabModel;
         this.client = loanTabModel.getClient();
         this.loan = loanTabModel.getLastLoan();
+        String loanStatus = loan.getLoanStatus().getDescription();
+        
         jLabel8.setText(loan.getDebt());
         jLabel9.setText(loan.getDueDate());
-        jLabel10.setText(loan.getLoanStatus().getDescription());
+        jLabel10.setText(loanStatus);
         setBorder(BorderFactory.createTitledBorder("Exisiting Loan details"));
         this.setVisible(visibility);
     }

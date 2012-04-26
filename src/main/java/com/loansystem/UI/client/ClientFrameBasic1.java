@@ -55,7 +55,7 @@ public class ClientFrameBasic1 extends JFrame {
         jTabbedPane1 = new JTabbedPane();
         
         for(int i=0; i<panels.length; i++) {
-           if(panels[i].getName().contains("Loans")) {
+           if(panels[i].getName().contains("MyLoans")) {
                myLoansTab = panels[i];
            }
            if(panels[i].getName().contains("Active")) {

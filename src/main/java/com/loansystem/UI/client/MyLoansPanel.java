@@ -11,6 +11,7 @@
 package com.loansystem.UI.client;
 
 import com.loansystem.backend.model.MyLoansTabModel;
+import com.loansystem.backend.model.PendingLoansTabModel;
 import com.loansystem.classificator.LoanStatusClassificator;
 import com.loansystem.classificator.MyLoansTabConstants;
 import com.loansystem.util.JLabeledTextField;
@@ -21,6 +22,7 @@ import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
+import com.loansystem.model.PostponeRequest;
 import com.loansystem.util.DateUtil;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -34,6 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -53,24 +56,40 @@ import org.hibernate.criterion.Restrictions;
  * @author antonve
  */
 public class MyLoansPanel extends javax.swing.JPanel {
-    
+
     private static final Log log = LogFactory.getLog(NewLoanRequestPanel.class);
     private List<Loan> loansList;
-    private final Client client;
+    private Client client;
     private Session session;
-    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     private JTable table;
 
     /** Creates new form MyLoansPanel */
     public MyLoansPanel(MyLoansTabModel myLoansTabModel, boolean visibility) {
         //initComponents();
-        
+
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
+        
         initComponents();
+        setBorder(BorderFactory.createTitledBorder("My previous loans"));
         this.client = myLoansTabModel.getClient();
         this.loansList = client.getLoans();
         //newLoanRequestTable.put(NewLoanRequestConstants.COL_1, Loan.class.getDeclaredField(TOOL_TIP_TEXT_KEY));
+        createTable(loansList);
+        this.setVisible(visibility);
+        session.close();
+    }
+
+    public MyLoansPanel(PendingLoansTabModel pendingLoansTabModel, boolean visibility) {
+        initComponents();
+        setBorder(BorderFactory.createTitledBorder("Previous client loans"));
+        this.loansList = pendingLoansTabModel.getPendingLoans();
+        createTable(loansList);
+        setVisible(visibility);
+    }
+
+    public void createTable(List<Loan> loansList) {
         Loan currentLoan;
         int i = 0;
         Object[][] tableObject = new Object[loansList.size()][6];
@@ -81,12 +100,19 @@ public class MyLoansPanel extends javax.swing.JPanel {
         Iterator loanOfferSet = loansList.iterator();
         while (loanOfferSet.hasNext()) {
 
+
+
             currentLoan = (Loan) loanOfferSet.next();
+            String loanStatus = currentLoan.getLoanStatus().getDescription();
+
             tableObject[i][0] = currentLoan.getDebt();
-            tableObject[i][1] = currentLoan.getLoanStatus().getDescription();
-            if(currentLoan.getLoanHistory().size()>0)
+
+            tableObject[i][1] = loanStatus;
+            if (currentLoan.getLoanHistory().size() > 0) {
                 tableObject[i][2] = currentLoan.getLoanHistory().get(0).getDate();
-            else tableObject[i][2] =  "";
+            } else {
+                tableObject[i][2] = "";
+            }
             tableObject[i][3] = currentLoan.getBaseDueDate();
             tableObject[i][4] = currentLoan.getApr();
 
@@ -97,10 +123,8 @@ public class MyLoansPanel extends javax.swing.JPanel {
                 new String[]{
                     MyLoansTabConstants.COL_SUM, MyLoansTabConstants.COL_STATUS, MyLoansTabConstants.COL_DUE_DATE, MyLoansTabConstants.COL_LAST_EVENT_DATE, MyLoansTabConstants.COL_RATING_CHANGE
                 }));
-        this.setVisible(visibility);
-        session.close();
 
-    
+
     }
 
     /** This method is called from within the constructor to
@@ -114,7 +138,6 @@ public class MyLoansPanel extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -132,32 +155,24 @@ public class MyLoansPanel extends javax.swing.JPanel {
         jTable1.setName("jTable1"); // NOI18N
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel1.setText("My loans");
-        jLabel1.setName("jLabel1"); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
+                .addGap(50, 50, 50)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(189, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables

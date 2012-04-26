@@ -7,15 +7,15 @@
             <column name="client_id"/>
             <generator class="assigned"/>
         </id>
-        <many-to-one class="com.loansystem.model.CientGroup" fetch="select" name="cientGroup">
+        <many-to-one class="com.loansystem.model.User" fetch="select" name="user">
+            <column length="2000000000" name="pers_code" not-null="true"/>
+        </many-to-one>
+        <many-to-one class="com.loansystem.model.ClientGroup" fetch="select" name="ClientGroup">
             <column length="2000000000" name="client_group_id" not-null="true"/>
         </many-to-one>
         <many-to-one class="com.loansystem.model.ClientStatus" fetch="select" name="clientStatus">
             <column length="2000000000" name="status_id" not-null="true"/>
         </many-to-one>
-        <property name="persCode" type="int">
-            <column length="2000000000" name="pers_code" not-null="true"/>
-        </property>
         <property name="rating" type="string">
             <column length="2000000000" name="rating" not-null="true"/>
         </property>

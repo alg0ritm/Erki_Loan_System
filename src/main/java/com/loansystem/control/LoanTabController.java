@@ -13,8 +13,12 @@ import com.loansystem.UI.client.NewLoanRequestPanel;
 import com.loansystem.UI.client.PostponeRequestPanel;
 import com.loansystem.backend.model.LoanInsertRequest;
 import com.loansystem.backend.model.LoanTabModel;
+import com.loansystem.classificator.PostponeRequestStatus;
 import com.loansystem.db.dao.LoanHome;
 import com.loansystem.db.dao.LoanStatusHome;
+import com.loansystem.db.dao.PostponeRequestHome;
+import com.loansystem.db.dao.PostponeRequestStatusHome;
+import com.loansystem.enums.LoanStatusEnum;
 import com.loansystem.enums.LoanStatusInterface;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
@@ -61,20 +65,38 @@ public class LoanTabController {
 
         public RemovePostponeRequestListener() {
         }
-        
+
         @Override
         public void actionPerformed(ActionEvent e) {
             log.info("RemovePostponeRequestListener actionPerformed");
 
             loanService = new LoanServiceImpl();
-            loanService.removeExistingLoanRequest(client);
+            //loanService.cancelExistingPostponeRequest(loanTabModel, client);
+
 
             loanTabView.removeExistingLoanTabControls(client);
-             String[] opts = {"No", "Yes"};
-             PostponeRequest postponeRequst = loanTabModel.getLastLoan().getPostponeRequest();
-            // loanTabView.removeExisitingLoanTab(client);
+            String[] opts = {"No", "Yes"};
 
-            loanTabView.showNewLoanTab(client);
+            PostponeRequest postponeRequst = loanTabModel.getLastLoan().getPostponeRequest(); //create postpone reuqest in db
+            int response = LoanUIutils.createQuestionPopup(opts, postponeRequst, "Are You sure to cancel postpone request with next parameters?");
+
+            // postponeRequest.setComment("Postpone cancel is requested");
+            switch (response) {
+                case 1:
+                    postponeRequst.setComment("Postpone cancel is rejected");
+                    loanTabModel.getLastLoan().setPostponeRequest(postponeRequst);
+                    loanTabView.hideUnnecessaryButtons();
+                    PostponeRequest postponeRequestUpd = loanService.updateLastPostponedLoan(loanTabModel, loanTabModel.getLastLoan().getDueDate(), loanTabModel.getLastLoan().getLoanOffer().getSum(), PostponeRequestStatus.CANCELED);
+                    loanTabModel.getLastLoan().setPostponeRequest(postponeRequestUpd);
+                    break;
+                default:
+
+
+            }
+            // loanTabView.removeExisitingLoanTab(client);
+            loanTabView.showExisitingLoanTab(client);
+            loanTabView.showExistingLoanTabControls(client);
+            //loanTabView.showNewLoanTab(client);
             //loanTabView.pack();
             //loanTabView.repaint();
 
@@ -91,15 +113,16 @@ public class LoanTabController {
             log.info("RemoveLoanRequestListener actionPerformed");
 
             loanService = new LoanServiceImpl();
-            
-             String[] opts = {"No", "Yes"};
-             PostponeRequest postponeRequst = loanTabModel.getLastLoan().getPostponeRequest();
+
+            String[] opts = {"No", "Yes"};
+            PostponeRequest postponeRequst = loanTabModel.getLastLoan().getPostponeRequest();
             /*int response = LoanUIutils.createQuestionPopup(opts, postponeRequest, "Are You sure you want to cancel initiated postpone request?");*/
-            loanService.removeExistingLoanRequest(client);
+            loanService.removeExistingLoanRequest(loanTabModel, client);
 
             loanTabView.removeExistingLoanTabControls(client);
 
             // loanTabView.removeExisitingLoanTab(client);
+            loanTabView.hideUnnecessaryButtons();
 
             loanTabView.showNewLoanTab(client);
             //loanTabView.pack();
@@ -123,14 +146,17 @@ public class LoanTabController {
             PostponeRequest postponeRequest = new PostponeRequest();
             String sum = loanTabModel.getPostponeRequestPanel().getjLabel4().getText();
             String dueDate = loanTabModel.getPostponeRequestPanel().getjLabel3().getText();
+            //PostponeRequestStatus
+            PostponeRequestStatusHome postponeRequestStatusHome = new PostponeRequestStatusHome();
+            com.loansystem.model.PostponeRequestStatus postponeRequestStatus = postponeRequestStatusHome.findById(PostponeRequestStatus.REQUESTED + "");
             postponeRequest.setDate(dueDate);
-            postponeRequest.setStatusId("1");
-            
+            postponeRequest.setStatusId(postponeRequestStatus);
+
             String[] opts = {"No", "Yes"};
             int response = LoanUIutils.createQuestionPopup(opts, postponeRequest, "Are You sure to postpone request with next parameters?");
 
             postponeRequest.setComment("Postpone is requested");
-            switch(response) {
+            switch (response) {
                 case 1: //ok 
                     loanService.createPostponeRequest(postponeRequest);
                     loanTabView.hidePostponeControls();
@@ -145,22 +171,25 @@ public class LoanTabController {
                     this.loanOffer = loanOffer;
                     this.postponeRequestId = postponeRequestId;
                     this.loanHistory = loanHistory;*/
-                    loanService.updateLastLoanToPostponeRequesed(loanTabModel, dueDate, sum);
+
+                    loanTabModel.getLastLoan().setPostponeRequest(postponeRequest);
+                    loanService.updateLastPostponedLoan(loanTabModel, dueDate, sum, PostponeRequestStatus.REQUESTED);
+                    loanTabView.hideUnnecessaryButtons();
                     loanTabView.updateExistingLoanPanel();
-                   
-                    
-                     /*jLabel8.setText(loan.getDebt());
-                     jLabel9.setText(loan.getDueDate());
-                     jLabel10.setText(loan.getLoanStatus().getDescription());
+
+
+                    /*jLabel8.setText(loan.getDebt());
+                    jLabel9.setText(loan.getDueDate());
+                    jLabel10.setText(loan.getLoanStatus().getDescription());
                     loanTabModel.updateLastLoan();
-                    */
-                   
+                     */
+
                     break;
                 default:
                     break;
-                
+
             }
-            
+
             //loanService.createPostponeRequest(postponeRequest);
 
 
@@ -231,7 +260,7 @@ public class LoanTabController {
         loanTabView.addLoanStateChangeToPostponedListener(new LoanStateChangeToPostponedListener());
         loanTabView.addSliderListener(new SliderStateChangedListener());
         loanTabView.addLoanPostponeConfirmedListener(new LoanPostponeRequestedListener());
-        
+
     }
 
     private class LoanStateChangeToPendingListener implements ActionListener {
@@ -243,6 +272,10 @@ public class LoanTabController {
         public void actionPerformed(ActionEvent e) {
             //ask if sure to take the loan  
             int rowIndex = loanTabView.getNewLoanRequestPanel().getjTable1().getSelectedRow();
+            if(rowIndex==0) {
+                JOptionPane.showMessageDialog(loanTabView.getNewLoanRequestPanel(), "Y've not chosen any loan offer");
+              return;  
+            }
 
             String s = loanTabView.getNewLoanRequestPanel().displayRowValues(rowIndex);
 
@@ -279,8 +312,8 @@ public class LoanTabController {
                     loanTabModel.setLastLoan(lastLoan);
                     loanTabView.showExistingLoanTabControls(client);
                     loanTabView.showExisitingLoanTab(client);
-                    
-                   
+
+
 
                     ArrayList<JPanel> loanRequestCTabPanels = loanTabModel.getCreatedPanels();
                     //loanTabModel.getExistingLoanRequestPanel()
@@ -357,7 +390,7 @@ public class LoanTabController {
             log.info("LoanStateChangeToPayedListener actionPerformed");
 
             loanService = new LoanServiceImpl();
-            loanService.removeExistingLoanRequest(client);
+            loanService.removeExistingLoanRequest(loanTabModel, client);
 
             loanTabView.removeExisitingLoanTab(client);
             loanTabView.showNewLoanTab(client);
@@ -370,7 +403,7 @@ public class LoanTabController {
         LoanHome loanHome = new LoanHome();
         //Loan loan = loanHome.findLastLoanForClient(client);
 
-       /* loanTabView.getExistingLoanRequestPanel().getjLabel8().setText(loan.getDebt());
+        /* loanTabView.getExistingLoanRequestPanel().getjLabel8().setText(loan.getDebt());
         loanTabView.getExistingLoanRequestPanel().getjLabel9().setText(loan.getDueDate());
         return loan;*/
         return null;
@@ -387,7 +420,7 @@ public class LoanTabController {
             log.info("RemoveLoanRequestListener actionPerformed");
 
             loanService = new LoanServiceImpl();
-            loanService.removeExistingLoanRequest(client);
+            loanService.removeExistingLoanRequest(loanTabModel, client);
 
             loanTabView.removeExistingLoanTabControls(client);
 
@@ -413,7 +446,7 @@ public class LoanTabController {
             float initialSum = Float.parseFloat(loanOffer.getSum());
             float percentSum = initialSum / 100;
             String initialDueDate = lastLoan.getDueDate();
-            
+
 
             if (!source.getValueIsAdjusting()) {
                 int fps = (int) source.getValue();

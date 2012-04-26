@@ -12,12 +12,15 @@ import com.loansystem.db.dao.LoanHome;
 import com.loansystem.db.dao.LoanOfferHome;
 import com.loansystem.db.dao.LoanStatusHome;
 import com.loansystem.db.dao.PostponeRequestHome;
+import com.loansystem.db.dao.PostponeRequestStatusHome;
 import com.loansystem.enums.LoanStatusInterface;
+import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
 import com.loansystem.model.PostponeRequest;
+import com.loansystem.model.PostponeRequestStatus;
 import com.loansystem.util.DateUtil;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,6 +28,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -68,16 +74,16 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int removeExistingLoanRequest(Client client) {
+    public int removeExistingLoanRequest(LoanTabModel loanTabModel, Client client) {
         /*ClientHome clientHome = new ClientHome();
         clientHome.*/
         LoanHome loanHome = new LoanHome();
-        //Loan lastLoan = loanHome.findLastLoanForClient(client);
+        Loan lastLoan = loanTabModel.getLastLoan();
 
         //log.info("LoanServiceImpl : removeExistingLoanRequest error occured " + lastLoan.getDueDate() );
 
         try {
-            //loanHome.delete(lastLoan);
+            loanHome.delete(lastLoan);
         } catch (Exception e) {
             log.info("LoanServiceImpl : removeExistingLoanRequest error occured " + e);
             return 0;
@@ -108,17 +114,50 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int updateLastLoanToPostponeRequesed(LoanTabModel loanTabModel, String dueDate, String sum) {
-        LoanStatusHome test = new LoanStatusHome();
-        LoanStatus lastStatus = test.findById(String.valueOf(LoanStatusInterface.POSTPONE_REQUESTED));
-        loanTabModel.getLastLoan().setDueDate(dueDate);
-        loanTabModel.getLastLoan().setDebt(sum);
-        loanTabModel.getLastLoan().setLoanStatus(lastStatus);
-        LoanHome loanHome = new LoanHome();
-        Loan result = loanHome.merge(loanTabModel.getLastLoan());
-        if(result!=null)
-            return 1;
+    @Transactional
+    public PostponeRequest updateLastPostponedLoan(LoanTabModel loanTabModel, String dueDate, String sum, int postponeRequestStatusId) {
+         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+          Transaction tx = session.beginTransaction();
+        int result = 0;
+        PostponeRequest postponeRequest = null;
+        session.beginTransaction();
+        postponeRequest = loanTabModel.getLastLoan().getPostponeRequest();
+        if(postponeRequest==null)
+        postponeRequest = new PostponeRequest();
+        PostponeRequestStatusHome postponeRequestStatusHome = new PostponeRequestStatusHome();
+        PostponeRequestStatus postponeRequestStatus = postponeRequestStatusHome.findById(String.valueOf(postponeRequestStatusId));
+        postponeRequest.setStatusId(postponeRequestStatus);
+        PostponeRequestHome postponeRequestHome = new PostponeRequestHome();
+        postponeRequestHome.merge(postponeRequest, session);
         
-        return 0;
+       
+        LoanStatusHome test = new LoanStatusHome();
+        //LoanStatus lastStatus = test.findById(String.valueOf(statusId));
+        //update loan in case of of postponeRequest.Requested
+        if(dueDate != null && sum != null) {
+            loanTabModel.getLastLoan().setDueDate(dueDate);
+            loanTabModel.getLastLoan().setDebt(sum);
+            //loanTabModel.getLastLoan().setLoanStatus(lastStatus);
+            LoanHome loanHome = new LoanHome();
+            loanHome.merge(loanTabModel.getLastLoan(),session);
+            result = 1;
+        }
+        /*postponeRequest = null;
+        int statusId = postponeRequest.getPostponeRequestId();*/
+        tx.commit();
+        return postponeRequest;
     }
+
+    @Override
+    public void cancelExistingPostponeRequest(LoanTabModel loanTabModel, Client client) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Loan getLoanById(Loan selectedLoan) {
+        LoanHome loanHome = new LoanHome();
+        Loan loan = loanHome.findById(selectedLoan.getLoanId(), null);
+        return loan;
+    }
+    
 }

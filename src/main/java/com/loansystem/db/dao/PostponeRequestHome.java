@@ -82,10 +82,19 @@ public class PostponeRequestHome {
         }
     }
 
-    public PostponeRequest merge(PostponeRequest detachedInstance) {
+    public PostponeRequest merge(PostponeRequest detachedInstance, Session session) {
+        Session sessionLoc = null;
+        if (session == null) {
+            sessionLoc = sessionFactory.getCurrentSession();
+            Transaction transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
+
+
         log.debug("merging PostponeRequest instance");
         try {
-            PostponeRequest result = (PostponeRequest) sessionFactory.getCurrentSession().merge(detachedInstance);
+            PostponeRequest result = (PostponeRequest) sessionLoc.merge(detachedInstance);
             log.debug("merge successful");
             return result;
         } catch (RuntimeException re) {

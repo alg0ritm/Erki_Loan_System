@@ -11,20 +11,29 @@ import java.util.Set;
 public class Client implements java.io.Serializable {
 
     private int clientId;
-    private CientGroup cientGroup;
+    private ClientGroup ClientGroup;
     private ClientStatus clientStatus;
-    private int persCode;
+    
     private String rating;
     private List<Loan> loans;
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Client() {
     }
 
-    public Client(int clientId, CientGroup cientGroup, ClientStatus clientStatus, int persCode, String rating, List<Loan> loans) {
+    public Client(int clientId, ClientGroup ClientGroup, ClientStatus clientStatus, int persCode, String rating, List<Loan> loans, User user) {
         this.clientId = clientId;
-        this.cientGroup = cientGroup;
+        this.ClientGroup = ClientGroup;
         this.clientStatus = clientStatus;
-        this.persCode = persCode;
+        this.user = user;
 
         this.rating = rating;
         this.loans = loans;
@@ -38,12 +47,12 @@ public class Client implements java.io.Serializable {
         this.clientId = clientId;
     }
 
-    public CientGroup getCientGroup() {
-        return this.cientGroup;
+    public ClientGroup getClientGroup() {
+        return this.ClientGroup;
     }
 
-    public void setCientGroup(CientGroup cientGroup) {
-        this.cientGroup = cientGroup;
+    public void setClientGroup(ClientGroup ClientGroup) {
+        this.ClientGroup = ClientGroup;
     }
 
     public ClientStatus getClientStatus() {
@@ -52,14 +61,6 @@ public class Client implements java.io.Serializable {
 
     public void setClientStatus(ClientStatus clientStatus) {
         this.clientStatus = clientStatus;
-    }
-
-    public int getPersCode() {
-        return persCode;
-    }
-
-    public void setPersCode(int persCode) {
-        this.persCode = persCode;
     }
 
     public String getRating() {

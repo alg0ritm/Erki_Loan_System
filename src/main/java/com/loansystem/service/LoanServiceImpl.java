@@ -8,6 +8,7 @@ import com.loansystem.backend.model.LoanInsertRequest;
 
 import com.loansystem.backend.model.LoanTabModel;
 import com.loansystem.db.dao.ClientHome;
+import com.loansystem.db.dao.LoanHistoryHome;
 import com.loansystem.db.dao.LoanHome;
 import com.loansystem.db.dao.LoanOfferHome;
 import com.loansystem.db.dao.LoanStatusHome;
@@ -18,6 +19,7 @@ import com.loansystem.enums.LoanStatusInterface;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
+import com.loansystem.model.LoanHistory;
 import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
 import com.loansystem.model.PostponeRequest;
@@ -170,17 +172,55 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void merge(Loan selectedLoan, Session session ) {
+    public void mergeLoan(Loan selectedLoan, Session session ) {
         LoanHome loanHome = new LoanHome();
         loanHome.merge(selectedLoan, session);
     }
+    
+    public void saveLoanHistory(LoanHistory loanHistory, Session session) {
+        LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
+        loanHistoryHome.save(loanHistory, session);
+        
+    }
 
     @Override
-    public void saveLoanWithStatus(Loan selectedLoan) {
+    public void saveLoanWithStatus(Loan selectedLoan, int loanStatus) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        LoanStatus selectedStatus = getStatusById(LoanStatusInterface.ISSUED);
+        LoanStatus selectedStatus = getStatusById(loanStatus);
         selectedLoan.setLoanStatus(selectedStatus);
-        merge(selectedLoan, session);
+        LoanHistory loanHistory = updateLoanHistory(selectedLoan);
+        
+        try {
+            mergeLoan(selectedLoan, session);
+            saveLoanHistory(loanHistory, session);
+            transaction.commit();
+        }catch(Exception e) {
+            log.fatal("saveLoanWithStatus : Failed to insert data");
+            transaction.rollback();
+        }
+        
+        
+        
+    }
+
+    private LoanHistory updateLoanHistory(Loan selectedLoan) {
+        LoanHistory loanHistory = new LoanHistory();
+        loanHistory.setComment("");
+        Date dateCreated = new Date();
+        String dueDateString = DateUtil.dateFormat.format(dateCreated);
+        loanHistory.setDate(dueDateString);
+        loanHistory.setLoanStatus(selectedLoan.getLoanStatus());
+        loanHistory.setLoan(selectedLoan);
+        
+        return loanHistory;
+    }
+
+    @Override
+    public ArrayList<Loan> getLoansByStatus(int loanStatus) {
+        LoanHome loanHome = new LoanHome();
+        LoanStatus loanStatus1 = getStatusById(loanStatus);
+        ArrayList<Loan> loans = loanHome.getLoansByStatus(loanStatus1, null);
+        return loans;
     }
 }

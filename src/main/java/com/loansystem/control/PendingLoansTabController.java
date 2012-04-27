@@ -48,13 +48,13 @@ public class PendingLoansTabController {
         pendingLoansTabModel.addRemovePostponeRequestListener(new RemovePostponeRequestListener());*/
     }
     
-    private void showPendingLoanControls() {
-        pendingLoansTabModel.getPendingLoanControls().setVisible(true);
-        pendingLoansTabModel.getPendingLoanControls().setButtonsVisibility(true);
+    private void showPendingLoanControls(boolean visibility) {
+        pendingLoansTabModel.getPendingLoanControls().setVisible(visibility);
+        pendingLoansTabModel.getPendingLoanControls().setButtonsVisibility(visibility);
     }
     
-     private void showPendingLoanDetailedViewPanel() {
-        pendingLoansTabModel.getPendingLoanDetailedViewPanel().setVisible(true);
+     private void showPendingLoanDetailedViewPanel(boolean visibility) {
+        pendingLoansTabModel.getPendingLoanDetailedViewPanel().setVisible(visibility);
     }
      
     private class LoanRequestAcceptedListner implements ActionListener {
@@ -63,7 +63,15 @@ public class PendingLoansTabController {
         public void actionPerformed(ActionEvent e) {
              Loan selectedLoan = pendingLoansTabModel.getSelectedLoan();
              LoanService loanService = new LoanServiceImpl();
-             loanService.saveLoanWithStatus(selectedLoan);
+             loanService.saveLoanWithStatus(selectedLoan, LoanStatusInterface.ISSUED);
+             ArrayList<Loan> pendingLoans = new ArrayList<Loan>();
+             pendingLoans = loanService.getLoansByStatus(LoanStatusInterface.PENDING);
+             pendingLoansTabModel.setPendingLoans(pendingLoans);
+             pendingLoansTabModel.removeUnnecessaryLoanFromTable(pendingLoans);
+             showPendingLoanDetailedViewPanel(false);
+             showClientLoansPanel(false);
+             showPendingLoanControls(false);
+             
              
              
         }
@@ -74,7 +82,16 @@ public class PendingLoansTabController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            throw new UnsupportedOperationException("Not supported yet.");
+             Loan selectedLoan = pendingLoansTabModel.getSelectedLoan();
+             LoanService loanService = new LoanServiceImpl();
+             loanService.saveLoanWithStatus(selectedLoan, LoanStatusInterface.REJECTED);
+              ArrayList<Loan> pendingLoans = new ArrayList<Loan>();
+             pendingLoans = loanService.getLoansByStatus(LoanStatusInterface.PENDING);
+             pendingLoansTabModel.setPendingLoans(pendingLoans);
+             pendingLoansTabModel.removeUnnecessaryLoanFromTable(pendingLoans);
+             showPendingLoanDetailedViewPanel(false);
+             showClientLoansPanel(false);
+             showPendingLoanControls(false);
         }
         
     }
@@ -93,9 +110,9 @@ public class PendingLoansTabController {
             selectedLoan = loanService.getLoanById(selectedLoan);
             pendingLoansTabModel.setSelectedLoan(selectedLoan);
             fillPendingLoanDetailedViewPanel();
-            showPendingLoanDetailedViewPanel();
-            showClientLoansPanel();
-            showPendingLoanControls();
+            showPendingLoanDetailedViewPanel(true);
+            showClientLoansPanel(true);
+            showPendingLoanControls(true);
         }
     }
 
@@ -103,11 +120,12 @@ public class PendingLoansTabController {
             pendingLoansTabModel.fillPendingLoanDetailedViewPanel(pendingLoansTabModel.getSelectedLoan());
         }
         
-        private void showClientLoansPanel() {
-            pendingLoansTabModel.showClientLoansPanel(pendingLoansTabModel.getSelectedLoan());
-        }
+       
 
        
     }
+     private void showClientLoansPanel(boolean visibility) {
+            pendingLoansTabModel.showClientLoansPanel(visibility);
+        }
     
 }

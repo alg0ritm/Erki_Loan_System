@@ -3,15 +3,18 @@
 <!-- Generated Nov 13, 2011 9:49:22 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping default-lazy="false">
     <class name="com.loansystem.model.LoanHistory" table="loan_history">
-        <id name="rowId" type="int">
-            <column length="2000000000" name="rowid"/>
-            <generator class="assigned"/>
+        <id name="loanHistoryId" type="int">
+            <column length="2000000000" name="loan_history_id"/>
+            <generator class="increment"/>
         </id>
         <property name="date" type="string">
             <column length="2000000000" name="date"/>
         </property>
-        <property name="event" type="string">
-            <column length="2000000000" name="event"/>
+        <many-to-one name="loanStatus" class="com.loansystem.model.LoanStatus" fetch="select">
+            <column name="loan_status_id" not-null="true" />
+        </many-to-one>
+        <property name="comment" type="string">
+            <column length="2000000000" name="comment"/>
         </property>
         <many-to-one name="loan" class="com.loansystem.model.Loan" fetch="select">
             <column name="loan_id" not-null="true" />

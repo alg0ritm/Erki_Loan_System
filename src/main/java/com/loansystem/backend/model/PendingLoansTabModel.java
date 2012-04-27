@@ -171,8 +171,8 @@ public class PendingLoansTabModel {
           this.pendingLoanDetailedViewPanel = pendingLoanDetailedViewPanel;
     }
 
-    public void showClientLoansPanel(Loan selectedLoan) {
-        clientLoansPanel.setVisible(true);
+    public void showClientLoansPanel(boolean visibility) {
+        clientLoansPanel.setVisible(visibility);
     }
 
     public void addLoanRequestAcceptedListner(ActionListener loanRequestAcceptedListner) {
@@ -181,6 +181,11 @@ public class PendingLoansTabModel {
     
     public void addLoanRequestRejectedListner(ActionListener loanRequestRejectedListner) {
         pendingLoanControls.getRejectRequestButton().addActionListener(loanRequestRejectedListner);
+    }
+
+    public void removeUnnecessaryLoanFromTable(ArrayList<Loan> loans) {
+        
+       pendingLoanRequestsPanel.removeUnnecessaryLoanFromTable(loans);
     }
     
 }

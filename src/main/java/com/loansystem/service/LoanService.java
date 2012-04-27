@@ -11,6 +11,7 @@ import com.loansystem.enums.LoanStatusEnum;
 import com.loansystem.enums.LoanStatusInterface;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
+import com.loansystem.model.LoanHistory;
 import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
 import com.loansystem.model.PostponeRequest;
@@ -22,9 +23,11 @@ import org.hibernate.Session;
  * @author antonve
  */
 public interface LoanService {
+
     public ArrayList<LoanOffer> getAvailableLoanOffers(Client client);
+
     public Loan createNewLoan(Client client, LoanOffer loanOffer);
-    
+
     public int removeExistingLoanRequest(LoanTabModel loanTaModel, Client client);
 
     public Loan getLastLoan(Client client);
@@ -39,8 +42,11 @@ public interface LoanService {
 
     public LoanStatus getStatusById(int loanStatus);
 
-    public void merge(Loan selectedLoan, Session session);
+    public void mergeLoan(Loan selectedLoan, Session session);
 
-    public void saveLoanWithStatus(Loan selectedLoan);
-    
+    public void saveLoanWithStatus(Loan selectedLoan, int loanStatus);
+
+    public void saveLoanHistory(LoanHistory loanHistory, Session session);
+
+    public ArrayList<Loan> getLoansByStatus(int PENDING);
 }

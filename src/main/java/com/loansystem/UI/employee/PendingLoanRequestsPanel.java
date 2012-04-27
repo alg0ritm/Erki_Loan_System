@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -29,46 +31,12 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
     public PendingLoanRequestsPanel(PendingLoansTabModel pendingLoansTabModel, boolean visibility) {
         initComponents();
         ArrayList<Loan> loansList = pendingLoansTabModel.getPendingLoans();
+
+        Object[][] tableObject = createTableData(loansList);
+        createTableFromData(tableObject);
         //newLoanRequestTable.put(NewLoanRequestConstants.COL_1, Loan.class.getDeclaredField(TOOL_TIP_TEXT_KEY));
-        Loan currentLoan;
-        int i = 0;
-        Object[][] tableObject = new Object[loansList.size()][6];
-
-        PendingLoansTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 
-        Iterator loanRequests = loansList.iterator();
-        while (loanRequests.hasNext()) {
-
-
-
-
-            currentLoan = (Loan) loanRequests.next();
-            User user = currentLoan.getClient().getUser();
-            Client client = user.getClients().get(0);
-
-
-            tableObject[i][0] = currentLoan.getLoanId();
-
-            tableObject[i][1] = user.getName() + " " + user.getLastName();
-
-            //tableObject[i][1] = currentLoan.getLoanHistory().get(0).getDate();
-            if (currentLoan.getLoanHistory().size() > 0) {
-                tableObject[i][2] = currentLoan.getLoanHistory().get(0).getDate();
-            } else {
-                tableObject[i][2] = "";
-            }
-            tableObject[i][3] = currentLoan.getLoanOffer().getSum();
-            tableObject[i][4] = client.getRating();
-            tableObject[i][5] = client.getClientGroup().getDescription();
-
-            i++;
-        }
-        PendingLoansTable.setModel(new javax.swing.table.DefaultTableModel(
-                tableObject,
-                new String[]{
-                    "Loan id", "Client", "Date requested", "Sum", "Client rating", "Client group"
-                }));
         this.setVisible(visibility);
     }
 
@@ -154,4 +122,55 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
     private javax.swing.JTable PendingLoansTable;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    public void removeUnnecessaryLoanFromTable(ArrayList<Loan> loans) {
+        Object[][] tableObject = createTableData(loans);
+        createTableFromData(tableObject);
+    }
+
+    private Object[][] createTableData(ArrayList<Loan> loansList) {
+        Loan currentLoan;
+        int i = 0;
+        Object[][] tableObject = new Object[loansList.size()][6];
+
+        PendingLoansTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+
+        Iterator loanRequests = loansList.iterator();
+        while (loanRequests.hasNext()) {
+
+
+
+
+            currentLoan = (Loan) loanRequests.next();
+            User user = currentLoan.getClient().getUser();
+            Client client = user.getClients().get(0);
+
+
+            tableObject[i][0] = currentLoan.getLoanId();
+
+            tableObject[i][1] = user.getName() + " " + user.getLastName();
+
+            //tableObject[i][1] = currentLoan.getLoanHistory().get(0).getDate();
+            if (currentLoan.getLoanHistory().size() > 0) {
+                tableObject[i][2] = currentLoan.getLoanHistory().get(0).getDate();
+            } else {
+                tableObject[i][2] = "";
+            }
+            tableObject[i][3] = currentLoan.getLoanOffer().getSum();
+            tableObject[i][4] = client.getRating();
+            tableObject[i][5] = client.getClientGroup().getDescription();
+
+            i++;
+        }
+        return tableObject;
+    }
+
+    private void createTableFromData(Object[][] tableObject) {
+        PendingLoansTable.setModel(new javax.swing.table.DefaultTableModel(
+                tableObject,
+                new String[]{
+                    "Loan id", "Client", "Date requested", "Sum", "Client rating", "Client group"
+                }));
+    }
 }

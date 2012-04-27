@@ -11,9 +11,11 @@
 package com.loansystem.UI.employee;
 
 import com.loansystem.backend.model.PendingLoansTabModel;
+import com.loansystem.backend.model.PostponeRequestedLoansTabModel;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.User;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JTable;
@@ -37,6 +39,15 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
         //newLoanRequestTable.put(NewLoanRequestConstants.COL_1, Loan.class.getDeclaredField(TOOL_TIP_TEXT_KEY));
 
 
+        this.setVisible(visibility);
+    }
+
+    public PendingLoanRequestsPanel(PostponeRequestedLoansTabModel postponeRequestedLoansTabModel, boolean visibility) {
+         initComponents();
+        ArrayList<Loan> loansList = postponeRequestedLoansTabModel.getPostponeRequestedLoans();
+
+        Object[][] tableObject = createTableData(loansList);
+        createTableFromData(tableObject);
         this.setVisible(visibility);
     }
 
@@ -172,5 +183,9 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
                 new String[]{
                     "Loan id", "Client", "Date requested", "Sum", "Client rating", "Client group"
                 }));
+    }
+
+    public void addPostponeRequestedLoanEntryClickedListener(MouseAdapter pendingLoanEntryClickedListener)    {
+        PendingLoansTable.addMouseListener(pendingLoanEntryClickedListener);
     }
 }

@@ -12,6 +12,7 @@ package com.loansystem.UI.employee;
 
 import com.loansystem.backend.model.LoanTabModel;
 import com.loansystem.backend.model.PendingLoansTabModel;
+import com.loansystem.backend.model.PostponeRequestedLoansTabModel;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -32,7 +33,7 @@ public class PendingLoanControlsPanel extends javax.swing.JPanel {
         initComponents();
     }
 
-    public PendingLoanControlsPanel(PendingLoansTabModel pendingLoansTabModel, boolean b) {
+    public PendingLoanControlsPanel(PendingLoansTabModel pendingLoansTabModel, boolean visibility) {
         this.loanTabModel = loanTabModel;
         initComponents();
         setBorder(BorderFactory.createTitledBorder("Pending Loan Controls"));
@@ -44,7 +45,22 @@ public class PendingLoanControlsPanel extends javax.swing.JPanel {
         jButton2.setVisible(false);*/
         
         //initComponents(this.loanTabModel);
-        setVisible(b);
+        setVisible(visibility);
+    }
+    
+     public PendingLoanControlsPanel(PostponeRequestedLoansTabModel postponeRequestedLoansTabModel, boolean visibility) {
+        this.loanTabModel = loanTabModel;
+        initComponents();
+        setBorder(BorderFactory.createTitledBorder("Pending Postpone Request Loan Controls"));
+        setButtonsVisibility(false);
+        
+       /* jButton2 = new javax.swing.JButton();
+        jButton2.setText("Reject Loan Request");
+        jButton2.setName("jButton2"); // NOI18N
+        jButton2.setVisible(false);*/
+        
+        //initComponents(this.loanTabModel);
+        setVisible(visibility);
     }
 
     private void initComponents(LoanTabModel loanTabModel) {

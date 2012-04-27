@@ -12,6 +12,7 @@ package com.loansystem.UI.client;
 
 import com.loansystem.backend.model.MyLoansTabModel;
 import com.loansystem.backend.model.PendingLoansTabModel;
+import com.loansystem.backend.model.PostponeRequestedLoansTabModel;
 import com.loansystem.classificator.LoanStatusClassificator;
 import com.loansystem.classificator.MyLoansTabConstants;
 import com.loansystem.util.JLabeledTextField;
@@ -88,6 +89,16 @@ public class MyLoansPanel extends javax.swing.JPanel {
         createTable(loansList);
         setVisible(visibility);
     }
+    
+     public MyLoansPanel(PostponeRequestedLoansTabModel  postponeRequestedLoansTabModel, boolean visibility) {
+        initComponents();
+        setBorder(BorderFactory.createTitledBorder("Previous client loans"));
+        this.loansList = postponeRequestedLoansTabModel.getClientLoans();
+        createTable(loansList);
+        setVisible(visibility);
+    }
+    
+   
 
     public void createTable(List<Loan> loansList) {
         Loan currentLoan;

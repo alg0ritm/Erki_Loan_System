@@ -223,4 +223,27 @@ public class LoanServiceImpl implements LoanService {
         ArrayList<Loan> loans = loanHome.getLoansByStatus(loanStatus1, null);
         return loans;
     }
+    
+    public ArrayList<Loan> getPostponedLoansByStatus(int loanStatus) {
+        LoanHome loanHome = new LoanHome();
+        LoanStatus loanStatus1 = getStatusById(loanStatus);
+        ArrayList<Loan> loans = loanHome.getLoansByStatus(loanStatus1, null);
+        return loans;
+    }
+    
+    @Override
+    public PostponeRequestStatus getPostponeRequestStatusById(int id) {
+        PostponeRequestStatusHome postponeRequestStatusHome = new PostponeRequestStatusHome();
+        PostponeRequestStatus postponeRequestStatus = postponeRequestStatusHome.findById(id+"");
+        return postponeRequestStatus;
+    }
+
+
+    @Override
+    public ArrayList<Loan> getPostponedLoansByStatus(PostponeRequestStatus postponeRequestStatus) {
+         ArrayList<Loan> postponeRequestedLoans = null;
+        LoanHome loanHome = new LoanHome();
+        postponeRequestedLoans = loanHome.getPostponedLoans(postponeRequestStatus.getId(), null);
+        return postponeRequestedLoans;
+    }
 }

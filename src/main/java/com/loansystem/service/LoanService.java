@@ -15,6 +15,7 @@ import com.loansystem.model.LoanHistory;
 import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
 import com.loansystem.model.PostponeRequest;
+import com.loansystem.model.PostponeRequestStatus;
 import java.util.ArrayList;
 import org.hibernate.Session;
 
@@ -49,4 +50,8 @@ public interface LoanService {
     public void saveLoanHistory(LoanHistory loanHistory, Session session);
 
     public ArrayList<Loan> getLoansByStatus(int PENDING);
+
+    public ArrayList<Loan> getPostponedLoansByStatus(PostponeRequestStatus postponeRequestStatus);
+    
+    public PostponeRequestStatus getPostponeRequestStatusById(int id);
 }

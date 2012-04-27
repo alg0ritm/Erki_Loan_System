@@ -11,6 +11,7 @@
 package com.loansystem.UI.employee;
 
 import com.loansystem.backend.model.PendingLoansTabModel;
+import com.loansystem.backend.model.PostponeRequestedLoansTabModel;
 import com.loansystem.model.Loan;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -74,12 +75,18 @@ public class PendingLoanDetailedViewPanel extends javax.swing.JPanel {
         this.loanSum = loanSum;
     }
 
-    public PendingLoanDetailedViewPanel(PendingLoansTabModel pendingLoansTabModel, boolean b) {
+    public PendingLoanDetailedViewPanel(PendingLoansTabModel pendingLoansTabModel, boolean visiblity) {
         initComponents();
         setBorder(BorderFactory.createTitledBorder("Pending Loan Request Details"));
-        setVisible(b);
+        setVisible(visiblity);
         
     }
+    
+     public PendingLoanDetailedViewPanel(PostponeRequestedLoansTabModel postponeRequestedLoansTabModel, boolean visiblity) {
+        initComponents();
+        setBorder(BorderFactory.createTitledBorder("Pending Postpone Request Details"));
+        setVisible(visiblity);
+     }
 
     /** This method is called from within the constructor to
      * initialize the form.

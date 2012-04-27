@@ -3,11 +3,13 @@ package com.loansystem.db.dao;
 // default package
 // Generated Nov 13, 2011 9:49:24 PM by Hibernate Tools 3.4.0.CR1
 import com.loansystem.backend.model.LoanInsertRequest;
+import com.loansystem.classificator.PostponeRequestStatus;
 import com.loansystem.enums.LoanStatusEnum;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanStatus;
+import com.loansystem.model.PostponeRequest;
 import java.util.ArrayList;
 import java.util.List;
 import javax.naming.InitialContext;
@@ -213,6 +215,31 @@ public class LoanHome {
             ArrayList<Loan> results = new ArrayList<Loan>();
              // = sessionLoc.createCriteria("Loan").add(Example.create(instance)).list();
              results = (ArrayList<Loan>) sessionLoc.createCriteria(Loan.class).add(Restrictions.eq("loanStatus", loanStatus)).list();
+            log.debug("merge successful");
+            return results;
+        } catch (RuntimeException re) {
+            log.error("merge failed", re);
+            throw re;
+        }
+    }
+
+    public ArrayList<Loan> getPostponedLoans(String postponeRequestStatus, Session session) {
+         log.debug("returning Loans with postone requests");
+        Session sessionLoc = null;
+        if (session == null) {
+            sessionLoc = sessionFactory.getCurrentSession();
+            Transaction transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
+        try {
+            ArrayList<Loan> results = new ArrayList<Loan>();
+            results = (ArrayList<Loan>)sessionLoc.createCriteria(Loan.class)
+               .createCriteria("postponeRequest", "pr")
+               .createCriteria("postponeRequestStatus", "prs")
+                    .add(Restrictions.eq("id", postponeRequestStatus)).list();
+             // = sessionLoc.createCriteria("Loan").add(Example.create(instance)).list();
+             /*results = (ArrayList<Loan>) sessionLoc.createCriteria(Loan.class).add(Restrictions.eq("postponeRequest", postponeRequest)).list();*/
             log.debug("merge successful");
             return results;
         } catch (RuntimeException re) {

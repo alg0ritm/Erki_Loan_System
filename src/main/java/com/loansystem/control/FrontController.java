@@ -25,11 +25,13 @@ import com.loansystem.backend.model.LoanSystemModel;
 import com.loansystem.backend.model.LoanTabModel;
 import com.loansystem.backend.model.MyLoansTabModel;
 import com.loansystem.backend.model.PendingLoansTabModel;
+import com.loansystem.backend.model.PostponeRequestedLoansTabModel;
 import com.loansystem.backend.model.UserLoginInput;
 import com.loansystem.classificator.EmployeeType;
 import com.loansystem.classificator.PostponeRequestStatus;
 import com.loansystem.db.dao.LoanHome;
 import com.loansystem.db.dao.LoanStatusHome;
+import com.loansystem.db.dao.PostponeRequestStatusHome;
 import com.loansystem.db.dao.UserHome;
 import com.loansystem.enums.LoanStatusEnum;
 import com.loansystem.enums.LoanStatusInterface;
@@ -43,6 +45,8 @@ import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
 import com.loansystem.model.PostponeRequest;
 import com.loansystem.model.User;
+import com.loansystem.service.LoanService;
+import com.loansystem.service.LoanServiceImpl;
 import com.loansystem.service.LoanUiService;
 import com.loansystem.service.LoanUiServiceImpl;
 import com.loansystem.validator.LoginValidator;
@@ -338,7 +342,55 @@ public class FrontController {
         }
 
         private void createTLFrame(User user) {
-            throw new UnsupportedOperationException("Not yet implemented");
+            PostponeRequestedLoansTabModel postponeRequestedLoansTabModel = new PostponeRequestedLoansTabModel();
+            postponeRequestedLoansTabModel.setUser(user);
+            postponeRequestedLoansTabModel.setEmployee(user.getEmployees().get(0));
+            
+            
+            ArrayList<Loan> postponeRequestedLoans = new ArrayList<Loan>();
+            LoanHome loanHome = new LoanHome();
+            LoanService loanService = new LoanServiceImpl();
+            PostponeRequestStatusHome postponeRequestStatusHome = new PostponeRequestStatusHome();
+            com.loansystem.model.PostponeRequestStatus postponeRequestStatus = new com.loansystem.model.PostponeRequestStatus();
+            postponeRequestStatus = postponeRequestStatusHome.findById(PostponeRequestStatus.REQUESTED+"");
+            
+            //ArrayList<Loan> clientLoans = loanService.getClientLoans()
+            
+            
+            postponeRequestedLoans = loanService.getPostponedLoansByStatus(postponeRequestStatus);
+            postponeRequestedLoansTabModel.setPostponeRequestedLoans(postponeRequestedLoans);
+            /*PostponeRequestStatusHome postponeRequestStatusHome = new PostponeRequestStatusHome();
+            LoanStatus pendingLoanStatus = loanStatusHome.findById(LoanStatusInterface.PENDING+"");
+            pendingLoans = loanHome.getLoansByStatus(pendingLoanStatus, null);
+            pendingLoansTabModel.setPendingLoans(pendingLoans);*/
+            
+            PendingLoanRequestsPanel postponeRequestedLoansPanel = new PendingLoanRequestsPanel(postponeRequestedLoansTabModel, true);
+            //TestTable testTable = new TestTable(true);
+            
+            PendingLoanDetailedViewPanel postponeRequestedLoanDetailedViewPanel = new PendingLoanDetailedViewPanel(postponeRequestedLoansTabModel, false);
+            //TestLabelForm testLabelForm = new TestLabelForm(true);
+            PendingLoanControlsPanel postponeRequestedLoanControlsPanel = new PendingLoanControlsPanel(postponeRequestedLoansTabModel, false);
+            MyLoansPanel clientLoansPanel = new MyLoansPanel(postponeRequestedLoansTabModel, false);
+            
+            postponeRequestedLoansTabModel.setPostponeRequestedLoansPanel(postponeRequestedLoansPanel);
+            postponeRequestedLoansTabModel.setPostponeRequestedLoanDetailedViewPanel(postponeRequestedLoanDetailedViewPanel);
+            postponeRequestedLoansTabModel.setPostponeRequestedLoanControlsPanel(postponeRequestedLoanControlsPanel);
+            postponeRequestedLoansTabModel.setClientLoansPanel(clientLoansPanel);
+            
+            ArrayList<JPanel> pendingLoansTabPanels = new ArrayList<JPanel>();
+            pendingLoansTabPanels = postponeRequestedLoansTabModel.getCreatedPanels();
+            
+            PendingLoanRequestsTab pendingLoansTab = new PendingLoanRequestsTab(pendingLoansTabPanels);
+            
+            PostponeRequestedLoansTabController pendingLoansTabController = new PostponeRequestedLoansTabController(postponeRequestedLoansTabModel, pendingLoansTab);
+            
+            
+            
+            JPanel[] camPanels = new JPanel[1];
+            camPanels[0] = pendingLoansTab;
+            
+            
+            ClientFrameBasic1 basicFrame = new ClientFrameBasic1(camPanels);
         }
     }
 

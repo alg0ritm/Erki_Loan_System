@@ -302,7 +302,7 @@ public class FrontController {
             PendingLoanRequestsPanel pendingLoansPanel = new PendingLoanRequestsPanel(pendingLoansTabModel, true);
             //TestTable testTable = new TestTable(true);
             
-            PendingLoanDetailedViewPanel pendingLoanDetailedViewPanel = new PendingLoanDetailedViewPanel(pendingLoansTabModel, true);
+            PendingLoanDetailedViewPanel pendingLoanDetailedViewPanel = new PendingLoanDetailedViewPanel(pendingLoansTabModel, false);
             //TestLabelForm testLabelForm = new TestLabelForm(true);
             PendingLoanControlsPanel pendingLoanControlsPanel = new PendingLoanControlsPanel(pendingLoansTabModel, false);
             MyLoansPanel clientLoansPanel = new MyLoansPanel(pendingLoansTabModel, false);

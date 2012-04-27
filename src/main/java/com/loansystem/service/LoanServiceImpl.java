@@ -13,6 +13,7 @@ import com.loansystem.db.dao.LoanOfferHome;
 import com.loansystem.db.dao.LoanStatusHome;
 import com.loansystem.db.dao.PostponeRequestHome;
 import com.loansystem.db.dao.PostponeRequestStatusHome;
+import com.loansystem.enums.LoanStatusEnum;
 import com.loansystem.enums.LoanStatusInterface;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
@@ -116,30 +117,31 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public PostponeRequest updateLastPostponedLoan(LoanTabModel loanTabModel, String dueDate, String sum, int postponeRequestStatusId) {
-         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-          Transaction tx = session.beginTransaction();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
         int result = 0;
         PostponeRequest postponeRequest = null;
         session.beginTransaction();
         postponeRequest = loanTabModel.getLastLoan().getPostponeRequest();
-        if(postponeRequest==null)
-        postponeRequest = new PostponeRequest();
+        if (postponeRequest == null) {
+            postponeRequest = new PostponeRequest();
+        }
         PostponeRequestStatusHome postponeRequestStatusHome = new PostponeRequestStatusHome();
         PostponeRequestStatus postponeRequestStatus = postponeRequestStatusHome.findById(String.valueOf(postponeRequestStatusId));
         postponeRequest.setStatusId(postponeRequestStatus);
         PostponeRequestHome postponeRequestHome = new PostponeRequestHome();
         postponeRequestHome.merge(postponeRequest, session);
-        
-       
+
+
         LoanStatusHome test = new LoanStatusHome();
         //LoanStatus lastStatus = test.findById(String.valueOf(statusId));
         //update loan in case of of postponeRequest.Requested
-        if(dueDate != null && sum != null) {
+        if (dueDate != null && sum != null) {
             loanTabModel.getLastLoan().setDueDate(dueDate);
             loanTabModel.getLastLoan().setDebt(sum);
             //loanTabModel.getLastLoan().setLoanStatus(lastStatus);
             LoanHome loanHome = new LoanHome();
-            loanHome.merge(loanTabModel.getLastLoan(),session);
+            loanHome.merge(loanTabModel.getLastLoan(), session);
             result = 1;
         }
         /*postponeRequest = null;
@@ -159,5 +161,26 @@ public class LoanServiceImpl implements LoanService {
         Loan loan = loanHome.findById(selectedLoan.getLoanId(), null);
         return loan;
     }
-    
+
+    @Override
+    public LoanStatus getStatusById(int loanStatus) {
+        LoanStatusHome loanStatusHome = new LoanStatusHome();
+        LoanStatus loanStatus1 = loanStatusHome.findById(loanStatus + "");
+        return loanStatus1;
+    }
+
+    @Override
+    public void merge(Loan selectedLoan, Session session ) {
+        LoanHome loanHome = new LoanHome();
+        loanHome.merge(selectedLoan, session);
+    }
+
+    @Override
+    public void saveLoanWithStatus(Loan selectedLoan) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        LoanStatus selectedStatus = getStatusById(LoanStatusInterface.ISSUED);
+        selectedLoan.setLoanStatus(selectedStatus);
+        merge(selectedLoan, session);
+    }
 }

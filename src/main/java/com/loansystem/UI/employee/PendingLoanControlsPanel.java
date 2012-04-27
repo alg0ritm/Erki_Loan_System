@@ -36,8 +36,14 @@ public class PendingLoanControlsPanel extends javax.swing.JPanel {
         this.loanTabModel = loanTabModel;
         initComponents();
         setBorder(BorderFactory.createTitledBorder("Pending Loan Controls"));
+        setButtonsVisibility(false);
         
-        initComponents(this.loanTabModel);
+       /* jButton2 = new javax.swing.JButton();
+        jButton2.setText("Reject Loan Request");
+        jButton2.setName("jButton2"); // NOI18N
+        jButton2.setVisible(false);*/
+        
+        //initComponents(this.loanTabModel);
         setVisible(b);
     }
 
@@ -50,12 +56,7 @@ public class PendingLoanControlsPanel extends javax.swing.JPanel {
 
         jButton1.setText("Accept Loan Request");
         jButton1.setName("jButton1"); // NOI18N
-        jButton1.setVisible(false);
-        
-        jButton2 = new javax.swing.JButton();
-        jButton2.setText("Reject Loan Request");
-        jButton2.setName("jButton2"); // NOI18N
-        jButton2.setVisible(false);
+       
 
 
 
@@ -77,7 +78,7 @@ public class PendingLoanControlsPanel extends javax.swing.JPanel {
         //add(jButton3, 2);
         //add(jButton4, 3);
         
-        setButtonsVisibility(false);
+       
         
 
        
@@ -92,23 +93,62 @@ public class PendingLoanControlsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        AcceptRequestButton = new javax.swing.JButton();
+        RejectRequestButton = new javax.swing.JButton();
+
+        setMaximumSize(new java.awt.Dimension(584, 89));
+
+        AcceptRequestButton.setText("Accept Loan Request");
+        AcceptRequestButton.setName("AcceptRequestButton"); // NOI18N
+
+        RejectRequestButton.setText("Reject Loan Request");
+        RejectRequestButton.setName("RejectRequestButton"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(AcceptRequestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 222, Short.MAX_VALUE)
+                .addComponent(RejectRequestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(AcceptRequestButton)
+                    .addComponent(RejectRequestButton))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AcceptRequestButton;
+    private javax.swing.JButton RejectRequestButton;
     // End of variables declaration//GEN-END:variables
 
+    public JButton getAcceptRequestButton() {
+        return AcceptRequestButton;
+    }
 
-    private void setButtonsVisibility(boolean b) {
-       jButton1.setVisible(b);
-       jButton1.setVisible(b);
+    public void setAcceptRequestButton(JButton AcceptRequestButton) {
+        this.AcceptRequestButton = AcceptRequestButton;
+    }
+
+    public JButton getRejectRequestButton() {
+        return RejectRequestButton;
+    }
+
+    public void setRejectRequestButton(JButton RejectRequestButton) {
+        this.RejectRequestButton = RejectRequestButton;
+    }
+
+
+    public void setButtonsVisibility(boolean b) {
+        AcceptRequestButton.setVisible(b);
+        RejectRequestButton.setVisible(b);
     }
 }

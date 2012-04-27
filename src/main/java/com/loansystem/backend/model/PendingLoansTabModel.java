@@ -9,12 +9,12 @@ import com.loansystem.UI.employee.PendingLoanControlsPanel;
 import com.loansystem.UI.employee.PendingLoanDetailedView;
 import com.loansystem.UI.employee.PendingLoanDetailedViewPanel;
 import com.loansystem.UI.employee.PendingLoanRequestsPanel;
-import com.loansystem.UI.employee.PendingLoansPanel;
 import com.loansystem.UI.employee.TestLabelForm;
 import com.loansystem.UI.employee.TestTable;
 import com.loansystem.model.Employee;
 import com.loansystem.model.Loan;
 import com.loansystem.model.User;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -173,6 +173,14 @@ public class PendingLoansTabModel {
 
     public void showClientLoansPanel(Loan selectedLoan) {
         clientLoansPanel.setVisible(true);
+    }
+
+    public void addLoanRequestAcceptedListner(ActionListener loanRequestAcceptedListner) {
+        pendingLoanControls.getAcceptRequestButton().addActionListener(loanRequestAcceptedListner);
+    }
+    
+    public void addLoanRequestRejectedListner(ActionListener loanRequestRejectedListner) {
+        pendingLoanControls.getRejectRequestButton().addActionListener(loanRequestRejectedListner);
     }
     
 }

@@ -8,9 +8,13 @@ import com.loansystem.UI.employee.PendingLoanRequestsTab;
 import com.loansystem.backend.model.PendingLoansTabModel;
 import com.loansystem.db.dao.LoanHome;
 import com.loansystem.enums.LoanStatusEnum;
+import com.loansystem.enums.LoanStatusInterface;
 import com.loansystem.model.Loan;
+import com.loansystem.model.LoanStatus;
 import com.loansystem.service.LoanService;
 import com.loansystem.service.LoanServiceImpl;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import org.apache.commons.logging.Log;
@@ -38,16 +42,41 @@ public class PendingLoansTabController {
     
     private void initExisitingLoanListeners() {
         pendingLoansTabModel.addPendingLoanEntryClickedListener(new PendingLoanEntryClickedListener());
+        pendingLoansTabModel.addLoanRequestAcceptedListner(new LoanRequestAcceptedListner());
+        pendingLoansTabModel.addLoanRequestRejectedListner(new LoanRequestRejectedListner());
         /*pendingLoansTabModel.addRemoveLoanRequestListener(new removeLoanRequestListener());
         pendingLoansTabModel.addRemovePostponeRequestListener(new RemovePostponeRequestListener());*/
     }
     
     private void showPendingLoanControls() {
         pendingLoansTabModel.getPendingLoanControls().setVisible(true);
+        pendingLoansTabModel.getPendingLoanControls().setButtonsVisibility(true);
     }
     
      private void showPendingLoanDetailedViewPanel() {
         pendingLoansTabModel.getPendingLoanDetailedViewPanel().setVisible(true);
+    }
+     
+    private class LoanRequestAcceptedListner implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+             Loan selectedLoan = pendingLoansTabModel.getSelectedLoan();
+             LoanService loanService = new LoanServiceImpl();
+             loanService.saveLoanWithStatus(selectedLoan);
+             
+             
+        }
+        
+    }
+    
+    private class LoanRequestRejectedListner implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        
     }
 
     private class PendingLoanEntryClickedListener extends MouseAdapter  {

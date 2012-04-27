@@ -96,15 +96,18 @@ public class LoanHome {
     public Loan merge(Loan detachedInstance, Session session) {
         log.debug("merging Loan instance");
         Session sessionLoc = null;
+        Transaction transaction = null;
         if (session == null) {
             sessionLoc = sessionFactory.getCurrentSession();
-            Transaction transaction = sessionLoc.beginTransaction();
+            transaction = sessionLoc.beginTransaction();
         } else {
             sessionLoc = session;
         }
         try {
             Loan result = (Loan) sessionLoc.merge(detachedInstance);
             log.debug("merge successful");
+            if(session==null) 
+                transaction.commit();
             return result;
         } catch (RuntimeException re) {
             log.error("merge failed", re);

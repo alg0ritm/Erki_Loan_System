@@ -7,12 +7,15 @@ package com.loansystem.service;
 import com.loansystem.backend.model.LoanInsertRequest;
 
 import com.loansystem.backend.model.LoanTabModel;
+import com.loansystem.enums.LoanStatusEnum;
 import com.loansystem.enums.LoanStatusInterface;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanOffer;
+import com.loansystem.model.LoanStatus;
 import com.loansystem.model.PostponeRequest;
 import java.util.ArrayList;
+import org.hibernate.Session;
 
 /**
  *
@@ -33,5 +36,11 @@ public interface LoanService {
     public void cancelExistingPostponeRequest(LoanTabModel loanTabModel, Client client);
 
     public Loan getLoanById(Loan selectedLoan);
+
+    public LoanStatus getStatusById(int loanStatus);
+
+    public void merge(Loan selectedLoan, Session session);
+
+    public void saveLoanWithStatus(Loan selectedLoan);
     
 }

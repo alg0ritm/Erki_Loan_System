@@ -6049,7 +6049,7 @@
 								supplier   	@206
 								vertices   	(list Points
 								    (1856, 1376)
-								    (1856, 1632))
+								    (1856, 1428))
 								line_style 	0
 								label      	(object SegLabel @240
 								    Parent_View 	@239
@@ -6093,7 +6093,7 @@
 								supplier   	@230
 								vertices   	(list Points
 								    (1856, 1376)
-								    (1856, 1168))
+								    (1856, 1324))
 								line_style 	0
 								label      	(object SegLabel @242
 								    Parent_View 	@241

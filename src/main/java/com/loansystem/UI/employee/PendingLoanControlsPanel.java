@@ -51,6 +51,8 @@ public class PendingLoanControlsPanel extends javax.swing.JPanel {
      public PendingLoanControlsPanel(PostponeRequestedLoansTabModel postponeRequestedLoansTabModel, boolean visibility) {
         this.loanTabModel = loanTabModel;
         initComponents();
+        AcceptRequestButton.setText("Accept Postpone Loan Request");
+        RejectRequestButton.setText("Reject Postpone Loan Request");
         setBorder(BorderFactory.createTitledBorder("Pending Postpone Request Loan Controls"));
         setButtonsVisibility(false);
         

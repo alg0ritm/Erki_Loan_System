@@ -111,6 +111,13 @@ public class PendingLoansTabController {
             pendingLoansTabModel.setSelectedLoan(selectedLoan);
             fillPendingLoanDetailedViewPanel();
             showPendingLoanDetailedViewPanel(true);
+            ArrayList<Loan> clientLoans = new ArrayList<Loan>();
+            clientLoans.addAll(selectedLoan.getClient().getLoans());
+            pendingLoansTabModel.setClientLoans(clientLoans);
+            fillPendingLoanDetailedViewPanel();
+            showPendingLoanDetailedViewPanel(true);
+            fillClientLoansPanel();
+            showClientLoansPanel(true);
             showClientLoansPanel(true);
             showPendingLoanControls(true);
         }
@@ -118,6 +125,10 @@ public class PendingLoansTabController {
 
         private void fillPendingLoanDetailedViewPanel() {
             pendingLoansTabModel.fillPendingLoanDetailedViewPanel(pendingLoansTabModel.getSelectedLoan());
+        }
+
+        private void fillClientLoansPanel() {
+            pendingLoansTabModel.fillClientLoansPanel();
         }
         
        

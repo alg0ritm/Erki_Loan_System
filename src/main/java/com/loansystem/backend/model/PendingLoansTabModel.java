@@ -30,6 +30,12 @@ public class PendingLoansTabModel {
     private PendingLoanDetailedViewPanel pendingLoanDetailedViewPanel;
     private TestTable testTable;
     private TestLabelForm testLabelForm;
+    private ArrayList<Loan> clientLoans;
+
+    public ArrayList<Loan> getClientLoans() {
+        return clientLoans;
+    }
+
 
     public TestLabelForm getTestLabelForm() {
         return testLabelForm;
@@ -186,6 +192,14 @@ public class PendingLoansTabModel {
     public void removeUnnecessaryLoanFromTable(ArrayList<Loan> loans) {
         
        pendingLoanRequestsPanel.removeUnnecessaryLoanFromTable(loans);
+    }
+
+    public void setClientLoans(ArrayList<Loan> clientLoans) {
+        this.clientLoans = clientLoans;
+    }
+
+    public void fillClientLoansPanel() {
+        clientLoansPanel.fillClientLoansPanel(clientLoans);
     }
     
 }

@@ -156,6 +156,10 @@ public class PostponeRequestedLoansTabModel {
        postponeRequestedLoanControlsPanel.getRejectRequestButton().addActionListener(loanRequestRejectedListner);
     }
 
+    public void fillClientLoansPanel() {
+        clientLoansPanel.fillClientLoansPanel(clientLoans);
+    }
+
 
     
     

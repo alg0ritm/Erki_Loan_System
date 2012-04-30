@@ -72,13 +72,18 @@ public class LoanHistoryHome {
         }
     }
 
-    public void delete(LoanHistory persistentInstance) {
-        log.debug("deleting LoanHistory instance");
+     public void delete(LoanHistory persistentInstance, Session session) {
+        Session sessionLoc = createRequieredSession(session);
+        log.debug("deleting Loan instance");
         try {
-            sessionFactory.getCurrentSession().delete(persistentInstance);
-            log.debug("delete successful");
+            sessionLoc.delete(persistentInstance);
+            if(session==null) {
+                log.debug("delete successful");
+                sessionLoc.getTransaction().commit();
+            }
         } catch (RuntimeException re) {
             log.error("delete failed", re);
+            sessionLoc.getTransaction().rollback();
             throw re;
         }
     }
@@ -146,5 +151,34 @@ public class LoanHistoryHome {
             log.error("find by example failed", re);
             throw re;
         }
+    }
+
+    public int insertLoanHistory(LoanHistory loanHistory, Session session) {
+        Session sessionLoc = createRequieredSession(session);
+        try {
+            log.info("before save");
+            sessionLoc.save(loanHistory);
+            if (session == null) {
+                sessionLoc.getTransaction().commit();
+            }
+            //session.close();
+        } catch (Exception ex) {
+            log.error(ex);
+            return 0;
+            //session.close();
+        }
+
+        return 1;
+    }
+
+    private Session createRequieredSession(Session session) {
+        Session sessionLoc = null;
+        if (session == null) {
+            sessionLoc = sessionFactory.getCurrentSession();
+            Transaction transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
+        return sessionLoc;
     }
 }

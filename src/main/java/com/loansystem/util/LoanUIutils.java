@@ -86,6 +86,11 @@ public class LoanUIutils {
         
         }*/
     }
+    
+    public static void createWarningPopup(String title, String text) {
+           JOptionPane.showMessageDialog(null, text,
+				    title, JOptionPane.WARNING_MESSAGE);
+    }
 
     public static boolean isGetter(Method method) {
         if (!method.getName().startsWith("get")) {

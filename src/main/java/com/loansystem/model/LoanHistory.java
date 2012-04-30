@@ -1,6 +1,9 @@
 package com.loansystem.model;
 
 // default package
+import com.loansystem.util.DateUtil;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 // Generated Nov 13, 2011 9:49:21 PM by Hibernate Tools 3.4.0.CR1
@@ -14,6 +17,8 @@ public class LoanHistory implements java.io.Serializable {
     private String date; //Date decide sql or java
     private Loan loan;
     private LoanStatus loanStatus;
+    private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+   
 
     public LoanHistory(int loanHistoryId, String comment, String date, Loan loan, LoanStatus loanStatus) {
         this.loanHistoryId = loanHistoryId;
@@ -22,6 +27,18 @@ public class LoanHistory implements java.io.Serializable {
         this.loan = loan;
         this.loanStatus = loanStatus;
     }
+    
+    public LoanHistory( Loan insertLoan, LoanStatus loanStatus, String comment) {
+        this.loan = insertLoan;
+        this.loanStatus = loanStatus;
+        Date insertDate = new Date();
+      //DateUtil.getDatePlusDays(new Date(), Integer.parseInt(loanOffer.getPeriod()));
+        this.date = dateFormat.format(insertDate);
+        this.comment = comment;
+        
+    }
+    
+   
 
     public LoanHistory() {
         

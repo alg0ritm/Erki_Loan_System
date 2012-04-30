@@ -80,36 +80,32 @@ public class LoanHome {
         }
     }
 
-    public void delete(Loan persistentInstance) {
+    public void delete(Loan persistentInstance, Session session) {
+        Session sessionLoc = createRequieredSession(session);
         log.debug("deleting Loan instance");
-        Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
         try {
-            session.delete(persistentInstance);
-            log.debug("delete successful");
-            transaction.commit();
+            sessionLoc.delete(persistentInstance);
+            if(session==null) {
+                log.debug("delete successful");
+                sessionLoc.getTransaction().commit();
+            }
         } catch (RuntimeException re) {
             log.error("delete failed", re);
-            transaction.rollback();
+            sessionLoc.getTransaction().rollback();
             throw re;
         }
     }
 
     public Loan merge(Loan detachedInstance, Session session) {
+
+        Session sessionLoc = createRequieredSession(session);
         log.debug("merging Loan instance");
-        Session sessionLoc = null;
-        Transaction transaction = null;
-        if (session == null) {
-            sessionLoc = sessionFactory.getCurrentSession();
-            transaction = sessionLoc.beginTransaction();
-        } else {
-            sessionLoc = session;
-        }
         try {
             Loan result = (Loan) sessionLoc.merge(detachedInstance);
             log.debug("merge successful");
-            if(session==null) 
-                transaction.commit();
+            if (session == null) {
+                sessionLoc.getTransaction().commit();
+            }
             return result;
         } catch (RuntimeException re) {
             log.error("merge failed", re);
@@ -127,8 +123,6 @@ public class LoanHome {
             sessionLoc = session;
         }
         try {
-            session = sessionFactory.getCurrentSession();
-            session.beginTransaction();
             Loan instance = (Loan) sessionLoc.get("com.loansystem.model.Loan", id);
             if (instance == null) {
                 log.debug("get successful, no instance found");
@@ -136,11 +130,11 @@ public class LoanHome {
                 log.debug("get successful, instance found");
             }
             return instance;
-            } catch (RuntimeException re) {
+        } catch (RuntimeException re) {
             log.error("find by example failed", re);
             throw re;
         }
-            
+
     }
 
     public List findByExample(Loan instance) {
@@ -155,53 +149,48 @@ public class LoanHome {
         }
     }
 
-    public int insertLoan(Loan loan) {
+    public int insertLoan(Loan loan, Session session) {
 
-        Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
-        //loginClient = (Client) session.createCriteria(Client.class).add(Restrictions.eq("mail", loginText)).add(Restrictions.eq("password", passwordText)).uniqueResult();
+        Session sessionLoc = createRequieredSession(session);
         try {
-            //SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-            //Session session = sessionFactory.getCurrentSession();
-            //Transaction tx = session.beginTransaction();
             log.info("before save");
-            session.save(loan);
-
-            transaction.commit();
+            sessionLoc.save(loan);
+            if (session == null) {
+                sessionLoc.getTransaction().commit();
+            }
             //session.close();
         } catch (Exception ex) {
             log.error(ex);
             return 0;
             //session.close();
         }
-        
+
         return 1;
 
     }
-    
-     /*public Loan findLastLoanForClient(Client client) {
-        log.debug("getting last Loan instance for Client  " + client.getLastName());
-        Session session = null;
-        try {
-            session = sessionFactory.getCurrentSession();
-            session.beginTransaction();
-            Loan instance = (Loan) session.createCriteria("com.loansystem.model.Loan")
-                    .add(Restrictions.eq("client", client))
-                    .addOrder(Order.desc("loanId")).setMaxResults(1).uniqueResult();
-            if (instance == null) {
-                log.debug("get successful, no instance found");
-            } else {
-                log.debug("get successful, instance found");
-            }
-            return instance;
-        } catch (RuntimeException re) {
-            log.error("get failed", re);
-            throw re;
-        } finally {
-            session.close();
-        }
-    }*/
 
+    /*public Loan findLastLoanForClient(Client client) {
+    log.debug("getting last Loan instance for Client  " + client.getLastName());
+    Session session = null;
+    try {
+    session = sessionFactory.getCurrentSession();
+    session.beginTransaction();
+    Loan instance = (Loan) session.createCriteria("com.loansystem.model.Loan")
+    .add(Restrictions.eq("client", client))
+    .addOrder(Order.desc("loanId")).setMaxResults(1).uniqueResult();
+    if (instance == null) {
+    log.debug("get successful, no instance found");
+    } else {
+    log.debug("get successful, instance found");
+    }
+    return instance;
+    } catch (RuntimeException re) {
+    log.error("get failed", re);
+    throw re;
+    } finally {
+    session.close();
+    }
+    }*/
     public ArrayList<Loan> getLoansByStatus(LoanStatus loanStatus, Session session) {
         log.debug("merging Loan instance");
         Session sessionLoc = null;
@@ -213,8 +202,8 @@ public class LoanHome {
         }
         try {
             ArrayList<Loan> results = new ArrayList<Loan>();
-             // = sessionLoc.createCriteria("Loan").add(Example.create(instance)).list();
-             results = (ArrayList<Loan>) sessionLoc.createCriteria(Loan.class).add(Restrictions.eq("loanStatus", loanStatus)).list();
+            // = sessionLoc.createCriteria("Loan").add(Example.create(instance)).list();
+            results = (ArrayList<Loan>) sessionLoc.createCriteria(Loan.class).add(Restrictions.eq("loanStatus", loanStatus)).list();
             log.debug("merge successful");
             return results;
         } catch (RuntimeException re) {
@@ -224,7 +213,7 @@ public class LoanHome {
     }
 
     public ArrayList<Loan> getPostponedLoans(String postponeRequestStatus, Session session) {
-         log.debug("returning Loans with postone requests");
+        log.debug("returning Loans with postone requests");
         Session sessionLoc = null;
         if (session == null) {
             sessionLoc = sessionFactory.getCurrentSession();
@@ -234,11 +223,8 @@ public class LoanHome {
         }
         try {
             ArrayList<Loan> results = new ArrayList<Loan>();
-            results = (ArrayList<Loan>)sessionLoc.createCriteria(Loan.class)
-               .createCriteria("postponeRequest", "pr")
-               .createCriteria("postponeRequestStatus", "prs")
-                    .add(Restrictions.eq("id", postponeRequestStatus)).list();
-             // = sessionLoc.createCriteria("Loan").add(Example.create(instance)).list();
+            results = (ArrayList<Loan>) sessionLoc.createCriteria(Loan.class).createCriteria("postponeRequest", "pr").createCriteria("postponeRequestStatus", "prs").add(Restrictions.eq("id", postponeRequestStatus)).list();
+            // = sessionLoc.createCriteria("Loan").add(Example.create(instance)).list();
              /*results = (ArrayList<Loan>) sessionLoc.createCriteria(Loan.class).add(Restrictions.eq("postponeRequest", postponeRequest)).list();*/
             log.debug("merge successful");
             return results;
@@ -248,4 +234,14 @@ public class LoanHome {
         }
     }
 
+    private Session createRequieredSession(Session session) {
+        Session sessionLoc = null;
+        if (session == null) {
+            sessionLoc = sessionFactory.getCurrentSession();
+            Transaction transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
+        return sessionLoc;
+    }
 }

@@ -41,6 +41,15 @@ public class PostponeRequestPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private JButton jButton2;
+
+    public JButton getjButton2() {
+        return jButton2;
+    }
+
+    public void setjButton2(JButton jButton2) {
+        this.jButton2 = jButton2;
+    }
 
     public JButton getjButton1() {
         return jButton1;
@@ -68,6 +77,8 @@ public class PostponeRequestPanel extends javax.swing.JPanel {
         // jSlider1 = new JSlider(JSlider.HORIZONTAL, minDays, maxDays, middleDays);
 
         // jSlider1.addChangeListener(new SliderStateChangedListener());
+
+        //Loan Offer.Sum * (1 + Loan Offer.APR* Loan Offer.periodDays/(100 * 365)
         LoanOffer loanOffer = lastLoan.getLoanOffer();
 
         int[] sliderOpts = new int[3];
@@ -77,6 +88,8 @@ public class PostponeRequestPanel extends javax.swing.JPanel {
 
 
         float initialSum = Float.parseFloat(loanOffer.getSum());
+        float apr = Float.parseFloat(loanOffer.getApr());
+        int days = Integer.parseInt(loanOffer.getPeriod());
         float percentSum = initialSum / 100;
         String initialDueDate = lastLoan.getDueDate();
 
@@ -89,7 +102,9 @@ public class PostponeRequestPanel extends javax.swing.JPanel {
         Date newDueDate = DateUtil.getDatePlusDays(oldDate, fps);
         String dueDateString = DateUtil.dateFormat.format(newDueDate);
         log.info("Current Due  Date : " + newDueDate);
-        float newSum = initialSum + percentSum * (Float.parseFloat(loanOffer.getPeriod()) + fps);
+
+        //Loan Offer.Sum * (1 + Loan Offer.APR* Loan Offer.periodDays/(100 * 365)
+        float newSum = initialSum * (1 + apr * (fps + days) / (100 * 365));
         log.info("Current sum : " + newSum);
 
         String dueDateAsString = String.valueOf(dueDateString);
@@ -134,6 +149,7 @@ public class PostponeRequestPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         //jSlider1.setName("jSlider1"); // NOI18N
 
@@ -152,14 +168,17 @@ public class PostponeRequestPanel extends javax.swing.JPanel {
         jButton1.setText("Create Postpone request");
         jButton1.setName("jButton1"); // NOI18N
 
+        jButton2.setText("Cancel");
+        jButton2.setName("jButton2"); // NOI18N
+
 
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(jButton1).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false).addGroup(layout.createSequentialGroup().addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(jLabel4)).addGroup(layout.createSequentialGroup().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(jLabel3)).addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))).addContainerGap(190, Short.MAX_VALUE)));
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false).addGroup(layout.createSequentialGroup().addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(jLabel4)).addGroup(layout.createSequentialGroup().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(jLabel3)).addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGroup(layout.createSequentialGroup().addComponent(jButton1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(jButton2))).addContainerGap(56, Short.MAX_VALUE)));
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(31, 31, 31).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(jLabel3)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel2).addComponent(jLabel4)).addGap(18, 18, 18).addComponent(jButton1).addContainerGap(154, Short.MAX_VALUE)));
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(31, 31, 31).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel1).addComponent(jLabel3)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jLabel2).addComponent(jLabel4)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jButton1).addComponent(jButton2)).addContainerGap(30, Short.MAX_VALUE)));
     }// </editor-fold>
 
     public JLabel getjLabel3() {
@@ -217,6 +236,12 @@ public class PostponeRequestPanel extends javax.swing.JPanel {
     public void addPostponeConfirmListener(ActionListener postponeConfirmListener) {
         jButton1.addActionListener(postponeConfirmListener);
     }
+
+    public void addPostponeCancelListener(ActionListener loanPostponeCancelListener) {
+       jButton2.addActionListener(loanPostponeCancelListener);
+    }
+    
+   
 }// </editor-fold>
 // Variables declaration - do not modify
 /*@SuppressWarnings("unchecked")

@@ -27,6 +27,7 @@ public class Loan implements java.io.Serializable {
     private LoanOffer loanOffer;
     private List<LoanHistory> loanHistory;
     private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    
 
     public Loan() {
     }
@@ -66,10 +67,16 @@ public class Loan implements java.io.Serializable {
         Date now = new Date();
 
         Date insertDate = DateUtil.getDatePlusDays(now, Integer.parseInt(loanOffer.getPeriod()));
-
+        
 
         //get current date time with Date()
+        float initialSum = Float.parseFloat(loanOffer.getSum());
+        float apr = Float.parseFloat(loanOffer.getApr());
+        int days = Integer.parseInt(loanOffer.getPeriod());
+       
 
+        //Loan Offer.Sum * (1 + Loan Offer.APR* Loan Offer.periodDays/(100 * 365)
+        float newSum = initialSum * (1 + apr * days / (100 * 365));
 
         //setDateFormat(dateFormat);
         this.client = client;
@@ -77,7 +84,7 @@ public class Loan implements java.io.Serializable {
         this.apr = loanOffer.getApr();
         this.dueDate = dateFormat.format(insertDate);
         this.baseDueDate = dateFormat.format(insertDate);
-        this.debt = loanOffer.getSum();
+        this.debt = newSum+"";
         this.loanStatus = loanStatus;
 
     }

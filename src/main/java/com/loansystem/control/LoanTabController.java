@@ -102,6 +102,7 @@ public class LoanTabController {
 
         }
     }
+    
 
     private class removeLoanRequestListener implements ActionListener {
 
@@ -224,6 +225,34 @@ public class LoanTabController {
         private void showNotification(String string, Loan lastLoan) {
         }
     }
+    
+    private class ChooseOtherLoanOfferListener implements ActionListener {
+        public ChooseOtherLoanOfferListener() {
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           log.info("RemoveLoanRequestListener actionPerformed");
+
+            //loanService = new LoanServiceImpl();
+
+            //String[] opts = {"No", "Yes"};
+            //PostponeRequest postponeRequst = loanTabModel.getLastLoan().getPostponeRequest();
+            /*int response = LoanUIutils.createQuestionPopup(opts, postponeRequest, "Are You sure you want to cancel initiated postpone request?");*/
+            //loanService.removeExistingLoanRequest(loanTabModel, client);
+
+            loanTabView.removeExistingLoanTabControls(client);
+
+            // loanTabView.removeExisitingLoanTab(client);
+            loanTabView.hideUnnecessaryButtons();
+
+            loanTabView.showNewLoanTab(client);
+            //loanTabView.pack();
+            //loanTabView.repaint();
+        }
+    }
+    
+    
     NewLoanRequestPanel newLoanRequestPanel;
     ExistingLoanRequestPanel existingLoanRequestPanel;
     PostponeRequestPanel postponeRequestPanel;
@@ -260,7 +289,22 @@ public class LoanTabController {
         loanTabView.addLoanStateChangeToPostponedListener(new LoanStateChangeToPostponedListener());
         loanTabView.addSliderListener(new SliderStateChangedListener());
         loanTabView.addLoanPostponeConfirmedListener(new LoanPostponeRequestedListener());
+        loanTabView.addLoanPostponeCancelListener(new LoanPostponeCancelListener());
+        loanTabView.addChooseOtherLoanOfferListener(new ChooseOtherLoanOfferListener());
 
+    }
+    
+    private class LoanPostponeCancelListener implements ActionListener {
+        
+        public LoanPostponeCancelListener() {
+            
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            loanTabView.hidePostponeControls();
+        }
+        
     }
 
     private class LoanStateChangeToPendingListener implements ActionListener {
@@ -272,7 +316,7 @@ public class LoanTabController {
         public void actionPerformed(ActionEvent e) {
             //ask if sure to take the loan  
             int rowIndex = loanTabView.getNewLoanRequestPanel().getjTable1().getSelectedRow();
-            if(rowIndex==0) {
+            if(rowIndex<0) {
                 JOptionPane.showMessageDialog(loanTabView.getNewLoanRequestPanel(), "Y've not chosen any loan offer");
               return;  
             }

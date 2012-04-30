@@ -201,4 +201,14 @@ public class LoanTabView extends JPanel {
        loanTabModel.getExistingLoanRequestControls().hideUnnecessaryButtons();
     }
 
+    public void addChooseOtherLoanOfferListener(ActionListener chooseOtherLoanOfferListener) {
+        loanTabModel.getExistingLoanRequestControls().addChooseOtherLoanOfferListener(chooseOtherLoanOfferListener);
+    }
+
+    public void addLoanPostponeCancelListener(ActionListener loanPostponeCancelListener) {
+        setActiveView(existingLoanRequestPanel);
+        log.info("VIEW : addLoanPOstponeCancelListener registered ");
+        loanTabModel.getPostponeRequestPanel().addPostponeCancelListener(loanPostponeCancelListener);
+    }
+
 }

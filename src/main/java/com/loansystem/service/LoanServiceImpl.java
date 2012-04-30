@@ -59,12 +59,25 @@ public class LoanServiceImpl implements LoanService {
         LoanOfferHome loanLoanOfferHome = new LoanOfferHome();
         LoanOffer loanOffer1 = loanLoanOfferHome.findBy4Parameters(loanOffer);
 
+        LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
+
         Loan insertLoan = new Loan(client, loanOffer1, loanStatus);
+        LoanHistory loanHistory = new LoanHistory(insertLoan, loanStatus, "Default comment");
+
+
+
 
 
         LoanHome loanHome = new LoanHome();
         try {
-            loanHome.insertLoan(insertLoan);
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+            Transaction transaction = session.beginTransaction();
+            loanHome.insertLoan(insertLoan, session);
+            loanHistoryHome.insertLoanHistory(loanHistory, session);
+            transaction.commit();
+            insertLoan = loanHome.findById(insertLoan.getLoanId(), null);
+            
+
         } catch (Exception e) {
 
             log.info("LoanServiceImpl : createNewLoan failed " + e.getStackTrace());
@@ -83,12 +96,31 @@ public class LoanServiceImpl implements LoanService {
         LoanHome loanHome = new LoanHome();
         Loan lastLoan = loanTabModel.getLastLoan();
 
+        LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
+        ArrayList<LoanHistory> loanHistory = new ArrayList<LoanHistory>();
+        loanHistory.addAll(lastLoan.getLoanHistory());
+        LoanHistory loanHistoryLast = loanHistory.get(0);
+
+        Transaction transaction = null;
+
         //log.info("LoanServiceImpl : removeExistingLoanRequest error occured " + lastLoan.getDueDate() );
 
         try {
-            loanHome.delete(lastLoan);
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+
+            //lastLoan.setLoanHistory(null);
+            loanHome.delete(lastLoan, session);
+            
+            //loanHistoryLast.setLoan(null);
+            loanHistoryHome.delete(loanHistoryLast, session);
+
+
+            transaction.commit();
+
         } catch (Exception e) {
             log.info("LoanServiceImpl : removeExistingLoanRequest error occured " + e);
+            transaction.rollback();
             return 0;
         }
         return 1;
@@ -172,15 +204,15 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void mergeLoan(Loan selectedLoan, Session session ) {
+    public void mergeLoan(Loan selectedLoan, Session session) {
         LoanHome loanHome = new LoanHome();
         loanHome.merge(selectedLoan, session);
     }
-    
+
     public void saveLoanHistory(LoanHistory loanHistory, Session session) {
         LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
         loanHistoryHome.save(loanHistory, session);
-        
+
     }
 
     @Override
@@ -190,18 +222,18 @@ public class LoanServiceImpl implements LoanService {
         LoanStatus selectedStatus = getStatusById(loanStatus);
         selectedLoan.setLoanStatus(selectedStatus);
         LoanHistory loanHistory = updateLoanHistory(selectedLoan);
-        
+
         try {
             mergeLoan(selectedLoan, session);
             saveLoanHistory(loanHistory, session);
             transaction.commit();
-        }catch(Exception e) {
+        } catch (Exception e) {
             log.fatal("saveLoanWithStatus : Failed to insert data");
             transaction.rollback();
         }
-        
-        
-        
+
+
+
     }
 
     private LoanHistory updateLoanHistory(Loan selectedLoan) {
@@ -212,7 +244,7 @@ public class LoanServiceImpl implements LoanService {
         loanHistory.setDate(dueDateString);
         loanHistory.setLoanStatus(selectedLoan.getLoanStatus());
         loanHistory.setLoan(selectedLoan);
-        
+
         return loanHistory;
     }
 
@@ -223,25 +255,24 @@ public class LoanServiceImpl implements LoanService {
         ArrayList<Loan> loans = loanHome.getLoansByStatus(loanStatus1, null);
         return loans;
     }
-    
+
     public ArrayList<Loan> getPostponedLoansByStatus(int loanStatus) {
         LoanHome loanHome = new LoanHome();
         LoanStatus loanStatus1 = getStatusById(loanStatus);
         ArrayList<Loan> loans = loanHome.getLoansByStatus(loanStatus1, null);
         return loans;
     }
-    
+
     @Override
     public PostponeRequestStatus getPostponeRequestStatusById(int id) {
         PostponeRequestStatusHome postponeRequestStatusHome = new PostponeRequestStatusHome();
-        PostponeRequestStatus postponeRequestStatus = postponeRequestStatusHome.findById(id+"");
+        PostponeRequestStatus postponeRequestStatus = postponeRequestStatusHome.findById(id + "");
         return postponeRequestStatus;
     }
 
-
     @Override
     public ArrayList<Loan> getPostponedLoansByStatus(PostponeRequestStatus postponeRequestStatus) {
-         ArrayList<Loan> postponeRequestedLoans = null;
+        ArrayList<Loan> postponeRequestedLoans = null;
         LoanHome loanHome = new LoanHome();
         postponeRequestedLoans = loanHome.getPostponedLoans(postponeRequestStatus.getId(), null);
         return postponeRequestedLoans;

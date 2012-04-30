@@ -17,7 +17,7 @@
             <column length="2000000000" name="comment"/>
         </property>
         <many-to-one name="loan" class="com.loansystem.model.Loan" fetch="select">
-            <column name="loan_id" not-null="true" />
+            <column name="loan_id" not-null="false" />
         </many-to-one>
     </class>
 </hibernate-mapping>

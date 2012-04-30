@@ -39,6 +39,7 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
     private final ButtonPlace postponeButtonLocation = new ButtonPlace(0, 1);
     private final ButtonPlace removePostponeButtonLocation = new ButtonPlace(1, 1);*/
     private JButton jButton4;
+    private JButton jButton5;
 
     /** Creates new form ExistingLoanRequestControls */
     public ExistingLoanRequestControls(LoanTabModel loanTabModel) {
@@ -54,6 +55,7 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         jButton1.setText("Remove Loan Request");
         jButton1.setName("jButton1"); // NOI18N
@@ -75,8 +77,12 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
         jButton4.setText("Cancel Postpone payback request");
         jButton4.setName("jButton4"); // NOI18N
         jButton4.setVisible(false);
+        
+        jButton5.setText("Choose another loan offer");
+        jButton5.setName("jButton5"); // NOI18N
+        jButton5.setVisible(false);
 
-        GridLayout layout = new GridLayout(2, 2);
+        GridLayout layout = new GridLayout(3, 3);
 
 
         setLayout(layout);
@@ -85,6 +91,8 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
         add(jButton2, 1);
         add(jButton3, 2);
         add(jButton4, 3);
+        add(jButton5, 4);
+        
         
         hideUnnecessaryButtons();
 
@@ -235,5 +243,24 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
 
         boolean showRemovePostponeRequestButton = showRemovePostponeRequestButton(loanTabModel.getLastLoan());
         jButton4.setVisible(showRemovePostponeRequestButton);
+        
+        boolean showChooseAnotherLoanOfferButton = showChooseAnotherLoanOfferButton(loanTabModel.getLastLoan());
+        jButton5.setVisible(showChooseAnotherLoanOfferButton);
+    }
+
+    private boolean showChooseAnotherLoanOfferButton(Loan lastLoan) {
+        LoanStatus loanStatus = lastLoan.getLoanStatus();
+        int status = Integer.parseInt(loanStatus.getLoanStatusId());
+
+        switch (status) {
+            case LoanStatusInterface.REJECTED:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public void addChooseOtherLoanOfferListener(ActionListener chooseOtherLoanOfferListener) {
+        jButton5.addActionListener(chooseOtherLoanOfferListener);
     }
 }

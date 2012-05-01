@@ -1680,7 +1680,7 @@
 						(object State "Rejected"
 						    quid       	"4DA9827E02C4"
 						    type       	"EndState")
-						(object State "Loan is deleted"
+						(object State "Canceled"
 						    quid       	"4DA982E9021C"
 						    type       	"EndState")
 						(object State "Overdue"
@@ -1734,7 +1734,7 @@
 						(object State_Transition
 						    quid       	"4DA982F5027A"
 						    label      	""
-						    supplier   	"Logical View::Analysis Model::Loan System::Registers::Loan Register::State diagrams::Loan is deleted"
+						    supplier   	"Logical View::Analysis Model::Loan System::Registers::Loan Register::State diagrams::Canceled"
 						    supplier_quidu 	"4DA982E9021C"
 						    client     	"Logical View::Analysis Model::Loan System::Registers::Loan Register::State diagrams::Pending"
 						    client_quidu 	"4DA981CE01E3"
@@ -1790,7 +1790,7 @@
 						    supplier_quidu 	"4DA9832A005C"
 						    client     	"Logical View::Analysis Model::Loan System::Registers::Loan Register::State diagrams::Overdue"
 						    client_quidu 	"4DA9831E00B7"
-						    Event      	(object Event "Loan is not payed after two additional due dates"
+						    Event      	(object Event "Loan is not payed after two weeks in status Overdue"
 							quid       	"4DB14E090333")
 						    sendEvent  	(object sendEvent
 							quid       	"4DA9837A02FF"))
@@ -1812,7 +1812,7 @@
 						    supplier_quidu 	"4DA983360331"
 						    client     	"Logical View::Analysis Model::Loan System::Registers::Loan Register::State diagrams::Issued"
 						    client_quidu 	"4DA98248000C"
-						    Event      	(object Event "Base due date has passed, but not new due date"
+						    Event      	(object Event "Loan has approved postpone request"
 							quid       	"4FBC00220188")
 						    sendEvent  	(object sendEvent
 							quid       	"4FBC0022018A")))
@@ -2049,7 +2049,7 @@
 								(738, 682))
 							    line_style 	0
 							    x_offset   	FALSE)
-							(object StateView "EndState" "Loan is deleted" @65
+							(object StateView "EndState" "Canceled" @65
 							    location   	(1648, 256)
 							    font       	(object Font
 								size       	9
@@ -2063,7 +2063,7 @@
 								default_color 	TRUE)
 							    label      	(object SegLabel @66
 								Parent_View 	@65
-								location   	(1527, 310)
+								location   	(1570, 310)
 								font       	(object Font
 								    size       	9
 								    face       	"Arial"
@@ -2075,10 +2075,10 @@
 								    color      	0
 								    default_color 	TRUE)
 								nlines     	1
-								max_width  	268
+								max_width  	163
 								justify    	1
-								label      	"Loan is deleted"
-								pctDist    	-1.095238
+								label      	"Canceled"
+								pctDist    	-0.571429
 								height     	96
 								orientation 	1)
 							    icon_style 	"Icon"
@@ -2308,7 +2308,7 @@
 								default_color 	TRUE)
 							    label      	(object SegLabel @78
 								Parent_View 	@77
-								location   	(2008, 1009)
+								location   	(2019, 948)
 								font       	(object Font
 								    size       	9
 								    face       	"Arial"
@@ -2320,12 +2320,12 @@
 								    color      	0
 								    default_color 	TRUE)
 								anchor_loc 	1
-								nlines     	2
-								max_width  	481
+								nlines     	3
+								max_width  	450
 								justify    	0
-								label      	"Loan is not payed after two additional due dates"
-								pctDist    	0.856447
-								height     	124
+								label      	"Loan is not payed after two weeks in status Overdue"
+								pctDist    	0.741269
+								height     	168
 								orientation 	0)
 							    stereotype 	TRUE
 							    line_color 	3342489
@@ -2434,7 +2434,7 @@
 								default_color 	TRUE)
 							    label      	(object SegLabel @84
 								Parent_View 	@83
-								location   	(782, 1173)
+								location   	(734, 1173)
 								font       	(object Font
 								    size       	9
 								    face       	"Arial"
@@ -2446,13 +2446,13 @@
 								    color      	0
 								    default_color 	TRUE)
 								anchor_loc 	1
-								nlines     	3
-								max_width  	463
+								nlines     	2
+								max_width  	400
 								justify    	0
-								label      	"Base due date has passed, but not new due date"
-								pctDist    	0.574885
-								height     	45
-								orientation 	0)
+								label      	"Loan has approved postpone request"
+								pctDist    	0.575136
+								height     	3
+								orientation 	1)
 							    stereotype 	TRUE
 							    line_color 	3342489
 							    quidu      	"4FBC00220187"
@@ -3129,7 +3129,7 @@
 								supplier   	@89
 								vertices   	(list Points
 								    (657, 351)
-								    (543, 236))
+								    (544, 236))
 								line_style 	0
 								label      	(object SegLabel @114
 								    Parent_View 	@112
@@ -3196,7 +3196,7 @@
 								supplier   	@101
 								vertices   	(list Points
 								    (657, 351)
-								    (771, 467))
+								    (772, 467))
 								line_style 	0
 								label      	(object SegLabel @117
 								    Parent_View 	@115
@@ -3712,7 +3712,7 @@
 								supplier   	@101
 								vertices   	(list Points
 								    (995, 362)
-								    (890, 467))
+								    (889, 467))
 								line_style 	0
 								label      	(object SegLabel @141
 								    Parent_View 	@139
@@ -3772,25 +3772,6 @@
 							line_color 	3342489
 							fill_color 	65280
 							quidu      	"4DA968D30339"
-							compartment 	(object Compartment
-							    Parent_View 	@142
-							    location   	(730, 339)
-							    font       	(object Font
-								size       	9
-								face       	"Arial"
-								charSet    	204
-								bold       	FALSE
-								italics    	FALSE
-								underline  	FALSE
-								strike     	FALSE
-								color      	0
-								default_color 	TRUE)
-							    icon_style 	"Icon"
-							    fill_color 	16777215
-							    anchor     	2
-							    nlines     	6
-							    max_width  	434
-							    justify    	1)
 							width      	446
 							height     	408
 							annotation 	8
@@ -3884,25 +3865,6 @@
 							line_color 	3342489
 							fill_color 	13434879
 							quidu      	"4DA051F2035B"
-							compartment 	(object Compartment
-							    Parent_View 	@145
-							    location   	(203, 1590)
-							    font       	(object Font
-								size       	9
-								face       	"Arial"
-								charSet    	204
-								bold       	FALSE
-								italics    	FALSE
-								underline  	FALSE
-								strike     	FALSE
-								color      	0
-								default_color 	TRUE)
-							    icon_style 	"Icon"
-							    fill_color 	16777215
-							    anchor     	2
-							    nlines     	3
-							    max_width  	403
-							    justify    	1)
 							width      	412
 							height     	222
 							annotation 	8
@@ -4420,25 +4382,6 @@
 							line_color 	3342489
 							fill_color 	65280
 							quidu      	"4DA96E530141"
-							compartment 	(object Compartment
-							    Parent_View 	@168
-							    location   	(1533, 2065)
-							    font       	(object Font
-								size       	9
-								face       	"Arial"
-								charSet    	204
-								bold       	FALSE
-								italics    	FALSE
-								underline  	FALSE
-								strike     	FALSE
-								color      	0
-								default_color 	TRUE)
-							    icon_style 	"Icon"
-							    fill_color 	16777215
-							    anchor     	2
-							    nlines     	2
-							    max_width  	243
-							    justify    	1)
 							width      	312
 							height     	220
 							annotation 	8
@@ -4617,25 +4560,6 @@
 							line_color 	3342489
 							fill_color 	8421631
 							quidu      	"4D84B02C009C"
-							compartment 	(object Compartment
-							    Parent_View 	@177
-							    location   	(775, 1543)
-							    font       	(object Font
-								size       	9
-								face       	"Arial"
-								charSet    	204
-								bold       	FALSE
-								italics    	FALSE
-								underline  	FALSE
-								strike     	FALSE
-								color      	0
-								default_color 	TRUE)
-							    icon_style 	"Icon"
-							    fill_color 	16777215
-							    anchor     	2
-							    nlines     	5
-							    max_width  	409
-							    justify    	1)
 							width      	420
 							height     	316
 							annotation 	8
@@ -5171,25 +5095,6 @@
 							line_color 	3342489
 							fill_color 	65280
 							quidu      	"4DA9681E001D"
-							compartment 	(object Compartment
-							    Parent_View 	@202
-							    location   	(1648, 1541)
-							    font       	(object Font
-								size       	9
-								face       	"Arial"
-								charSet    	204
-								bold       	FALSE
-								italics    	FALSE
-								underline  	FALSE
-								strike     	FALSE
-								color      	0
-								default_color 	TRUE)
-							    icon_style 	"Icon"
-							    fill_color 	16777215
-							    anchor     	2
-							    nlines     	6
-							    max_width  	421
-							    justify    	1)
 							width      	434
 							height     	406
 							annotation 	8
@@ -5378,25 +5283,6 @@
 							line_color 	3342489
 							fill_color 	65280
 							quidu      	"4D84B473005D"
-							compartment 	(object Compartment
-							    Parent_View 	@210
-							    location   	(1065, 1170)
-							    font       	(object Font
-								size       	9
-								face       	"Arial"
-								charSet    	204
-								bold       	FALSE
-								italics    	FALSE
-								underline  	FALSE
-								strike     	FALSE
-								color      	0
-								default_color 	TRUE)
-							    icon_style 	"Icon"
-							    fill_color 	16777215
-							    anchor     	2
-							    nlines     	2
-							    max_width  	309
-							    justify    	1)
 							width      	320
 							height     	218
 							annotation 	8
@@ -5739,25 +5625,6 @@
 							line_color 	3342489
 							fill_color 	65280
 							quidu      	"4DA965B0014A"
-							compartment 	(object Compartment
-							    Parent_View 	@226
-							    location   	(1662, 1123)
-							    font       	(object Font
-								size       	9
-								face       	"Arial"
-								charSet    	204
-								bold       	FALSE
-								italics    	FALSE
-								underline  	FALSE
-								strike     	FALSE
-								color      	0
-								default_color 	TRUE)
-							    icon_style 	"Icon"
-							    fill_color 	16777215
-							    anchor     	2
-							    nlines     	4
-							    max_width  	396
-							    justify    	1)
 							width      	406
 							height     	312
 							annotation 	8
@@ -5946,7 +5813,7 @@
 								supplier   	@202
 								vertices   	(list Points
 								    (1856, 1376)
-								    (1856, 1429))
+								    (1856, 1633))
 								line_style 	0
 								label      	(object SegLabel @236
 								    Parent_View 	@235
@@ -5990,7 +5857,7 @@
 								supplier   	@226
 								vertices   	(list Points
 								    (1856, 1376)
-								    (1856, 1324))
+								    (1856, 1168))
 								line_style 	0
 								label      	(object SegLabel @238
 								    Parent_View 	@237
@@ -6041,25 +5908,6 @@
 							line_color 	3342489
 							fill_color 	65280
 							quidu      	"4DB16A5101CF"
-							compartment 	(object Compartment
-							    Parent_View 	@239
-							    location   	(1662, 730)
-							    font       	(object Font
-								size       	9
-								face       	"Arial"
-								charSet    	204
-								bold       	FALSE
-								italics    	FALSE
-								underline  	FALSE
-								strike     	FALSE
-								color      	0
-								default_color 	TRUE)
-							    icon_style 	"Icon"
-							    fill_color 	16777215
-							    anchor     	2
-							    nlines     	3
-							    max_width  	396
-							    justify    	1)
 							width      	406
 							height     	266
 							annotation 	8
@@ -15956,205 +15804,11 @@
 					line_color 	3342489
 					fill_color 	13434879
 					quidu      	"4E340DD6030E"
-					compartment 	(object Compartment
-					    Parent_View 	@306
-					    location   	(1580, 453)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	4
-					    max_width  	573
-					    justify    	1)
 					width      	666
 					height     	374
 					annotation 	8
 					autoResize 	TRUE)
-				    (object ClassView "Class" "Logical View::Schemas::Database::Clien History" @307
-					ShowCompartmentStereotypes 	TRUE
-					IncludeAttribute 	TRUE
-					location   	(2944, 480)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					label      	(object ItemLabel
-					    Parent_View 	@307
-					    location   	(2581, 344)
-					    fill_color 	13434879
-					    nlines     	1
-					    max_width  	726
-					    justify    	0
-					    label      	"Clien History")
-					icon       	"Table"
-					icon_style 	"Decoration"
-					line_color 	3342489
-					fill_color 	13434879
-					quidu      	"4E340EF101FE"
-					compartment 	(object Compartment
-					    Parent_View 	@307
-					    location   	(2581, 404)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	6
-					    max_width  	652
-					    justify    	1)
-					width      	744
-					height     	472
-					annotation 	8
-					autoResize 	TRUE)
-				    (object AssociationViewNew "$UNNAMED$99" @308
-					location   	(2404, 480)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					stereotype 	(object SegLabel @309
-					    Parent_View 	@308
-					    location   	(2404, 373)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    anchor     	10
-					    anchor_loc 	1
-					    nlines     	1
-					    max_width  	450
-					    justify    	0
-					    label      	"<<Non-Identifying>>"
-					    pctDist    	0.500000
-					    height     	108
-					    orientation 	0)
-					line_color 	3342489
-					quidu      	"4E340FA30168"
-					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$100" @310
-						Parent_View 	@308
-						location   	(596, 112)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E340FA30334"
-						client     	@308
-						supplier   	@307
-						vertices   	(list Points
-						    (2404, 480)
-						    (2571, 480))
-						line_style 	0
-						label      	(object SegLabel @311
-						    Parent_View 	@310
-						    location   	(2538, 534)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..*"
-						    pctDist    	0.803371
-						    height     	54
-						    orientation 	1))
-					    (object RoleView "$UNNAMED$101" @312
-						Parent_View 	@308
-						location   	(596, 112)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E340FA3033A"
-						client     	@308
-						supplier   	@306
-						vertices   	(list Points
-						    (2404, 480)
-						    (2237, 480))
-						line_style 	0
-						label      	(object SegLabel @313
-						    Parent_View 	@312
-						    location   	(2286, 534)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..1"
-						    pctDist    	0.706215
-						    height     	54
-						    orientation 	0))))
-				    (object ClassView "Class" "Logical View::Schemas::Database::Employee Position" @314
+				    (object ClassView "Class" "Logical View::Schemas::Database::Employee Position" @307
 					ShowCompartmentStereotypes 	TRUE
 					IncludeAttribute 	TRUE
 					location   	(464, 464)
@@ -16169,7 +15823,7 @@
 					    color      	0
 					    default_color 	TRUE)
 					label      	(object ItemLabel
-					    Parent_View 	@314
+					    Parent_View 	@307
 					    location   	(140, 377)
 					    fill_color 	13434879
 					    nlines     	1
@@ -16181,30 +15835,11 @@
 					line_color 	3342489
 					fill_color 	13434879
 					quidu      	"4E340B89010F"
-					compartment 	(object Compartment
-					    Parent_View 	@314
-					    location   	(140, 437)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	4
-					    max_width  	573
-					    justify    	1)
 					width      	666
 					height     	374
 					annotation 	8
 					autoResize 	TRUE)
-				    (object ClassView "Class" "Logical View::Schemas::Database::User" @315
+				    (object ClassView "Class" "Logical View::Schemas::Database::User" @308
 					ShowCompartmentStereotypes 	TRUE
 					IncludeAttribute 	TRUE
 					location   	(1184, 432)
@@ -16219,7 +15854,7 @@
 					    color      	0
 					    default_color 	TRUE)
 					label      	(object ItemLabel
-					    Parent_View 	@315
+					    Parent_View 	@308
 					    location   	(847, 271)
 					    fill_color 	13434879
 					    nlines     	1
@@ -16231,505 +15866,11 @@
 					line_color 	3342489
 					fill_color 	13434879
 					quidu      	"4F51F2610164"
-					compartment 	(object Compartment
-					    Parent_View 	@315
-					    location   	(847, 331)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	7
-					    max_width  	599
-					    justify    	1)
 					width      	692
 					height     	522
 					annotation 	8
 					autoResize 	TRUE)
-				    (object ClassView "Class" "Logical View::Schemas::Database::Postpone Request Status" @316
-					ShowCompartmentStereotypes 	TRUE
-					IncludeAttribute 	TRUE
-					location   	(742, 2492)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					label      	(object ItemLabel
-					    Parent_View 	@316
-					    location   	(418, 2405)
-					    fill_color 	13434879
-					    nlines     	1
-					    max_width  	648
-					    justify    	0
-					    label      	"Postpone Request Status")
-					icon       	"Table"
-					icon_style 	"Decoration"
-					line_color 	3342489
-					fill_color 	13434879
-					quidu      	"4E3D1A8C023A"
-					compartment 	(object Compartment
-					    Parent_View 	@316
-					    location   	(418, 2465)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	4
-					    max_width  	573
-					    justify    	1)
-					width      	666
-					height     	374
-					annotation 	8
-					autoResize 	TRUE)
-				    (object ClassView "Class" "Logical View::Schemas::Database::Client" @317
-					ShowCompartmentStereotypes 	TRUE
-					IncludeAttribute 	TRUE
-					location   	(1776, 1120)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					label      	(object ItemLabel
-					    Parent_View 	@317
-					    location   	(1410, 984)
-					    fill_color 	13434879
-					    nlines     	1
-					    max_width  	732
-					    justify    	0
-					    label      	"Client")
-					icon       	"Table"
-					icon_style 	"Decoration"
-					line_color 	3342489
-					fill_color 	13434879
-					quidu      	"4E3405030327"
-					compartment 	(object Compartment
-					    Parent_View 	@317
-					    location   	(1410, 1044)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	6
-					    max_width  	658
-					    justify    	1)
-					width      	750
-					height     	472
-					annotation 	8
-					autoResize 	TRUE)
-				    (object AssociationViewNew "$UNNAMED$96" @318
-					location   	(1844, 775)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					stereotype 	(object SegLabel @319
-					    Parent_View 	@318
-					    location   	(1842, 774)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    anchor     	10
-					    anchor_loc 	1
-					    nlines     	1
-					    max_width  	450
-					    justify    	0
-					    label      	"<<Non-Identifying>>"
-					    pctDist    	0.483333
-					    height     	2
-					    orientation 	0)
-					line_color 	3342489
-					quidu      	"4E340EA701F3"
-					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$97" @320
-						Parent_View 	@318
-						location   	(36, 407)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E340EA80097"
-						client     	@318
-						supplier   	@317
-						vertices   	(list Points
-						    (1844, 775)
-						    (1821, 883))
-						line_style 	0
-						label      	(object SegLabel @321
-						    Parent_View 	@320
-						    location   	(1896, 856)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..*"
-						    pctDist    	0.636044
-						    height     	66
-						    orientation 	0))
-					    (object RoleView "$UNNAMED$98" @322
-						Parent_View 	@318
-						location   	(36, 407)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E340EA8009D"
-						client     	@318
-						supplier   	@306
-						vertices   	(list Points
-						    (1844, 775)
-						    (1865, 667))
-						line_style 	0
-						label      	(object SegLabel @323
-						    Parent_View 	@322
-						    location   	(1911, 717)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"1"
-						    pctDist    	0.649779
-						    height     	54
-						    orientation 	1))))
-				    (object AssociationViewNew "$UNNAMED$102" @324
-					location   	(2361, 798)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					stereotype 	(object SegLabel @325
-					    Parent_View 	@324
-					    location   	(2476, 849)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    anchor     	10
-					    anchor_loc 	1
-					    nlines     	1
-					    max_width  	450
-					    justify    	0
-					    label      	"<<Non-Identifying>>"
-					    pctDist    	2.433333
-					    height     	51
-					    orientation 	1)
-					line_color 	3342489
-					quidu      	"4E340FAD00EC"
-					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$103" @326
-						Parent_View 	@324
-						location   	(553, -418)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E340FB2026C"
-						client     	@324
-						supplier   	@307
-						vertices   	(list Points
-						    (2361, 798)
-						    (2571, 681))
-						line_style 	0
-						label      	(object SegLabel @327
-						    Parent_View 	@326
-						    location   	(2543, 748)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..*"
-						    pctDist    	0.763802
-						    height     	43
-						    orientation 	1))
-					    (object RoleView "$UNNAMED$104" @328
-						Parent_View 	@324
-						location   	(553, -418)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E340FB20275"
-						client     	@324
-						supplier   	@317
-						vertices   	(list Points
-						    (2361, 798)
-						    (2151, 912))
-						line_style 	0
-						label      	(object SegLabel @329
-						    Parent_View 	@328
-						    location   	(2185, 945)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"1"
-						    pctDist    	0.939807
-						    height     	43
-						    orientation 	0))))
-				    (object AssociationViewNew "$UNNAMED$132" @330
-					location   	(1490, 788)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					stereotype 	(object SegLabel @331
-					    Parent_View 	@330
-					    location   	(1429, 785)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    anchor     	10
-					    anchor_loc 	1
-					    nlines     	1
-					    max_width  	450
-					    justify    	0
-					    label      	"<<Non-Identifying>>"
-					    pctDist    	-0.533333
-					    height     	4
-					    orientation 	0)
-					line_color 	3342489
-					quidu      	"4F51FB430013"
-					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$133" @332
-						Parent_View 	@330
-						location   	(306, 356)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4F51FB430234"
-						client     	@330
-						supplier   	@317
-						vertices   	(list Points
-						    (1490, 788)
-						    (1572, 883))
-						line_style 	0
-						label      	(object SegLabel @333
-						    Parent_View 	@332
-						    location   	(1621, 858)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..1"
-						    pctDist    	1.104489
-						    height     	54
-						    orientation 	0))
-					    (object RoleView "$UNNAMED$134" @334
-						Parent_View 	@330
-						location   	(306, 356)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4F51FB430239"
-						client     	@330
-						supplier   	@315
-						vertices   	(list Points
-						    (1490, 788)
-						    (1408, 693))
-						line_style 	0
-						label      	(object SegLabel @335
-						    Parent_View 	@334
-						    location   	(1476, 721)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"1"
-						    pctDist    	0.489911
-						    height     	34
-						    orientation 	1))))
-				    (object ClassView "Class" "Logical View::Schemas::Database::Loan History" @336
+				    (object ClassView "Class" "Logical View::Schemas::Database::Loan History" @309
 					ShowCompartmentStereotypes 	TRUE
 					IncludeAttribute 	TRUE
 					location   	(1776, 2512)
@@ -16744,7 +15885,7 @@
 					    color      	0
 					    default_color 	TRUE)
 					label      	(object ItemLabel
-					    Parent_View 	@336
+					    Parent_View 	@309
 					    location   	(1527, 2424)
 					    fill_color 	13434879
 					    nlines     	1
@@ -16756,30 +15897,11 @@
 					line_color 	3342489
 					fill_color 	13434879
 					quidu      	"4E3413BC0305"
-					compartment 	(object Compartment
-					    Parent_View 	@336
-					    location   	(1527, 2484)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	4
-					    max_width  	422
-					    justify    	1)
 					width      	516
 					height     	376
 					annotation 	8
 					autoResize 	TRUE)
-				    (object ClassView "Class" "Logical View::Schemas::Database::Loan Status" @337
+				    (object ClassView "Class" "Logical View::Schemas::Database::Loan Status" @310
 					ShowCompartmentStereotypes 	TRUE
 					IncludeAttribute 	TRUE
 					location   	(2848, 2513)
@@ -16794,7 +15916,7 @@
 					    color      	0
 					    default_color 	TRUE)
 					label      	(object ItemLabel
-					    Parent_View 	@337
+					    Parent_View 	@310
 					    location   	(2524, 2426)
 					    fill_color 	13434879
 					    nlines     	1
@@ -16806,30 +15928,11 @@
 					line_color 	3342489
 					fill_color 	13434879
 					quidu      	"4E3413C102DD"
-					compartment 	(object Compartment
-					    Parent_View 	@337
-					    location   	(2524, 2486)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	4
-					    max_width  	573
-					    justify    	1)
 					width      	666
 					height     	374
 					annotation 	8
 					autoResize 	TRUE)
-				    (object AssociationViewNew "$UNNAMED$138" @338
+				    (object AssociationViewNew "$UNNAMED$138" @311
 					location   	(2274, 2512)
 					font       	(object Font
 					    size       	9
@@ -16841,8 +15944,8 @@
 					    strike     	FALSE
 					    color      	0
 					    default_color 	TRUE)
-					stereotype 	(object SegLabel @339
-					    Parent_View 	@338
+					stereotype 	(object SegLabel @312
+					    Parent_View 	@311
 					    location   	(2274, 2405)
 					    font       	(object Font
 						size       	9
@@ -16866,8 +15969,8 @@
 					line_color 	3342489
 					quidu      	"4F98FBF00181"
 					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$139" @340
-						Parent_View 	@338
+					    (object RoleView "$UNNAMED$139" @313
+						Parent_View 	@311
 						location   	(-574, 32)
 						font       	(object Font
 						    size       	9
@@ -16882,14 +15985,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4F98FBF003C2"
-						client     	@338
-						supplier   	@336
+						client     	@311
+						supplier   	@309
 						vertices   	(list Points
 						    (2274, 2512)
 						    (2034, 2512))
 						line_style 	0
-						label      	(object SegLabel @341
-						    Parent_View 	@340
+						label      	(object SegLabel @314
+						    Parent_View 	@313
 						    location   	(2074, 2582)
 						    font       	(object Font
 							size       	9
@@ -16910,8 +16013,8 @@
 						    pctDist    	0.835743
 						    height     	70
 						    orientation 	0))
-					    (object RoleView "$UNNAMED$140" @342
-						Parent_View 	@338
+					    (object RoleView "$UNNAMED$140" @315
+						Parent_View 	@311
 						location   	(-574, 32)
 						font       	(object Font
 						    size       	9
@@ -16926,14 +16029,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4F98FBF003D1"
-						client     	@338
-						supplier   	@337
+						client     	@311
+						supplier   	@310
 						vertices   	(list Points
 						    (2274, 2512)
 						    (2514, 2512))
 						line_style 	0
-						label      	(object SegLabel @343
-						    Parent_View 	@342
+						label      	(object SegLabel @316
+						    Parent_View 	@315
 						    location   	(2489, 2566)
 						    font       	(object Font
 							size       	9
@@ -16954,7 +16057,38 @@
 						    pctDist    	0.900000
 						    height     	54
 						    orientation 	1))))
-				    (object ClassView "Class" "Logical View::Schemas::Database::Employee" @344
+				    (object ClassView "Class" "Logical View::Schemas::Database::Postpone Request Status" @317
+					ShowCompartmentStereotypes 	TRUE
+					IncludeAttribute 	TRUE
+					location   	(742, 2492)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					label      	(object ItemLabel
+					    Parent_View 	@317
+					    location   	(418, 2405)
+					    fill_color 	13434879
+					    nlines     	1
+					    max_width  	648
+					    justify    	0
+					    label      	"Postpone Request Status")
+					icon       	"Table"
+					icon_style 	"Decoration"
+					line_color 	3342489
+					fill_color 	13434879
+					quidu      	"4E3D1A8C023A"
+					width      	666
+					height     	374
+					annotation 	8
+					autoResize 	TRUE)
+				    (object ClassView "Class" "Logical View::Schemas::Database::Employee" @318
 					ShowCompartmentStereotypes 	TRUE
 					IncludeAttribute 	TRUE
 					location   	(746, 1136)
@@ -16969,7 +16103,7 @@
 					    color      	0
 					    default_color 	TRUE)
 					label      	(object ItemLabel
-					    Parent_View 	@344
+					    Parent_View 	@318
 					    location   	(407, 1049)
 					    fill_color 	13434879
 					    nlines     	1
@@ -16981,30 +16115,11 @@
 					line_color 	3342489
 					fill_color 	13434879
 					quidu      	"4E340A20012B"
-					compartment 	(object Compartment
-					    Parent_View 	@344
-					    location   	(407, 1109)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	4
-					    max_width  	603
-					    justify    	1)
 					width      	696
 					height     	374
 					annotation 	8
 					autoResize 	TRUE)
-				    (object AssociationViewNew "$UNNAMED$126" @345
+				    (object AssociationViewNew "$UNNAMED$126" @319
 					location   	(603, 799)
 					font       	(object Font
 					    size       	9
@@ -17016,8 +16131,8 @@
 					    strike     	FALSE
 					    color      	0
 					    default_color 	TRUE)
-					stereotype 	(object SegLabel @346
-					    Parent_View 	@345
+					stereotype 	(object SegLabel @320
+					    Parent_View 	@319
 					    location   	(570, 784)
 					    font       	(object Font
 						size       	9
@@ -17041,8 +16156,8 @@
 					line_color 	3342489
 					quidu      	"4E46473B0250"
 					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$127" @347
-						Parent_View 	@345
+					    (object RoleView "$UNNAMED$127" @321
+						Parent_View 	@319
 						location   	(-277, 431)
 						font       	(object Font
 						    size       	9
@@ -17057,14 +16172,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4E46473C0174"
-						client     	@345
-						supplier   	@344
+						client     	@319
+						supplier   	@318
 						vertices   	(list Points
 						    (603, 799)
 						    (666, 948))
 						line_style 	0
-						label      	(object SegLabel @348
-						    Parent_View 	@347
+						label      	(object SegLabel @322
+						    Parent_View 	@321
 						    location   	(709, 913)
 						    font       	(object Font
 							size       	9
@@ -17085,8 +16200,8 @@
 						    pctDist    	0.900000
 						    height     	54
 						    orientation 	0))
-					    (object RoleView "$UNNAMED$128" @349
-						Parent_View 	@345
+					    (object RoleView "$UNNAMED$128" @323
+						Parent_View 	@319
 						location   	(-277, 431)
 						font       	(object Font
 						    size       	9
@@ -17101,14 +16216,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4E46473C0183"
-						client     	@345
-						supplier   	@314
+						client     	@319
+						supplier   	@307
 						vertices   	(list Points
 						    (603, 799)
 						    (540, 651))
 						line_style 	0
-						label      	(object SegLabel @350
-						    Parent_View 	@349
+						label      	(object SegLabel @324
+						    Parent_View 	@323
 						    location   	(594, 709)
 						    font       	(object Font
 							size       	9
@@ -17129,7 +16244,7 @@
 						    pctDist    	0.548940
 						    height     	27
 						    orientation 	1))))
-				    (object AssociationViewNew "$UNNAMED$129" @351
+				    (object AssociationViewNew "$UNNAMED$129" @325
 					location   	(940, 820)
 					font       	(object Font
 					    size       	9
@@ -17141,8 +16256,8 @@
 					    strike     	FALSE
 					    color      	0
 					    default_color 	TRUE)
-					stereotype 	(object SegLabel @352
-					    Parent_View 	@351
+					stereotype 	(object SegLabel @326
+					    Parent_View 	@325
 					    location   	(953, 815)
 					    font       	(object Font
 						size       	9
@@ -17166,8 +16281,8 @@
 					line_color 	3342489
 					quidu      	"4F51F94401F8"
 					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$130" @353
-						Parent_View 	@351
+					    (object RoleView "$UNNAMED$130" @327
+						Parent_View 	@325
 						location   	(-244, 388)
 						font       	(object Font
 						    size       	9
@@ -17182,14 +16297,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4F51F94500DD"
-						client     	@351
-						supplier   	@344
+						client     	@325
+						supplier   	@318
 						vertices   	(list Points
 						    (940, 820)
 						    (861, 948))
 						line_style 	0
-						label      	(object SegLabel @354
-						    Parent_View 	@353
+						label      	(object SegLabel @328
+						    Parent_View 	@327
 						    location   	(955, 916)
 						    font       	(object Font
 							size       	9
@@ -17210,8 +16325,8 @@
 						    pctDist    	0.496666
 						    height     	63
 						    orientation 	0))
-					    (object RoleView "$UNNAMED$131" @355
-						Parent_View 	@351
+					    (object RoleView "$UNNAMED$131" @329
+						Parent_View 	@325
 						location   	(-244, 388)
 						font       	(object Font
 						    size       	9
@@ -17226,14 +16341,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4F51F94500E2"
-						client     	@351
-						supplier   	@315
+						client     	@325
+						supplier   	@308
 						vertices   	(list Points
 						    (940, 820)
 						    (1018, 693))
 						line_style 	0
-						label      	(object SegLabel @356
-						    Parent_View 	@355
+						label      	(object SegLabel @330
+						    Parent_View 	@329
 						    location   	(1057, 736)
 						    font       	(object Font
 							size       	9
@@ -17254,557 +16369,7 @@
 						    pctDist    	0.900000
 						    height     	54
 						    orientation 	1))))
-				    (object ClassView "Class" "Logical View::Schemas::Database::Loan" @357
-					ShowCompartmentStereotypes 	TRUE
-					IncludeAttribute 	TRUE
-					location   	(1777, 1826)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					label      	(object ItemLabel
-					    Parent_View 	@357
-					    location   	(1468, 1567)
-					    fill_color 	13434879
-					    nlines     	1
-					    max_width  	618
-					    justify    	0
-					    label      	"Loan")
-					icon       	"Table"
-					icon_style 	"Decoration"
-					line_color 	3342489
-					fill_color 	13434879
-					quidu      	"4E3410DF0313"
-					compartment 	(object Compartment
-					    Parent_View 	@357
-					    location   	(1468, 1627)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	11
-					    max_width  	543
-					    justify    	1)
-					width      	636
-					height     	718
-					annotation 	8
-					autoResize 	TRUE)
-				    (object AssociationViewNew "$UNNAMED$105" @358
-					location   	(1776, 1411)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					stereotype 	(object SegLabel @359
-					    Parent_View 	@358
-					    location   	(2032, 1397)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    anchor     	10
-					    anchor_loc 	1
-					    nlines     	1
-					    max_width  	450
-					    justify    	0
-					    label      	"<<Non-Identifying>>"
-					    pctDist    	4.783333
-					    height     	15
-					    orientation 	0)
-					line_color 	3342489
-					quidu      	"4E3412F502F5"
-					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$106" @360
-						Parent_View 	@358
-						location   	(-32, 195)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E3412F6026B"
-						client     	@358
-						supplier   	@357
-						vertices   	(list Points
-						    (1776, 1411)
-						    (1776, 1466))
-						line_style 	0
-						label      	(object SegLabel @361
-						    Parent_View 	@360
-						    location   	(1829, 1448)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..*"
-						    pctDist    	0.672727
-						    height     	53
-						    orientation 	0))
-					    (object RoleView "$UNNAMED$107" @362
-						Parent_View 	@358
-						location   	(-32, 195)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E3412F60272"
-						client     	@358
-						supplier   	@317
-						vertices   	(list Points
-						    (1776, 1411)
-						    (1776, 1356))
-						line_style 	0
-						label      	(object SegLabel @363
-						    Parent_View 	@362
-						    location   	(1814, 1377)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"1"
-						    pctDist    	0.625000
-						    height     	38
-						    orientation 	1))))
-				    (object AssociationViewNew "$UNNAMED$114" @364
-					location   	(1776, 2254)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					stereotype 	(object SegLabel @365
-					    Parent_View 	@364
-					    location   	(1583, 2256)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    anchor     	10
-					    anchor_loc 	1
-					    nlines     	1
-					    max_width  	450
-					    justify    	0
-					    label      	"<<Non-Identifying>>"
-					    pctDist    	-2.733333
-					    height     	2
-					    orientation 	1)
-					line_color 	3342489
-					quidu      	"4E3415440236"
-					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$115" @366
-						Parent_View 	@364
-						location   	(-32, 190)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E34154500E3"
-						client     	@364
-						supplier   	@336
-						vertices   	(list Points
-						    (1776, 2254)
-						    (1776, 2323))
-						line_style 	0
-						label      	(object SegLabel @367
-						    Parent_View 	@366
-						    location   	(1830, 2287)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"1..*"
-						    pctDist    	0.475197
-						    height     	54
-						    orientation 	0))
-					    (object RoleView "$UNNAMED$116" @368
-						Parent_View 	@364
-						location   	(-32, 190)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E34154500E9"
-						client     	@364
-						supplier   	@357
-						vertices   	(list Points
-						    (1776, 2254)
-						    (1776, 2185))
-						line_style 	0
-						label      	(object SegLabel @369
-						    Parent_View 	@368
-						    location   	(1817, 2212)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"1"
-						    pctDist    	0.623902
-						    height     	41
-						    orientation 	1))))
-				    (object AssociationViewNew "$UNNAMED$111" @370
-					location   	(2325, 2177)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					stereotype 	(object SegLabel @371
-					    Parent_View 	@370
-					    location   	(2542, 2205)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    anchor     	10
-					    anchor_loc 	1
-					    nlines     	1
-					    max_width  	450
-					    justify    	0
-					    label      	"<<Non-Identifying>>"
-					    pctDist    	4.116667
-					    height     	28
-					    orientation 	1)
-					line_color 	3342489
-					quidu      	"4E34150103E6"
-					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$112" @372
-						Parent_View 	@370
-						location   	(-395, -159)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E34150201B4"
-						client     	@370
-						supplier   	@357
-						vertices   	(list Points
-						    (2325, 2177)
-						    (2095, 2029))
-						line_style 	0
-						label      	(object SegLabel @373
-						    Parent_View 	@372
-						    location   	(2145, 2111)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..*"
-						    pctDist    	0.689606
-						    height     	43
-						    orientation 	0))
-					    (object RoleView "$UNNAMED$113" @374
-						Parent_View 	@370
-						location   	(-395, -159)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E34150201BD"
-						client     	@370
-						supplier   	@337
-						vertices   	(list Points
-						    (2325, 2177)
-						    (2556, 2325))
-						line_style 	0
-						label      	(object SegLabel @375
-						    Parent_View 	@374
-						    location   	(2582, 2285)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"1"
-						    pctDist    	1.000176
-						    height     	49
-						    orientation 	0))))
-				    (object AssociationViewNew "$UNNAMED$108" @376
-					location   	(1242, 1467)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					stereotype 	(object SegLabel @377
-					    Parent_View 	@376
-					    location   	(1243, 1458)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    anchor     	10
-					    anchor_loc 	1
-					    nlines     	1
-					    max_width  	450
-					    justify    	0
-					    label      	"<<Non-Identifying>>"
-					    pctDist    	0.516667
-					    height     	10
-					    orientation 	0)
-					line_color 	3342489
-					quidu      	"4E34131B03D7"
-					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$109" @378
-						Parent_View 	@376
-						location   	(362, 267)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E34131C0357"
-						client     	@376
-						supplier   	@357
-						vertices   	(list Points
-						    (1242, 1467)
-						    (1458, 1612))
-						line_style 	0
-						label      	(object SegLabel @379
-						    Parent_View 	@378
-						    location   	(1406, 1642)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..*"
-						    pctDist    	0.900000
-						    height     	54
-						    orientation 	1))
-					    (object RoleView "$UNNAMED$110" @380
-						Parent_View 	@376
-						location   	(362, 267)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E34131C0361"
-						client     	@376
-						supplier   	@344
-						vertices   	(list Points
-						    (1242, 1467)
-						    (1027, 1323))
-						line_style 	0
-						label      	(object SegLabel @381
-						    Parent_View 	@380
-						    location   	(1171, 1358)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..1"
-						    pctDist    	0.461591
-						    height     	52
-						    orientation 	1))))
-				    (object ClassView "Class" "Logical View::Schemas::Database::Postpone Request" @382
+				    (object ClassView "Class" "Logical View::Schemas::Database::Postpone Request" @331
 					ShowCompartmentStereotypes 	TRUE
 					IncludeAttribute 	TRUE
 					location   	(741, 1824)
@@ -17819,7 +16384,7 @@
 					    color      	0
 					    default_color 	TRUE)
 					label      	(object ItemLabel
-					    Parent_View 	@382
+					    Parent_View 	@331
 					    location   	(406, 1688)
 					    fill_color 	13434879
 					    nlines     	1
@@ -17831,30 +16396,11 @@
 					line_color 	3342489
 					fill_color 	13434879
 					quidu      	"4E3D16A403A8"
-					compartment 	(object Compartment
-					    Parent_View 	@382
-					    location   	(406, 1748)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	6
-					    max_width  	596
-					    justify    	1)
 					width      	688
 					height     	472
 					annotation 	8
 					autoResize 	TRUE)
-				    (object AssociationViewNew "$UNNAMED$123" @383
+				    (object AssociationViewNew "$UNNAMED$123" @332
 					location   	(741, 2182)
 					font       	(object Font
 					    size       	9
@@ -17866,8 +16412,8 @@
 					    strike     	FALSE
 					    color      	0
 					    default_color 	TRUE)
-					stereotype 	(object SegLabel @384
-					    Parent_View 	@383
+					stereotype 	(object SegLabel @333
+					    Parent_View 	@332
 					    location   	(757, 2178)
 					    font       	(object Font
 						size       	9
@@ -17891,8 +16437,8 @@
 					line_color 	3342489
 					quidu      	"4E3D1EAF02EB"
 					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$124" @385
-						Parent_View 	@383
+					    (object RoleView "$UNNAMED$124" @334
+						Parent_View 	@332
 						location   	(-27, -522)
 						font       	(object Font
 						    size       	9
@@ -17907,14 +16453,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4E3D1EB0004D"
-						client     	@383
-						supplier   	@382
+						client     	@332
+						supplier   	@331
 						vertices   	(list Points
 						    (741, 2182)
 						    (741, 2060))
 						line_style 	0
-						label      	(object SegLabel @386
-						    Parent_View 	@385
+						label      	(object SegLabel @335
+						    Parent_View 	@334
 						    location   	(794, 2091)
 						    font       	(object Font
 							size       	9
@@ -17935,8 +16481,8 @@
 						    pctDist    	0.745098
 						    height     	53
 						    orientation 	1))
-					    (object RoleView "$UNNAMED$125" @387
-						Parent_View 	@383
+					    (object RoleView "$UNNAMED$125" @336
+						Parent_View 	@332
 						location   	(-27, -522)
 						font       	(object Font
 						    size       	9
@@ -17951,14 +16497,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4E3D1EB0005A"
-						client     	@383
-						supplier   	@316
+						client     	@332
+						supplier   	@317
 						vertices   	(list Points
 						    (741, 2182)
 						    (741, 2304))
 						line_style 	0
-						label      	(object SegLabel @388
-						    Parent_View 	@387
+						label      	(object SegLabel @337
+						    Parent_View 	@336
 						    location   	(793, 2266)
 						    font       	(object Font
 							size       	9
@@ -17979,7 +16525,7 @@
 						    pctDist    	0.684932
 						    height     	52
 						    orientation 	0))))
-				    (object AssociationViewNew "$UNNAMED$141" @389
+				    (object AssociationViewNew "$UNNAMED$141" @338
 					location   	(742, 1455)
 					font       	(object Font
 					    size       	9
@@ -17991,8 +16537,8 @@
 					    strike     	FALSE
 					    color      	0
 					    default_color 	TRUE)
-					stereotype 	(object SegLabel @390
-					    Parent_View 	@389
+					stereotype 	(object SegLabel @339
+					    Parent_View 	@338
 					    location   	(742, 1442)
 					    font       	(object Font
 						size       	9
@@ -18016,8 +16562,8 @@
 					line_color 	3342489
 					quidu      	"4F992A2F02BF"
 					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$142" @391
-						Parent_View 	@389
+					    (object RoleView "$UNNAMED$142" @340
+						Parent_View 	@338
 						location   	(-26, 319)
 						font       	(object Font
 						    size       	9
@@ -18032,14 +16578,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4F992A3000FE"
-						client     	@389
-						supplier   	@382
+						client     	@338
+						supplier   	@331
 						vertices   	(list Points
 						    (742, 1455)
 						    (741, 1587))
 						line_style 	0
-						label      	(object SegLabel @392
-						    Parent_View 	@391
+						label      	(object SegLabel @341
+						    Parent_View 	@340
 						    location   	(808, 1544)
 						    font       	(object Font
 							size       	9
@@ -18060,8 +16606,8 @@
 						    pctDist    	0.673611
 						    height     	66
 						    orientation 	0))
-					    (object RoleView "$UNNAMED$143" @393
-						Parent_View 	@389
+					    (object RoleView "$UNNAMED$143" @342
+						Parent_View 	@338
 						location   	(-26, 319)
 						font       	(object Font
 						    size       	9
@@ -18076,14 +16622,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4F992A300107"
-						client     	@389
-						supplier   	@344
+						client     	@338
+						supplier   	@318
 						vertices   	(list Points
 						    (742, 1455)
 						    (743, 1323))
 						line_style 	0
-						label      	(object SegLabel @394
-						    Parent_View 	@393
+						label      	(object SegLabel @343
+						    Parent_View 	@342
 						    location   	(810, 1350)
 						    font       	(object Font
 							size       	9
@@ -18103,6 +16649,1099 @@
 						    label      	"0..1"
 						    pctDist    	0.804196
 						    height     	67
+						    orientation 	1))))
+				    (object ClassView "Class" "Logical View::Schemas::Database::Clien History" @344
+					ShowCompartmentStereotypes 	TRUE
+					IncludeAttribute 	TRUE
+					location   	(2944, 480)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					label      	(object ItemLabel
+					    Parent_View 	@344
+					    location   	(2581, 344)
+					    fill_color 	13434879
+					    nlines     	1
+					    max_width  	726
+					    justify    	0
+					    label      	"Clien History")
+					icon       	"Table"
+					icon_style 	"Decoration"
+					line_color 	3342489
+					fill_color 	13434879
+					quidu      	"4E340EF101FE"
+					width      	744
+					height     	472
+					annotation 	8
+					autoResize 	TRUE)
+				    (object AssociationViewNew "$UNNAMED$99" @345
+					location   	(2404, 480)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					stereotype 	(object SegLabel @346
+					    Parent_View 	@345
+					    location   	(2404, 373)
+					    font       	(object Font
+						size       	9
+						face       	"Arial"
+						charSet    	204
+						bold       	FALSE
+						italics    	FALSE
+						underline  	FALSE
+						strike     	FALSE
+						color      	0
+						default_color 	TRUE)
+					    anchor     	10
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	450
+					    justify    	0
+					    label      	"<<Non-Identifying>>"
+					    pctDist    	0.500000
+					    height     	108
+					    orientation 	0)
+					line_color 	3342489
+					quidu      	"4E340FA30168"
+					roleview_list 	(list RoleViews
+					    (object RoleView "$UNNAMED$100" @347
+						Parent_View 	@345
+						location   	(596, 112)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E340FA30334"
+						client     	@345
+						supplier   	@344
+						vertices   	(list Points
+						    (2404, 480)
+						    (2571, 480))
+						line_style 	0
+						label      	(object SegLabel @348
+						    Parent_View 	@347
+						    location   	(2538, 534)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..*"
+						    pctDist    	0.803371
+						    height     	54
+						    orientation 	1))
+					    (object RoleView "$UNNAMED$101" @349
+						Parent_View 	@345
+						location   	(596, 112)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E340FA3033A"
+						client     	@345
+						supplier   	@306
+						vertices   	(list Points
+						    (2404, 480)
+						    (2237, 480))
+						line_style 	0
+						label      	(object SegLabel @350
+						    Parent_View 	@349
+						    location   	(2286, 534)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..1"
+						    pctDist    	0.706215
+						    height     	54
+						    orientation 	0))))
+				    (object ClassView "Class" "Logical View::Schemas::Database::Client" @351
+					ShowCompartmentStereotypes 	TRUE
+					IncludeAttribute 	TRUE
+					location   	(1776, 1120)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					label      	(object ItemLabel
+					    Parent_View 	@351
+					    location   	(1410, 984)
+					    fill_color 	13434879
+					    nlines     	1
+					    max_width  	732
+					    justify    	0
+					    label      	"Client")
+					icon       	"Table"
+					icon_style 	"Decoration"
+					line_color 	3342489
+					fill_color 	13434879
+					quidu      	"4E3405030327"
+					width      	750
+					height     	472
+					annotation 	8
+					autoResize 	TRUE)
+				    (object AssociationViewNew "$UNNAMED$96" @352
+					location   	(1844, 775)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					stereotype 	(object SegLabel @353
+					    Parent_View 	@352
+					    location   	(1842, 774)
+					    font       	(object Font
+						size       	9
+						face       	"Arial"
+						charSet    	204
+						bold       	FALSE
+						italics    	FALSE
+						underline  	FALSE
+						strike     	FALSE
+						color      	0
+						default_color 	TRUE)
+					    anchor     	10
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	450
+					    justify    	0
+					    label      	"<<Non-Identifying>>"
+					    pctDist    	0.483333
+					    height     	2
+					    orientation 	0)
+					line_color 	3342489
+					quidu      	"4E340EA701F3"
+					roleview_list 	(list RoleViews
+					    (object RoleView "$UNNAMED$97" @354
+						Parent_View 	@352
+						location   	(36, 407)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E340EA80097"
+						client     	@352
+						supplier   	@351
+						vertices   	(list Points
+						    (1844, 775)
+						    (1821, 883))
+						line_style 	0
+						label      	(object SegLabel @355
+						    Parent_View 	@354
+						    location   	(1896, 856)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..*"
+						    pctDist    	0.636044
+						    height     	66
+						    orientation 	0))
+					    (object RoleView "$UNNAMED$98" @356
+						Parent_View 	@352
+						location   	(36, 407)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E340EA8009D"
+						client     	@352
+						supplier   	@306
+						vertices   	(list Points
+						    (1844, 775)
+						    (1865, 667))
+						line_style 	0
+						label      	(object SegLabel @357
+						    Parent_View 	@356
+						    location   	(1911, 717)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"1"
+						    pctDist    	0.649779
+						    height     	54
+						    orientation 	1))))
+				    (object AssociationViewNew "$UNNAMED$102" @358
+					location   	(2361, 798)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					stereotype 	(object SegLabel @359
+					    Parent_View 	@358
+					    location   	(2476, 849)
+					    font       	(object Font
+						size       	9
+						face       	"Arial"
+						charSet    	204
+						bold       	FALSE
+						italics    	FALSE
+						underline  	FALSE
+						strike     	FALSE
+						color      	0
+						default_color 	TRUE)
+					    anchor     	10
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	450
+					    justify    	0
+					    label      	"<<Non-Identifying>>"
+					    pctDist    	2.433333
+					    height     	51
+					    orientation 	1)
+					line_color 	3342489
+					quidu      	"4E340FAD00EC"
+					roleview_list 	(list RoleViews
+					    (object RoleView "$UNNAMED$103" @360
+						Parent_View 	@358
+						location   	(553, -418)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E340FB2026C"
+						client     	@358
+						supplier   	@344
+						vertices   	(list Points
+						    (2361, 798)
+						    (2571, 681))
+						line_style 	0
+						label      	(object SegLabel @361
+						    Parent_View 	@360
+						    location   	(2543, 748)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..*"
+						    pctDist    	0.763802
+						    height     	43
+						    orientation 	1))
+					    (object RoleView "$UNNAMED$104" @362
+						Parent_View 	@358
+						location   	(553, -418)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E340FB20275"
+						client     	@358
+						supplier   	@351
+						vertices   	(list Points
+						    (2361, 798)
+						    (2151, 912))
+						line_style 	0
+						label      	(object SegLabel @363
+						    Parent_View 	@362
+						    location   	(2185, 945)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"1"
+						    pctDist    	0.939807
+						    height     	43
+						    orientation 	0))))
+				    (object AssociationViewNew "$UNNAMED$132" @364
+					location   	(1490, 788)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					stereotype 	(object SegLabel @365
+					    Parent_View 	@364
+					    location   	(1429, 785)
+					    font       	(object Font
+						size       	9
+						face       	"Arial"
+						charSet    	204
+						bold       	FALSE
+						italics    	FALSE
+						underline  	FALSE
+						strike     	FALSE
+						color      	0
+						default_color 	TRUE)
+					    anchor     	10
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	450
+					    justify    	0
+					    label      	"<<Non-Identifying>>"
+					    pctDist    	-0.533333
+					    height     	4
+					    orientation 	0)
+					line_color 	3342489
+					quidu      	"4F51FB430013"
+					roleview_list 	(list RoleViews
+					    (object RoleView "$UNNAMED$133" @366
+						Parent_View 	@364
+						location   	(306, 356)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4F51FB430234"
+						client     	@364
+						supplier   	@351
+						vertices   	(list Points
+						    (1490, 788)
+						    (1572, 883))
+						line_style 	0
+						label      	(object SegLabel @367
+						    Parent_View 	@366
+						    location   	(1621, 858)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..1"
+						    pctDist    	1.104489
+						    height     	54
+						    orientation 	0))
+					    (object RoleView "$UNNAMED$134" @368
+						Parent_View 	@364
+						location   	(306, 356)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4F51FB430239"
+						client     	@364
+						supplier   	@308
+						vertices   	(list Points
+						    (1490, 788)
+						    (1408, 693))
+						line_style 	0
+						label      	(object SegLabel @369
+						    Parent_View 	@368
+						    location   	(1476, 721)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"1"
+						    pctDist    	0.489911
+						    height     	34
+						    orientation 	1))))
+				    (object ClassView "Class" "Logical View::Schemas::Database::Loan" @370
+					ShowCompartmentStereotypes 	TRUE
+					IncludeAttribute 	TRUE
+					location   	(1777, 1826)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					label      	(object ItemLabel
+					    Parent_View 	@370
+					    location   	(1468, 1567)
+					    fill_color 	13434879
+					    nlines     	1
+					    max_width  	618
+					    justify    	0
+					    label      	"Loan")
+					icon       	"Table"
+					icon_style 	"Decoration"
+					line_color 	3342489
+					fill_color 	13434879
+					quidu      	"4E3410DF0313"
+					width      	636
+					height     	718
+					annotation 	8
+					autoResize 	TRUE)
+				    (object AssociationViewNew "$UNNAMED$105" @371
+					location   	(1776, 1411)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					stereotype 	(object SegLabel @372
+					    Parent_View 	@371
+					    location   	(2032, 1397)
+					    font       	(object Font
+						size       	9
+						face       	"Arial"
+						charSet    	204
+						bold       	FALSE
+						italics    	FALSE
+						underline  	FALSE
+						strike     	FALSE
+						color      	0
+						default_color 	TRUE)
+					    anchor     	10
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	450
+					    justify    	0
+					    label      	"<<Non-Identifying>>"
+					    pctDist    	4.783333
+					    height     	15
+					    orientation 	0)
+					line_color 	3342489
+					quidu      	"4E3412F502F5"
+					roleview_list 	(list RoleViews
+					    (object RoleView "$UNNAMED$106" @373
+						Parent_View 	@371
+						location   	(-32, 195)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E3412F6026B"
+						client     	@371
+						supplier   	@370
+						vertices   	(list Points
+						    (1776, 1411)
+						    (1777, 1826))
+						line_style 	0
+						label      	(object SegLabel @374
+						    Parent_View 	@373
+						    location   	(1829, 1448)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..*"
+						    pctDist    	0.672727
+						    height     	53
+						    orientation 	0))
+					    (object RoleView "$UNNAMED$107" @375
+						Parent_View 	@371
+						location   	(-32, 195)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E3412F60272"
+						client     	@371
+						supplier   	@351
+						vertices   	(list Points
+						    (1776, 1411)
+						    (1776, 1120))
+						line_style 	0
+						label      	(object SegLabel @376
+						    Parent_View 	@375
+						    location   	(1814, 1377)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"1"
+						    pctDist    	0.625000
+						    height     	38
+						    orientation 	1))))
+				    (object AssociationViewNew "$UNNAMED$114" @377
+					location   	(1776, 2254)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					stereotype 	(object SegLabel @378
+					    Parent_View 	@377
+					    location   	(1583, 2256)
+					    font       	(object Font
+						size       	9
+						face       	"Arial"
+						charSet    	204
+						bold       	FALSE
+						italics    	FALSE
+						underline  	FALSE
+						strike     	FALSE
+						color      	0
+						default_color 	TRUE)
+					    anchor     	10
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	450
+					    justify    	0
+					    label      	"<<Non-Identifying>>"
+					    pctDist    	-2.733333
+					    height     	2
+					    orientation 	1)
+					line_color 	3342489
+					quidu      	"4E3415440236"
+					roleview_list 	(list RoleViews
+					    (object RoleView "$UNNAMED$115" @379
+						Parent_View 	@377
+						location   	(-32, 190)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E34154500E3"
+						client     	@377
+						supplier   	@309
+						vertices   	(list Points
+						    (1776, 2254)
+						    (1776, 2323))
+						line_style 	0
+						label      	(object SegLabel @380
+						    Parent_View 	@379
+						    location   	(1830, 2287)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"1..*"
+						    pctDist    	0.475197
+						    height     	54
+						    orientation 	0))
+					    (object RoleView "$UNNAMED$116" @381
+						Parent_View 	@377
+						location   	(-32, 190)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E34154500E9"
+						client     	@377
+						supplier   	@370
+						vertices   	(list Points
+						    (1776, 2254)
+						    (1776, 2185))
+						line_style 	0
+						label      	(object SegLabel @382
+						    Parent_View 	@381
+						    location   	(1817, 2212)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"1"
+						    pctDist    	0.623902
+						    height     	41
+						    orientation 	1))))
+				    (object AssociationViewNew "$UNNAMED$111" @383
+					location   	(2325, 2177)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					stereotype 	(object SegLabel @384
+					    Parent_View 	@383
+					    location   	(2542, 2205)
+					    font       	(object Font
+						size       	9
+						face       	"Arial"
+						charSet    	204
+						bold       	FALSE
+						italics    	FALSE
+						underline  	FALSE
+						strike     	FALSE
+						color      	0
+						default_color 	TRUE)
+					    anchor     	10
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	450
+					    justify    	0
+					    label      	"<<Non-Identifying>>"
+					    pctDist    	4.116667
+					    height     	28
+					    orientation 	1)
+					line_color 	3342489
+					quidu      	"4E34150103E6"
+					roleview_list 	(list RoleViews
+					    (object RoleView "$UNNAMED$112" @385
+						Parent_View 	@383
+						location   	(-395, -159)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E34150201B4"
+						client     	@383
+						supplier   	@370
+						vertices   	(list Points
+						    (2325, 2177)
+						    (2095, 2029))
+						line_style 	0
+						label      	(object SegLabel @386
+						    Parent_View 	@385
+						    location   	(2145, 2111)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..*"
+						    pctDist    	0.689606
+						    height     	43
+						    orientation 	0))
+					    (object RoleView "$UNNAMED$113" @387
+						Parent_View 	@383
+						location   	(-395, -159)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E34150201BD"
+						client     	@383
+						supplier   	@310
+						vertices   	(list Points
+						    (2325, 2177)
+						    (2556, 2325))
+						line_style 	0
+						label      	(object SegLabel @388
+						    Parent_View 	@387
+						    location   	(2582, 2285)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"1"
+						    pctDist    	1.000176
+						    height     	49
+						    orientation 	0))))
+				    (object AssociationViewNew "$UNNAMED$108" @389
+					location   	(1242, 1467)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					stereotype 	(object SegLabel @390
+					    Parent_View 	@389
+					    location   	(1243, 1458)
+					    font       	(object Font
+						size       	9
+						face       	"Arial"
+						charSet    	204
+						bold       	FALSE
+						italics    	FALSE
+						underline  	FALSE
+						strike     	FALSE
+						color      	0
+						default_color 	TRUE)
+					    anchor     	10
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	450
+					    justify    	0
+					    label      	"<<Non-Identifying>>"
+					    pctDist    	0.516667
+					    height     	10
+					    orientation 	0)
+					line_color 	3342489
+					quidu      	"4E34131B03D7"
+					roleview_list 	(list RoleViews
+					    (object RoleView "$UNNAMED$109" @391
+						Parent_View 	@389
+						location   	(362, 267)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E34131C0357"
+						client     	@389
+						supplier   	@370
+						vertices   	(list Points
+						    (1242, 1467)
+						    (1458, 1612))
+						line_style 	0
+						label      	(object SegLabel @392
+						    Parent_View 	@391
+						    location   	(1406, 1642)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..*"
+						    pctDist    	0.900000
+						    height     	54
+						    orientation 	1))
+					    (object RoleView "$UNNAMED$110" @393
+						Parent_View 	@389
+						location   	(362, 267)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E34131C0361"
+						client     	@389
+						supplier   	@318
+						vertices   	(list Points
+						    (1242, 1467)
+						    (1028, 1323))
+						line_style 	0
+						label      	(object SegLabel @394
+						    Parent_View 	@393
+						    location   	(1171, 1358)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..1"
+						    pctDist    	0.461591
+						    height     	52
 						    orientation 	1))))
 				    (object AssociationViewNew "$UNNAMED$144" @395
 					location   	(1271, 1824)
@@ -18158,10 +17797,10 @@
 						line_color 	3342489
 						quidu      	"4FBBFEEF021F"
 						client     	@395
-						supplier   	@357
+						supplier   	@370
 						vertices   	(list Points
 						    (1271, 1824)
-						    (1458, 1825))
+						    (1458, 1824))
 						line_style 	0
 						label      	(object SegLabel @398
 						    Parent_View 	@397
@@ -18202,7 +17841,7 @@
 						line_color 	3342489
 						quidu      	"4FBBFEEF022C"
 						client     	@395
-						supplier   	@382
+						supplier   	@331
 						vertices   	(list Points
 						    (1271, 1824)
 						    (1085, 1824))
@@ -18229,307 +17868,7 @@
 						    pctDist    	0.720096
 						    height     	40
 						    orientation 	0))))
-				    (object ClassView "Class" "Logical View::Schemas::Database::Client Group" @401
-					ShowCompartmentStereotypes 	TRUE
-					IncludeAttribute 	TRUE
-					location   	(2944, 1120)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					label      	(object ItemLabel
-					    Parent_View 	@401
-					    location   	(2582, 1008)
-					    fill_color 	13434879
-					    nlines     	1
-					    max_width  	724
-					    justify    	0
-					    label      	"Client Group")
-					icon       	"Table"
-					icon_style 	"Decoration"
-					line_color 	3342489
-					fill_color 	13434879
-					quidu      	"4E3D1117002F"
-					compartment 	(object Compartment
-					    Parent_View 	@401
-					    location   	(2582, 1068)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	5
-					    max_width  	649
-					    justify    	1)
-					width      	742
-					height     	424
-					annotation 	8
-					autoResize 	TRUE)
-				    (object AssociationViewNew "$UNNAMED$135" @402
-					location   	(2944, 811)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					stereotype 	(object SegLabel @403
-					    Parent_View 	@402
-					    location   	(3134, 811)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    anchor     	10
-					    anchor_loc 	1
-					    nlines     	1
-					    max_width  	450
-					    justify    	0
-					    label      	"<<Non-Identifying>>"
-					    pctDist    	3.683333
-					    height     	1
-					    orientation 	0)
-					line_color 	3342489
-					quidu      	"4F98F81F001F"
-					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$136" @404
-						Parent_View 	@402
-						location   	(-48, -309)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4F98F81F034A"
-						client     	@402
-						supplier   	@307
-						vertices   	(list Points
-						    (2944, 811)
-						    (2944, 716))
-						line_style 	0
-						label      	(object SegLabel @405
-						    Parent_View 	@404
-						    location   	(2995, 756)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..*"
-						    pctDist    	0.592593
-						    height     	51
-						    orientation 	1))
-					    (object RoleView "$UNNAMED$137" @406
-						Parent_View 	@402
-						location   	(-48, -309)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4F98F81F034C"
-						client     	@402
-						supplier   	@401
-						vertices   	(list Points
-						    (2944, 811)
-						    (2944, 907))
-						line_style 	0
-						label      	(object SegLabel @407
-						    Parent_View 	@406
-						    location   	(2999, 878)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..1"
-						    pctDist    	0.707190
-						    height     	55
-						    orientation 	0))))
-				    (object AssociationViewNew "$UNNAMED$120" @408
-					location   	(2361, 1120)
-					font       	(object Font
-					    size       	9
-					    face       	"Arial"
-					    charSet    	204
-					    bold       	FALSE
-					    italics    	FALSE
-					    underline  	FALSE
-					    strike     	FALSE
-					    color      	0
-					    default_color 	TRUE)
-					stereotype 	(object SegLabel @409
-					    Parent_View 	@408
-					    location   	(2377, 1080)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    anchor     	10
-					    anchor_loc 	1
-					    nlines     	1
-					    max_width  	450
-					    justify    	0
-					    label      	"<<Non-Identifying>>"
-					    pctDist    	0.783333
-					    height     	41
-					    orientation 	0)
-					line_color 	3342489
-					quidu      	"4E3D13A60072"
-					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$121" @410
-						Parent_View 	@408
-						location   	(-823, 144)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E3D13A6036E"
-						client     	@408
-						supplier   	@317
-						vertices   	(list Points
-						    (2361, 1120)
-						    (2151, 1120))
-						line_style 	0
-						label      	(object SegLabel @411
-						    Parent_View 	@410
-						    location   	(2201, 1157)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"0..*"
-						    pctDist    	0.764940
-						    height     	37
-						    orientation 	0))
-					    (object RoleView "$UNNAMED$122" @412
-						Parent_View 	@408
-						location   	(-823, 144)
-						font       	(object Font
-						    size       	9
-						    face       	"Arial"
-						    charSet    	204
-						    bold       	FALSE
-						    italics    	FALSE
-						    underline  	FALSE
-						    strike     	FALSE
-						    color      	0
-						    default_color 	TRUE)
-						stereotype 	TRUE
-						line_color 	3342489
-						quidu      	"4E3D13A6037C"
-						client     	@408
-						supplier   	@401
-						vertices   	(list Points
-						    (2361, 1120)
-						    (2572, 1120))
-						line_style 	0
-						label      	(object SegLabel @413
-						    Parent_View 	@412
-						    location   	(2551, 1174)
-						    font       	(object Font
-							size       	9
-							face       	"Arial"
-							charSet    	204
-							bold       	FALSE
-							italics    	FALSE
-							underline  	FALSE
-							strike     	FALSE
-							color      	0
-							default_color 	TRUE)
-						    anchor     	2
-						    anchor_loc 	1
-						    nlines     	1
-						    max_width  	15
-						    justify    	0
-						    label      	"1"
-						    pctDist    	0.900000
-						    height     	54
-						    orientation 	1))))
-				    (object ClassView "Class" "Logical View::Schemas::Database::Loan Offer" @414
+				    (object ClassView "Class" "Logical View::Schemas::Database::Loan Offer" @401
 					ShowCompartmentStereotypes 	TRUE
 					IncludeAttribute 	TRUE
 					location   	(2944, 1824)
@@ -18544,7 +17883,7 @@
 					    color      	0
 					    default_color 	TRUE)
 					label      	(object ItemLabel
-					    Parent_View 	@414
+					    Parent_View 	@401
 					    location   	(2555, 1639)
 					    fill_color 	13434879
 					    nlines     	1
@@ -18556,30 +17895,11 @@
 					line_color 	3342489
 					fill_color 	13434879
 					quidu      	"4E34172D0226"
-					compartment 	(object Compartment
-					    Parent_View 	@414
-					    location   	(2555, 1699)
-					    font       	(object Font
-						size       	9
-						face       	"Arial"
-						charSet    	204
-						bold       	FALSE
-						italics    	FALSE
-						underline  	FALSE
-						strike     	FALSE
-						color      	0
-						default_color 	TRUE)
-					    icon_style 	"Icon"
-					    fill_color 	16777215
-					    anchor     	2
-					    nlines     	8
-					    max_width  	704
-					    justify    	1)
 					width      	796
 					height     	570
 					annotation 	8
 					autoResize 	TRUE)
-				    (object AssociationViewNew "$UNNAMED$117" @415
+				    (object AssociationViewNew "$UNNAMED$117" @402
 					location   	(2320, 1824)
 					font       	(object Font
 					    size       	9
@@ -18591,8 +17911,8 @@
 					    strike     	FALSE
 					    color      	0
 					    default_color 	TRUE)
-					stereotype 	(object SegLabel @416
-					    Parent_View 	@415
+					stereotype 	(object SegLabel @403
+					    Parent_View 	@402
 					    location   	(2335, 1878)
 					    font       	(object Font
 						size       	9
@@ -18616,8 +17936,8 @@
 					line_color 	3342489
 					quidu      	"4E3418140282"
 					roleview_list 	(list RoleViews
-					    (object RoleView "$UNNAMED$118" @417
-						Parent_View 	@415
+					    (object RoleView "$UNNAMED$118" @404
+						Parent_View 	@402
 						location   	(528, -1088)
 						font       	(object Font
 						    size       	9
@@ -18632,14 +17952,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4E3418150115"
-						client     	@415
-						supplier   	@357
+						client     	@402
+						supplier   	@370
 						vertices   	(list Points
 						    (2320, 1824)
-						    (2095, 1825))
+						    (2095, 1824))
 						line_style 	0
-						label      	(object SegLabel @418
-						    Parent_View 	@417
+						label      	(object SegLabel @405
+						    Parent_View 	@404
 						    location   	(2138, 1785)
 						    font       	(object Font
 							size       	9
@@ -18660,8 +17980,8 @@
 						    pctDist    	0.810127
 						    height     	41
 						    orientation 	1))
-					    (object RoleView "$UNNAMED$119" @419
-						Parent_View 	@415
+					    (object RoleView "$UNNAMED$119" @406
+						Parent_View 	@402
 						location   	(528, -1088)
 						font       	(object Font
 						    size       	9
@@ -18676,14 +17996,14 @@
 						stereotype 	TRUE
 						line_color 	3342489
 						quidu      	"4E341815011D"
-						client     	@415
-						supplier   	@414
+						client     	@402
+						supplier   	@401
 						vertices   	(list Points
 						    (2320, 1824)
 						    (2545, 1824))
 						line_style 	0
-						label      	(object SegLabel @420
-						    Parent_View 	@419
+						label      	(object SegLabel @407
+						    Parent_View 	@406
 						    location   	(2512, 1787)
 						    font       	(object Font
 							size       	9
@@ -18704,6 +18024,287 @@
 						    pctDist    	0.856540
 						    height     	38
 						    orientation 	0))))
+				    (object ClassView "Class" "Logical View::Schemas::Database::Client Group" @408
+					ShowCompartmentStereotypes 	TRUE
+					IncludeAttribute 	TRUE
+					location   	(2944, 1120)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					label      	(object ItemLabel
+					    Parent_View 	@408
+					    location   	(2582, 1008)
+					    fill_color 	13434879
+					    nlines     	1
+					    max_width  	724
+					    justify    	0
+					    label      	"Client Group")
+					icon       	"Table"
+					icon_style 	"Decoration"
+					line_color 	3342489
+					fill_color 	13434879
+					quidu      	"4E3D1117002F"
+					width      	742
+					height     	424
+					annotation 	8
+					autoResize 	TRUE)
+				    (object AssociationViewNew "$UNNAMED$135" @409
+					location   	(2944, 811)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					stereotype 	(object SegLabel @410
+					    Parent_View 	@409
+					    location   	(3134, 811)
+					    font       	(object Font
+						size       	9
+						face       	"Arial"
+						charSet    	204
+						bold       	FALSE
+						italics    	FALSE
+						underline  	FALSE
+						strike     	FALSE
+						color      	0
+						default_color 	TRUE)
+					    anchor     	10
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	450
+					    justify    	0
+					    label      	"<<Non-Identifying>>"
+					    pctDist    	3.683333
+					    height     	1
+					    orientation 	0)
+					line_color 	3342489
+					quidu      	"4F98F81F001F"
+					roleview_list 	(list RoleViews
+					    (object RoleView "$UNNAMED$136" @411
+						Parent_View 	@409
+						location   	(-48, -309)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4F98F81F034A"
+						client     	@409
+						supplier   	@344
+						vertices   	(list Points
+						    (2944, 811)
+						    (2944, 716))
+						line_style 	0
+						label      	(object SegLabel @412
+						    Parent_View 	@411
+						    location   	(2995, 756)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..*"
+						    pctDist    	0.592593
+						    height     	51
+						    orientation 	1))
+					    (object RoleView "$UNNAMED$137" @413
+						Parent_View 	@409
+						location   	(-48, -309)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4F98F81F034C"
+						client     	@409
+						supplier   	@408
+						vertices   	(list Points
+						    (2944, 811)
+						    (2944, 907))
+						line_style 	0
+						label      	(object SegLabel @414
+						    Parent_View 	@413
+						    location   	(2999, 878)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..1"
+						    pctDist    	0.707190
+						    height     	55
+						    orientation 	0))))
+				    (object AssociationViewNew "$UNNAMED$120" @415
+					location   	(2361, 1120)
+					font       	(object Font
+					    size       	9
+					    face       	"Arial"
+					    charSet    	204
+					    bold       	FALSE
+					    italics    	FALSE
+					    underline  	FALSE
+					    strike     	FALSE
+					    color      	0
+					    default_color 	TRUE)
+					stereotype 	(object SegLabel @416
+					    Parent_View 	@415
+					    location   	(2377, 1080)
+					    font       	(object Font
+						size       	9
+						face       	"Arial"
+						charSet    	204
+						bold       	FALSE
+						italics    	FALSE
+						underline  	FALSE
+						strike     	FALSE
+						color      	0
+						default_color 	TRUE)
+					    anchor     	10
+					    anchor_loc 	1
+					    nlines     	1
+					    max_width  	450
+					    justify    	0
+					    label      	"<<Non-Identifying>>"
+					    pctDist    	0.783333
+					    height     	41
+					    orientation 	0)
+					line_color 	3342489
+					quidu      	"4E3D13A60072"
+					roleview_list 	(list RoleViews
+					    (object RoleView "$UNNAMED$121" @417
+						Parent_View 	@415
+						location   	(-823, 144)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E3D13A6036E"
+						client     	@415
+						supplier   	@351
+						vertices   	(list Points
+						    (2361, 1120)
+						    (2151, 1120))
+						line_style 	0
+						label      	(object SegLabel @418
+						    Parent_View 	@417
+						    location   	(2201, 1157)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"0..*"
+						    pctDist    	0.764940
+						    height     	37
+						    orientation 	0))
+					    (object RoleView "$UNNAMED$122" @419
+						Parent_View 	@415
+						location   	(-823, 144)
+						font       	(object Font
+						    size       	9
+						    face       	"Arial"
+						    charSet    	204
+						    bold       	FALSE
+						    italics    	FALSE
+						    underline  	FALSE
+						    strike     	FALSE
+						    color      	0
+						    default_color 	TRUE)
+						stereotype 	TRUE
+						line_color 	3342489
+						quidu      	"4E3D13A6037C"
+						client     	@415
+						supplier   	@408
+						vertices   	(list Points
+						    (2361, 1120)
+						    (2572, 1120))
+						line_style 	0
+						label      	(object SegLabel @420
+						    Parent_View 	@419
+						    location   	(2551, 1174)
+						    font       	(object Font
+							size       	9
+							face       	"Arial"
+							charSet    	204
+							bold       	FALSE
+							italics    	FALSE
+							underline  	FALSE
+							strike     	FALSE
+							color      	0
+							default_color 	TRUE)
+						    anchor     	2
+						    anchor_loc 	1
+						    nlines     	1
+						    max_width  	15
+						    justify    	0
+						    label      	"1"
+						    pctDist    	0.900000
+						    height     	54
+						    orientation 	1))))
 				    (object AssociationViewNew "$UNNAMED$147" @421
 					location   	(2944, 1435)
 					font       	(object Font
@@ -18758,7 +18359,7 @@
 						line_color 	3342489
 						quidu      	"4FC211E30102"
 						client     	@421
-						supplier   	@414
+						supplier   	@401
 						vertices   	(list Points
 						    (2944, 1435)
 						    (2944, 1538))
@@ -18802,7 +18403,7 @@
 						line_color 	3342489
 						quidu      	"4FC211E3010A"
 						client     	@421
-						supplier   	@401
+						supplier   	@408
 						vertices   	(list Points
 						    (2944, 1435)
 						    (2944, 1332))

@@ -25,14 +25,13 @@ public class Loan implements java.io.Serializable {
     private String employeeId;
     private PostponeRequest postponeRequest;
     private LoanOffer loanOffer;
-    private List<LoanHistory> loanHistory;
     private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     
 
     public Loan() {
     }
 
-    public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId, LoanStatus loanStatus, LoanOffer loanOffer, List<LoanHistory> loanHistory, PostponeRequest postponeRequest) {
+    public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId, LoanStatus loanStatus, LoanOffer loanOffer, PostponeRequest postponeRequest) {
         this.loanId = id;
         this.dueDate = dueDate;
         this.baseDueDate = baseDueDate;
@@ -41,12 +40,12 @@ public class Loan implements java.io.Serializable {
         this.client = client;
         this.loanStatus = loanStatus;
         this.loanOffer = loanOffer;
-        this.loanHistory = loanHistory;
+      
         this.postponeRequest = postponeRequest;
     }
 
     public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId,
-            String employeeId, LoanStatus loanStatus, LoanOffer loanOffer, PostponeRequest postponeRequest, List<LoanHistory> loanHistory) {
+            String employeeId, LoanStatus loanStatus, LoanOffer loanOffer, PostponeRequest postponeRequest) {
         this.loanId = id;
         this.dueDate = dueDate;
         this.baseDueDate = baseDueDate;
@@ -57,7 +56,7 @@ public class Loan implements java.io.Serializable {
         this.loanStatus = loanStatus;
         this.loanOffer = loanOffer;
         this.postponeRequest = postponeRequest;
-        this.loanHistory = loanHistory;
+      
     }
 
     //custom constructor
@@ -89,13 +88,7 @@ public class Loan implements java.io.Serializable {
 
     }
 
-    public List<LoanHistory> getLoanHistory() {
-        return loanHistory;
-    }
-
-    public void setLoanHistory(List<LoanHistory> loanHistory) {
-        this.loanHistory = loanHistory;
-    }
+   
 
 
     public LoanOffer getLoanOffer() {

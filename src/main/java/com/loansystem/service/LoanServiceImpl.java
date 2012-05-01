@@ -20,6 +20,7 @@ import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanHistory;
+import com.loansystem.model.LoanHistoryCollection;
 import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
 import com.loansystem.model.PostponeRequest;
@@ -97,9 +98,10 @@ public class LoanServiceImpl implements LoanService {
         Loan lastLoan = loanTabModel.getLastLoan();
 
         LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
-        ArrayList<LoanHistory> loanHistory = new ArrayList<LoanHistory>();
-        loanHistory.addAll(lastLoan.getLoanHistory());
-        LoanHistory loanHistoryLast = loanHistory.get(0);
+        LoanHistoryCollection loanHistory = new LoanHistoryCollection();
+        ArrayList<LoanHistory> loanHistoryList = loanHistoryHome.findByLoanId(lastLoan, null);
+        //loanHistory.addAll(lastLoan.getLoanHistory());
+        //LoanHistory loanHistoryLast = loanHistory.get(0);
 
         Transaction transaction = null;
 
@@ -109,11 +111,14 @@ public class LoanServiceImpl implements LoanService {
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             transaction = session.beginTransaction();
 
+            //lastLoan.getLoanHistory().get(0).setLoan(null); works
             //lastLoan.setLoanHistory(null);
+           
+            loanHistoryHome.delete(loanHistoryList.get(0), session);
             loanHome.delete(lastLoan, session);
             
             //loanHistoryLast.setLoan(null);
-            loanHistoryHome.delete(loanHistoryLast, session);
+            //loanHistoryHome.delete(loanHistoryLast, session);
 
 
             transaction.commit();
@@ -276,5 +281,35 @@ public class LoanServiceImpl implements LoanService {
         LoanHome loanHome = new LoanHome();
         postponeRequestedLoans = loanHome.getPostponedLoans(postponeRequestStatus.getId(), null);
         return postponeRequestedLoans;
+    }
+
+    @Override
+    public void updateLoanHistoryForLoan(LoanTabModel loanTabModel, int loanStatusId) {
+       Transaction transaction = null;
+       Loan lastLoan = loanTabModel.getLastLoan();
+       
+       LoanStatus loanStatus = getStatusById(loanStatusId);
+       
+       lastLoan.setLoanStatus(loanStatus);
+       
+       LoanHistory loanHistory = new LoanHistory(lastLoan, loanStatus, "change to status " + loanStatus.getDescription());
+       
+       try {
+           Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+           transaction = session.beginTransaction();
+           
+           saveLoanHistory(loanHistory, session);
+           mergeLoan(lastLoan, session);
+           
+           transaction.commit();
+           
+       } catch(Exception e) {
+           transaction.rollback();
+           log.error("updateLoanHistoryForLoan " + e);
+       }
+       
+       
+       
+       
     }
 }

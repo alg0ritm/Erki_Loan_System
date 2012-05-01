@@ -3,8 +3,9 @@ package com.loansystem.db.dao;
 // default package
 // Generated Nov 13, 2011 9:49:24 PM by Hibernate Tools 3.4.0.CR1
 import com.loansystem.hibernate.HibernateUtil;
+import com.loansystem.model.Loan;
 import com.loansystem.model.LoanHistory;
-import com.loansystem.model.LoanHistoryId;
+import java.util.ArrayList;
 import java.util.List;
 import javax.naming.InitialContext;
 import org.apache.commons.logging.Log;
@@ -14,6 +15,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Home object for domain model class LoanHistory.
@@ -100,15 +103,18 @@ public class LoanHistoryHome {
         }
     }
 
-    public LoanHistory findById(LoanHistoryId id) {
-        log.debug("getting LoanHistory instance with id: " + id);
+    public LoanHistory findById(int loanHistoryId, Session session) {
+        Session sessionLoc = createRequieredSession(session);
+        log.debug("getting LoanHistory instance with id: " + loanHistoryId);
         try {
-            LoanHistory instance = (LoanHistory) sessionFactory.getCurrentSession().get("LoanHistory", id);
+            LoanHistory instance = (LoanHistory) sessionLoc.get("com.loansystem.model.LoanHistory", loanHistoryId);
             if (instance == null) {
                 log.debug("get successful, no instance found");
             } else {
                 log.debug("get successful, instance found");
             }
+            if(session==null)
+                sessionLoc.getTransaction().commit();
             return instance;
         } catch (RuntimeException re) {
             log.error("get failed", re);
@@ -180,5 +186,27 @@ public class LoanHistoryHome {
             sessionLoc = session;
         }
         return sessionLoc;
+    }
+
+    public ArrayList<LoanHistory> findByLoanId(Loan loan, Session session) {
+        Session sessionLoc = createRequieredSession(session);
+        ArrayList<LoanHistory> loanHistoryList = new ArrayList<LoanHistory>();
+        log.debug("getting LoanHistory instance with id: " + loan);
+        try {
+            loanHistoryList.addAll(sessionLoc.createCriteria(LoanHistory.class).add(Restrictions.eq("loan", loan)).list());
+            /*LoanHistory instance = (LoanHistory) sessionLoc.get("com.loansystem.model.LoanHistory", loanId);*/
+            if (loanHistoryList.size() == 0) {
+                log.debug("get successful, no instance found");
+            } else {
+                log.debug("get successful, instance found");
+            }
+            
+            if(session==null)
+                sessionLoc.getTransaction().commit();
+            return loanHistoryList;
+        } catch (RuntimeException re) {
+            log.error("get failed", re);
+            throw re;
+        }
     }
 }

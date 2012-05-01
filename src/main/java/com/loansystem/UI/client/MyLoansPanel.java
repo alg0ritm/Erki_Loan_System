@@ -119,11 +119,11 @@ public class MyLoansPanel extends javax.swing.JPanel {
             tableObject[i][0] = currentLoan.getDebt();
 
             tableObject[i][1] = loanStatus;
-            if (currentLoan.getLoanHistory().size() > 0) {
-                tableObject[i][2] = currentLoan.getLoanHistory().get(0).getDate();
-            } else {
+            /*if (currentLoan.getLoanHistory().size() > 0) {
+                //tableObject[i][2] = currentLoan.getLoanHistory().get(0).getDate();
+            } else {*/
                 tableObject[i][2] = "";
-            }
+            //}
             tableObject[i][3] = currentLoan.getBaseDueDate();
             tableObject[i][4] = currentLoan.getApr();
 

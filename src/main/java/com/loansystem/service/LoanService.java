@@ -54,4 +54,6 @@ public interface LoanService {
     public ArrayList<Loan> getPostponedLoansByStatus(PostponeRequestStatus postponeRequestStatus);
     
     public PostponeRequestStatus getPostponeRequestStatusById(int id);
+
+    public void updateLoanHistoryForLoan(LoanTabModel loanTabModel, int loanStatusId);
 }

@@ -353,7 +353,6 @@ public class LoanTabController {
                     existingLoanRequestPanel = loanUiService.createExistingLoanRequestPanel(client, loanTabModel);
                     loanTabView.setExistingLoanRequestPanel(existingLoanRequestPanel);
                     loanTabView.removeNewLoanTab(client);
-                    loanTabModel.setLastLoan(lastLoan);
                     loanTabView.showExistingLoanTabControls(client);
                     loanTabView.showExisitingLoanTab(client);
 
@@ -434,7 +433,7 @@ public class LoanTabController {
             log.info("LoanStateChangeToPayedListener actionPerformed");
 
             loanService = new LoanServiceImpl();
-            loanService.removeExistingLoanRequest(loanTabModel, client);
+            //loanService.removeExistingLoanRequest(loanTabModel, client);
 
             loanTabView.removeExisitingLoanTab(client);
             loanTabView.showNewLoanTab(client);
@@ -464,7 +463,9 @@ public class LoanTabController {
             log.info("RemoveLoanRequestListener actionPerformed");
 
             loanService = new LoanServiceImpl();
-            loanService.removeExistingLoanRequest(loanTabModel, client);
+            //loanService.removeExistingLoanRequest(loanTabModel, client);
+            
+            loanService.updateLoanHistoryForLoan(loanTabModel, LoanStatusInterface.PAYED_BACK);
 
             loanTabView.removeExistingLoanTabControls(client);
 

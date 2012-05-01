@@ -163,11 +163,11 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
             tableObject[i][1] = user.getName() + " " + user.getLastName();
 
             //tableObject[i][1] = currentLoan.getLoanHistory().get(0).getDate();
-            if (currentLoan.getLoanHistory().size() > 0) {
-                tableObject[i][2] = currentLoan.getLoanHistory().get(0).getDate();
-            } else {
+            /*if (currentLoan.getLoanHistory().size() > 0) {
+                //tableObject[i][2] = currentLoan.getLoanHistory().get(0).getDate();
+            } else {*/
                 tableObject[i][2] = "";
-            }
+            //}
             tableObject[i][3] = currentLoan.getLoanOffer().getSum();
             tableObject[i][4] = client.getRating();
             tableObject[i][5] = client.getClientGroup().getDescription();

@@ -14,11 +14,11 @@
         <property name="description" type="string" >
             <column name="description" length="2000000000" />
         </property>
-        <property name="minRating" type="int" >
-            <column name="min_rating" length="2000000000" not-null="false"/>
+        <property name="minRating" type="double">
+            <column length="2000000000" name="min_rating" not-null="true"/>
         </property>
-        <property name="maxRating" type="int">
-            <column name="max_rating" length="2000000000" not-null="false"/>
+        <property name="maxRating" type="double">
+            <column name="max_rating" length="2000000000" not-null="true"/>
         </property>
         <bag name="clients" cascade="all" order-by="client_id" lazy="false">
             <key>

@@ -14,23 +14,23 @@ public class ClientGroup implements java.io.Serializable {
     private String groupId;
     private String name;
     private String description;
-    private int minRating;
-    private int maxRating;
+    private double minRating;
+    private double maxRating;
     private List<Client> clients;
 
-    public int getMaxRating() {
+    public double getMaxRating() {
         return maxRating;
     }
 
-    public void setMaxRating(int maxRating) {
+    public void setMaxRating(double maxRating) {
         this.maxRating = maxRating;
     }
 
-    public int getMinRating() {
+    public double getMinRating() {
         return minRating;
     }
 
-    public void setMinRating(int minRating) {
+    public void setMinRating(double minRating) {
         this.minRating = minRating;
     }
 
@@ -53,7 +53,7 @@ public class ClientGroup implements java.io.Serializable {
         this.name = name;
     }
 
-    public ClientGroup(String groupId, String name, String description, int minRating, int maxRating, List<Client> clients, List<LoanOffer> loanOffers) {
+    public ClientGroup(String groupId, String name, String description, double minRating, double maxRating, List<Client> clients, List<LoanOffer> loanOffers) {
         this.groupId = groupId;
         this.name = name;
         this.description = description;

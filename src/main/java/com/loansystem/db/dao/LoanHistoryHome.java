@@ -193,7 +193,7 @@ public class LoanHistoryHome {
         ArrayList<LoanHistory> loanHistoryList = new ArrayList<LoanHistory>();
         log.debug("getting LoanHistory instance with id: " + loan);
         try {
-            loanHistoryList.addAll(sessionLoc.createCriteria(LoanHistory.class).add(Restrictions.eq("loan", loan)).list());
+            loanHistoryList.addAll(sessionLoc.createCriteria(LoanHistory.class).add(Restrictions.eq("loan", loan)).addOrder(Order.desc("loanHistoryId")).list());
             /*LoanHistory instance = (LoanHistory) sessionLoc.get("com.loansystem.model.LoanHistory", loanId);*/
             if (loanHistoryList.size() == 0) {
                 log.debug("get successful, no instance found");

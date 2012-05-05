@@ -30,6 +30,7 @@ import com.loansystem.backend.model.UserLoginInput;
 import com.loansystem.classificator.ClientStatusClassificator;
 import com.loansystem.classificator.EmployeeType;
 import com.loansystem.classificator.PostponeRequestStatus;
+import com.loansystem.db.dao.LoanHistoryHome;
 import com.loansystem.db.dao.LoanHome;
 import com.loansystem.db.dao.LoanStatusHome;
 import com.loansystem.db.dao.PostponeRequestStatusHome;
@@ -50,12 +51,14 @@ import com.loansystem.service.LoanService;
 import com.loansystem.service.LoanServiceImpl;
 import com.loansystem.service.LoanUiService;
 import com.loansystem.service.LoanUiServiceImpl;
+import com.loansystem.util.DateUtil;
 import com.loansystem.util.LoanUIutils;
 import com.loansystem.validator.LoginValidator;
 import com.loansystem.view.LoanTabView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JPanel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -88,7 +91,20 @@ public class FrontController {
     //TODO : create service/utils for creating frames
 
     private void createIssuedFrame() {
+
         LoanTabModel loanTabModel = new LoanTabModel(loginClient);
+        boolean overdue = checkIfOverdue(loanTabModel.getLastLoan());
+
+        ///save all data that will tell that loan is overdue
+        if (overdue) {
+
+
+            LoanService loanService = new LoanServiceImpl();
+            loanService.saveLoanWithStatus(loanTabModel.getLastLoan(), LoanStatusInterface.OVERDUE);
+            Loan lastLoan = loanService.getLoanById(loanTabModel.getLastLoan());
+            loanTabModel.setLastLoan(lastLoan);
+
+        }
         ArrayList<JPanel> loanRequestCTabPanels = new ArrayList<JPanel>();
 
 
@@ -162,7 +178,7 @@ public class FrontController {
     }
 
     private void createRejectedFrame() {
-       LoanTabModel loanTabModel = new LoanTabModel(loginClient);
+        LoanTabModel loanTabModel = new LoanTabModel(loginClient);
         ArrayList<JPanel> loanRequestCTabPanels = new ArrayList<JPanel>();
 
 
@@ -196,6 +212,26 @@ public class FrontController {
         panels[1] = new LoanRequestCTab(loanRequestCTabPanels);
 
         ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
+    }
+
+    private void createOverdueFrame() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private boolean checkIfOverdue(Loan lastLoan) {
+        Date now = new Date();
+        Date loanDueDate = null;
+        try {
+            loanDueDate = DateUtil.dateFormat.parse(lastLoan.getDueDate());
+            Date now1 = DateUtil.getDatePlusDays(loanDueDate, 1);
+            if (loanDueDate.compareTo(now1) <= 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            log.debug("checkIfOverdue() some error occured" + e);
+            return true;
+        }
+        return false;
     }
 
     ////////////////////////////////////////// inner class MultiplyListener
@@ -483,10 +519,10 @@ public class FrontController {
         if (loanStatus == LoanStatusInterface.REJECTED) {
             createRejectedFrame();
         }
-        
-        /*if (loanStatusEnum.equals(LoanStatusEnum.OVERDUE)) {
-            createOverdueFrame();
-        }*/
+
+        if (loanStatus == LoanStatusInterface.OVERDUE) {
+            createIssuedFrame();
+        }
         if (loanStatus == LoanStatusInterface.ISSUED) {
             createIssuedFrame();
         }

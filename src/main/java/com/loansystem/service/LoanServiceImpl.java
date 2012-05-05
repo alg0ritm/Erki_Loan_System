@@ -7,6 +7,7 @@ package com.loansystem.service;
 import com.loansystem.backend.model.LoanInsertRequest;
 
 import com.loansystem.backend.model.LoanTabModel;
+import com.loansystem.db.dao.ClientGroupHome;
 import com.loansystem.db.dao.ClientHistoryHome;
 import com.loansystem.db.dao.ClientHome;
 import com.loansystem.db.dao.ClientStatusHome;
@@ -20,6 +21,7 @@ import com.loansystem.enums.LoanStatusEnum;
 import com.loansystem.enums.LoanStatusInterface;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
+import com.loansystem.model.ClientGroup;
 import com.loansystem.model.ClientHistory;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanHistory;
@@ -291,10 +293,10 @@ public class LoanServiceImpl implements LoanService {
         Transaction transaction = null;
         Loan lastLoan = loanTabModel.getLastLoan();
         Client client = lastLoan.getClient();
+        ClientHistory clientHistory1= null;
 
         LoanStatus loanStatus = getStatusById(loanStatusId);
 
-        lastLoan.setLoanStatus(loanStatus);
 
         LoanHistory loanHistory = new LoanHistory(lastLoan, loanStatus, "change to status " + loanStatus.getDescription());
 
@@ -303,9 +305,8 @@ public class LoanServiceImpl implements LoanService {
         try {
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             transaction = session.beginTransaction();
-
-            saveLoanHistory(loanHistory, session);
-            mergeLoan(lastLoan, session);
+            
+            
             
            
 
@@ -315,23 +316,48 @@ public class LoanServiceImpl implements LoanService {
                 ClientHistory clientHistory = client.getClientHistory().get(0); //find last client history
                 LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
                 ArrayList<LoanHistory> loanHistory1 = loanHistoryHome.findByLoanId(lastLoan, session);
-
+                
 
                 double rating = calculateRating(loanHistory1, lastLoan);
 
                 clientHistory.setNewRating(rating);
                 clientHistory.setDate(DateUtil.dateFormat.format(new Date()));
-                client.setRating(rating + "");
                 saveClientHistory(clientHistory, session);
-                mergeClient(client, session);
+                String clientHistoryComment = "rating changed";
+                client.setRating(rating + "");
+               
+                
+                if(client.getClientGroup().getMaxRating()<rating) {
+                    ClientGroup newClientGroup = new ClientGroup();
+                    ClientGroupHome clientGroupHome = new ClientGroupHome();
+                    newClientGroup = clientGroupHome.findByRating(rating, session);
+                    if(newClientGroup!=null) {
+                        client.setClientGroup(newClientGroup);
+                        clientHistory1 = clientHistoryHome.findByClient(client, session); 
+                        clientHistory1.setDate(DateUtil.dateFormat.format(new Date()));
+                        clientHistory1.setComment(clientHistoryComment+" group changed");
 
+                        clientHistory1.setClientGroup(newClientGroup);
+                    }
+                                
+                }
+                
+                
+
+            }
+            mergeClient(client, session);
+            lastLoan.setLoanStatus(loanStatus);
+            saveLoanHistory(loanHistory, session);
+            mergeLoan(lastLoan, session);
+            if(clientHistory1 != null) {
+                saveClientHistory(clientHistory1, session);
             }
            /* if(loanStatusId == LoanStatusInterface.SENT_TO_DEBT_COLLECTION) {
                 
             }*/
             /*saveClientHistory()
             mergeClient()*/
-
+           
 
             transaction.commit();
 
@@ -400,6 +426,7 @@ public class LoanServiceImpl implements LoanService {
 
             }
         } else {
+             newRating = calculateRatingAfterLoanStatus(loanHistory, lastLoan);
         }
 
         return newRating;
@@ -410,7 +437,7 @@ public class LoanServiceImpl implements LoanService {
         double lastClientRating = Double.parseDouble(lastLoan.getClient().getRating());
         double loanOfferRatingBonus = Double.parseDouble(lastLoan.getLoanOffer().getRatingBonus());
 
-        switch (Integer.parseInt(loanHistory.get(0).getLoanStatus().getLoanStatusId())) {
+        switch (Integer.parseInt(lastLoan.getLoanStatus().getLoanStatusId())) {
             case LoanStatusInterface.ISSUED:
                 newRating = lastClientRating + loanOfferRatingBonus;
                 break;

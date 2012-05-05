@@ -7,7 +7,9 @@ package com.loansystem.service;
 import com.loansystem.backend.model.LoanInsertRequest;
 
 import com.loansystem.backend.model.LoanTabModel;
+import com.loansystem.db.dao.ClientHistoryHome;
 import com.loansystem.db.dao.ClientHome;
+import com.loansystem.db.dao.ClientStatusHome;
 import com.loansystem.db.dao.LoanHistoryHome;
 import com.loansystem.db.dao.LoanHome;
 import com.loansystem.db.dao.LoanOfferHome;
@@ -18,6 +20,7 @@ import com.loansystem.enums.LoanStatusEnum;
 import com.loansystem.enums.LoanStatusInterface;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
+import com.loansystem.model.ClientHistory;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanHistory;
 import com.loansystem.model.LoanHistoryCollection;
@@ -77,7 +80,7 @@ public class LoanServiceImpl implements LoanService {
             loanHistoryHome.insertLoanHistory(loanHistory, session);
             transaction.commit();
             insertLoan = loanHome.findById(insertLoan.getLoanId(), null);
-            
+
 
         } catch (Exception e) {
 
@@ -113,10 +116,10 @@ public class LoanServiceImpl implements LoanService {
 
             //lastLoan.getLoanHistory().get(0).setLoan(null); works
             //lastLoan.setLoanHistory(null);
-           
+
             loanHistoryHome.delete(loanHistoryList.get(0), session);
             loanHome.delete(lastLoan, session);
-            
+
             //loanHistoryLast.setLoan(null);
             //loanHistoryHome.delete(loanHistoryLast, session);
 
@@ -285,31 +288,137 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public void updateLoanHistoryForLoan(LoanTabModel loanTabModel, int loanStatusId) {
-       Transaction transaction = null;
-       Loan lastLoan = loanTabModel.getLastLoan();
-       
-       LoanStatus loanStatus = getStatusById(loanStatusId);
-       
-       lastLoan.setLoanStatus(loanStatus);
-       
-       LoanHistory loanHistory = new LoanHistory(lastLoan, loanStatus, "change to status " + loanStatus.getDescription());
-       
-       try {
-           Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-           transaction = session.beginTransaction();
+        Transaction transaction = null;
+        Loan lastLoan = loanTabModel.getLastLoan();
+        Client client = lastLoan.getClient();
+
+        LoanStatus loanStatus = getStatusById(loanStatusId);
+
+        lastLoan.setLoanStatus(loanStatus);
+
+        LoanHistory loanHistory = new LoanHistory(lastLoan, loanStatus, "change to status " + loanStatus.getDescription());
+
+        //ClientHistory clientHistory = new ClientHistory();
+
+        try {
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+
+            saveLoanHistory(loanHistory, session);
+            mergeLoan(lastLoan, session);
+            
            
-           saveLoanHistory(loanHistory, session);
-           mergeLoan(lastLoan, session);
-           
-           transaction.commit();
-           
-       } catch(Exception e) {
-           transaction.rollback();
-           log.error("updateLoanHistoryForLoan " + e);
-       }
-       
-       
-       
-       
+
+            if (loanStatusId == LoanStatusInterface.PAYED_BACK) {
+
+                ClientHistoryHome clientHistoryHome = new ClientHistoryHome();
+                ClientHistory clientHistory = client.getClientHistory().get(0); //find last client history
+                LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
+                ArrayList<LoanHistory> loanHistory1 = loanHistoryHome.findByLoanId(lastLoan, session);
+
+
+                double rating = calculateRating(loanHistory1, lastLoan);
+
+                clientHistory.setNewRating(rating);
+                clientHistory.setDate(DateUtil.dateFormat.format(new Date()));
+                client.setRating(rating + "");
+                saveClientHistory(clientHistory, session);
+                mergeClient(client, session);
+
+            }
+           /* if(loanStatusId == LoanStatusInterface.SENT_TO_DEBT_COLLECTION) {
+                
+            }*/
+            /*saveClientHistory()
+            mergeClient()*/
+
+
+            transaction.commit();
+
+        } catch (Exception e) {
+            transaction.rollback();
+            log.error("updateLoanHistoryForLoan " + e);
+        }
+
+
+
+
+    }
+
+    private void mergeClientHistory(ClientHistory clientHistory, Session session) {
+        ClientHistoryHome clientHistoryHome = new ClientHistoryHome();
+        clientHistoryHome.merge(clientHistory, session);
+    }
+
+    private void mergeClient(Client client, Session session) {
+        ClientHome clientHome = new ClientHome();
+        clientHome.merge(client, session);
+    }
+
+    private void saveClientHistory(ClientHistory clientHistory, Session session) {
+        ClientHistoryHome clientHistoryHome = new ClientHistoryHome();
+        clientHistoryHome.save(clientHistory, session);
+    }
+
+    private double calculateRating(ArrayList<LoanHistory> loanHistory, Loan lastLoan) {
+        double newRating = 0.0F;
+        double lastClientRating = Double.parseDouble(lastLoan.getClient().getRating());
+        double loanOfferRatingBonus = Double.parseDouble(lastLoan.getLoanOffer().getRatingBonus());
+        /*
+        I. Esli u loana est' pojavljaetsa Postpone request to : 
+        1) V slu4ae accepta postpone requesta loan status menjaetsa na POSTPONED.
+        2) V slu4ae rejecta, canela postpone reuqesta loan status ostaetsa loan issued no menjaestsa na OVERDUE po nastupleniju datq vqplatq.
+        3) V slu4ae kogda postpone rquest status ostaetsa requestd(TL ne uspvaet prinjat' reshenie v otnoshenii nego) i client vqpla4ivaet nesmotrja na eto dolg to newRating = lastClientRating + loanOfferRatingBonus;
+        
+        V slu4ajah(1,2) newRating = (lastClientRating) + (loanOfferRatingBonus / 2);
+        
+        II. takie ze pravila deistvujut k loanu bez postpone reuqesta: 
+        1) Loan issued : newRating = lastClientRating + loanOfferRatingBonus;
+        2) OVERDUE : newRating = (lastClientRating) + (loanOfferRatingBonus / 2);
+        
+        V slu4ae (2) debt = summa nabezavshaja po u4etu standartnoi formulq za dannqi period((data vqplatq)-(loanIssued date)) + 10 euro	(kommisija)
+        
+        III. Esli Loan v statuse OVERDUE perevalivaet za srok loanOffer/2 to loan status menjaetsa na SENT_TO_DEBT_COLLECTION. 
+        
+        
+        IV. Maksimalno vomznoq srok na kotorqi mozno vzjat' postpone request = loanOffer/2; 
+         */
+        if (lastLoan.getPostponeRequest() != null) {
+            switch (Integer.parseInt(lastLoan.getPostponeRequest().getPostponeRequestStatus().getId())) {
+                case com.loansystem.classificator.PostponeRequestStatus.ACCEPTED:
+                    newRating = lastClientRating + loanOfferRatingBonus / 2;
+                    break;
+                case com.loansystem.classificator.PostponeRequestStatus.REQUESTED:
+                    newRating = lastClientRating + loanOfferRatingBonus;
+                    break;
+                case com.loansystem.classificator.PostponeRequestStatus.REJECTED:
+                    newRating = calculateRatingAfterLoanStatus(loanHistory, lastLoan);
+                    break;
+                case com.loansystem.classificator.PostponeRequestStatus.CANCELED:
+                    newRating = calculateRatingAfterLoanStatus(loanHistory, lastLoan);
+                    break;
+
+            }
+        } else {
+        }
+
+        return newRating;
+    }
+
+    private double calculateRatingAfterLoanStatus(ArrayList<LoanHistory> loanHistory, Loan lastLoan) {
+        double newRating = 0.0F;
+        double lastClientRating = Double.parseDouble(lastLoan.getClient().getRating());
+        double loanOfferRatingBonus = Double.parseDouble(lastLoan.getLoanOffer().getRatingBonus());
+
+        switch (Integer.parseInt(loanHistory.get(0).getLoanStatus().getLoanStatusId())) {
+            case LoanStatusInterface.ISSUED:
+                newRating = lastClientRating + loanOfferRatingBonus;
+                break;
+            case LoanStatusInterface.OVERDUE:
+                newRating = lastClientRating + loanOfferRatingBonus / 2;
+                break;
+
+        }
+        return newRating;
     }
 }

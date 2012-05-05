@@ -4,7 +4,7 @@
 <!-- Generated Nov 13, 2011 9:49:22 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping default-lazy="false">
     <class name="com.loansystem.model.ClientHistory" table="client_history">
-        <composite-id name="id" class="com.loansystem.model.ClientHistoryId">
+        <!--composite-id name="id" class="com.loansystem.model.ClientHistoryId">
             <key-property name="date" type="string">
                 <column name="date" length="2000000000" />
             </key-property>
@@ -17,6 +17,28 @@
             <key-property name="clientId" type="int">
                 <column name="client_id" />
             </key-property>
-        </composite-id>
+        </composite-id-->
+        <id name="id" type="int">
+            <column length="2000000000" name="client_history_id"/>
+            <generator class="increment"/>
+        </id>
+        <property name="date" type="string">
+            <column length="2000000000" name="date"/>
+        </property>
+        <property name="newRating" type="double">
+            <column length="2000000000" name="new_rating"/>
+        </property>
+        <many-to-one name="clientStatus" class="com.loansystem.model.ClientStatus" fetch="select">
+            <column name="status_id" not-null="true" />
+        </many-to-one>
+        <property name="comment" type="string">
+            <column length="2000000000" name="comment"/>
+        </property>
+        <many-to-one name="client" class="com.loansystem.model.Client" fetch="select">
+            <column name="client_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="clientGroup" class="com.loansystem.model.ClientGroup" fetch="select">
+            <column name="group_id" not-null="true" />
+        </many-to-one>
     </class>
 </hibernate-mapping>

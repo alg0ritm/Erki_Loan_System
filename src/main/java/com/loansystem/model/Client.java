@@ -17,6 +17,7 @@ public class Client implements java.io.Serializable {
     private String rating;
     private List<Loan> loans;
     private User user;
+    private List<ClientHistory> clientHistory;
 
     public User getUser() {
         return user;
@@ -29,14 +30,14 @@ public class Client implements java.io.Serializable {
     public Client() {
     }
 
-    public Client(int clientId, ClientGroup ClientGroup, ClientStatus clientStatus, int persCode, String rating, List<Loan> loans, User user) {
+    public Client(int clientId, ClientGroup ClientGroup, ClientStatus clientStatus, int persCode, String rating, List<Loan> loans, User user, List<ClientHistory> clientHistory) {
         this.clientId = clientId;
         this.ClientGroup = ClientGroup;
         this.clientStatus = clientStatus;
         this.user = user;
-
         this.rating = rating;
         this.loans = loans;
+        this.clientHistory = clientHistory;
     }
 
     public int getClientId() {
@@ -73,6 +74,14 @@ public class Client implements java.io.Serializable {
 
     public List<Loan> getLoans() {
         return loans;
+    }
+
+    public List<ClientHistory> getClientHistory() {
+        return clientHistory;
+    }
+
+    public void setClientHistory(List<ClientHistory> clientHistory) {
+        this.clientHistory = clientHistory;
     }
 
     public void setLoans(List<Loan> loans) {

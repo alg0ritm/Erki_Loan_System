@@ -44,11 +44,15 @@ public class ClientHome {
         //session = sessionFactory.getCurrentSession();
     }
 
-    public void persist(Client transientInstance) {
+    public void persist(Client transientInstance, Session session) {
+        Session sessionLoc = HibernateUtil.createRequieredSession(session);
         log.debug("persisting Client instance");
         try {
-            sessionFactory.getCurrentSession().persist(transientInstance);
+            sessionLoc.persist(transientInstance);
             log.debug("persist successful");
+            if(session==null) {
+                session.getTransaction().commit();
+            }
         } catch (RuntimeException re) {
             log.error("persist failed", re);
             throw re;
@@ -76,6 +80,7 @@ public class ClientHome {
             throw re;
         }
     }
+    
 
     public void delete(Client persistentInstance) {
         log.debug("deleting Client instance");
@@ -88,11 +93,15 @@ public class ClientHome {
         }
     }
 
-    public Client merge(Client detachedInstance) {
+    public Client merge(Client detachedInstance, Session session) {
+        Session sessionLoc = HibernateUtil.createRequieredSession(session);
         log.debug("merging Client instance");
         try {
-            Client result = (Client) sessionFactory.getCurrentSession().merge(detachedInstance);
+            Client result = (Client) sessionLoc.merge(detachedInstance);
             log.debug("merge successful");
+            if(session == null) {
+                sessionLoc.getTransaction().commit();
+            }
             return result;
         } catch (RuntimeException re) {
             log.error("merge failed", re);
@@ -143,5 +152,16 @@ public class ClientHome {
             log.error("find by example failed", re);
             throw re;
         }
+    }
+    
+    private Session createRequieredSession(Session session) {
+        Session sessionLoc = null;
+        if (session == null) {
+            sessionLoc = sessionFactory.getCurrentSession();
+            Transaction transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
+        return sessionLoc;
     }
 }

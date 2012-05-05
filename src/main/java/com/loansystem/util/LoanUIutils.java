@@ -22,38 +22,57 @@ public class LoanUIutils {
     public static int createQuestionPopup(String[] opts, Object requestObject, String initialQuestion) {
 
         String s = initialQuestion + '\n';
-        try {
-            Class cls = requestObject.getClass();
-            log.info(cls.toString());
-            //c = Class.forName(requestObject.getClass().toString());
-            Method m[] = cls.getMethods();
-            for (Method method : m) {
-                if (isGetter(method)) {
-                    String methodField = eliminateGet(method);
-                    String returnValue = String.valueOf(method.invoke(requestObject, null));
-                    if (returnValue != null && !returnValue.equals("null")) {
-                        log.info("returnValue = " + returnValue);
-                        s += methodField + " : " + returnValue + '\n';
+        int choiceResposne = 0;
+        if(requestObject!=null) {
+            try {
+                Class cls = requestObject.getClass();
+                log.info(cls.toString());
+                //c = Class.forName(requestObject.getClass().toString());
+                Method m[] = cls.getMethods();
+                for (Method method : m) {
+                    if (isGetter(method)) {
+
+                        String methodField = eliminateGet(method);
+                        String returnValue = String.valueOf(method.invoke(requestObject, null));
+                        if (returnValue != null && !returnValue.equals("null")) {
+                            log.info("returnValue = " + returnValue);
+                            s += methodField + " : " + returnValue + '\n';
+                        }
                     }
                 }
+                //log.info(m[0].toString());
+            } catch (Exception ex) {
+                Logger.getLogger(LoanUIutils.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //log.info(m[0].toString());
-        } catch (Exception ex) {
-            Logger.getLogger(LoanUIutils.class.getName()).log(Level.SEVERE, null, ex);
+            String[] choices = opts;
+            choiceResposne = JOptionPane.showOptionDialog(
+                    null // Center in window.
+                    , s // Message
+                    , "" // Title in titlebar
+                    , JOptionPane.YES_NO_OPTION // Option type
+                    , JOptionPane.PLAIN_MESSAGE // messageType
+                    , null // Icon (none)
+                    , choices // Button text as above.
+                    , "Yes" // Default button's label
+                    );
+
+
+            
         }
-        String[] choices = opts;
-        int choiceResposne = JOptionPane.showOptionDialog(
-                null // Center in window.
-                , s // Message
-                , "" // Title in titlebar
-                , JOptionPane.YES_NO_OPTION // Option type
-                , JOptionPane.PLAIN_MESSAGE // messageType
-                , null // Icon (none)
-                , choices // Button text as above.
-                , "Yes" // Default button's label
-                );
-
-
+        else {
+             String[] choices = opts;
+            choiceResposne = JOptionPane.showOptionDialog(
+                    null // Center in window.
+                    , initialQuestion // Message
+                    , "" // Title in titlebar
+                    , JOptionPane.YES_NO_OPTION // Option type
+                    , JOptionPane.PLAIN_MESSAGE // messageType
+                    , null // Icon (none)
+                    , choices // Button text as above.
+                    , "Yes" // Default button's label
+                    );
+            
+        }
         return choiceResposne;
 
 

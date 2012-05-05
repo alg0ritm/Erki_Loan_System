@@ -23,5 +23,9 @@
             <key column="client_id"/>
             <one-to-many class="com.loansystem.model.Loan"/>
         </bag>
+        <bag name="clientHistory" cascade="all" order-by="client_history_id desc" lazy="false">
+            <key column="client_id"/>
+            <one-to-many class="com.loansystem.model.ClientHistory"/>
+        </bag>
     </class>
 </hibernate-mapping>

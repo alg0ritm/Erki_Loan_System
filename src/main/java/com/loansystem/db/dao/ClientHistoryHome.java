@@ -3,14 +3,16 @@ package com.loansystem.db.dao;
 // default package
 // Generated Nov 13, 2011 9:49:24 PM by Hibernate Tools 3.4.0.CR1
 
+import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.ClientHistory;
-import com.loansystem.model.ClientHistoryId;
 import java.util.List;
 import javax.naming.InitialContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 
 /**
@@ -20,24 +22,43 @@ import org.hibernate.criterion.Example;
  */
 public class ClientHistoryHome {
 
-	private static final Log log = LogFactory.getLog(ClientHistoryHome.class);
+    private static final Log log = LogFactory.getLog(ClientHistoryHome.class);
+    private final SessionFactory sessionFactory = getSessionFactory();
 
-	private final SessionFactory sessionFactory = getSessionFactory();
+    protected SessionFactory getSessionFactory() {
+        try {
+            SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+            //session = sessionFactory.openSession();
 
-	protected SessionFactory getSessionFactory() {
-		try {
-			return (SessionFactory) new InitialContext().lookup("SessionFactory");
-		} catch (Exception e) {
-			log.error("Could not locate SessionFactory in JNDI", e);
-			throw new IllegalStateException("Could not locate SessionFactory in JNDI");
-		}
-	}
+            return sessionFactory;
 
-	public void persist(ClientHistory transientInstance) {
+            //return (SessionFactory) new InitialContext().lookup("SessionFactory");
+        } catch (Exception e) {
+            log.error("Could not locate SessionFactory in JNDI", e);
+            throw new IllegalStateException("Could not locate SessionFactory in JNDI");
+        }
+    }
+    
+    private Session createRequieredSession(Session session) {
+        Session sessionLoc = null;
+        if (session == null) {
+            sessionLoc = sessionFactory.getCurrentSession();
+            Transaction transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
+        return sessionLoc;
+    }
+
+	public void persist(ClientHistory transientInstance, Session session) {
+            Session sessionLoc = HibernateUtil.createRequieredSession(session);
 		log.debug("persisting ClientHistory instance");
 		try {
-			sessionFactory.getCurrentSession().persist(transientInstance);
-			log.debug("persist successful");
+			sessionLoc.persist(transientInstance);
+                        if(session == null) {
+                            log.debug("persist successful");
+                            sessionLoc.getTransaction().commit();
+                        }
 		} catch (RuntimeException re) {
 			log.error("persist failed", re);
 			throw re;
@@ -65,6 +86,22 @@ public class ClientHistoryHome {
 			throw re;
 		}
 	}
+        
+        public void save(ClientHistory clientHistory, Session session) 
+        {
+        Session sessionLoc = HibernateUtil.createRequieredSession(session);
+		log.debug("persisting ClientHistory instance");
+		try {
+			sessionLoc.save(clientHistory);
+                        if(session == null) {
+                            log.debug("persist successful");
+                            sessionLoc.getTransaction().commit();
+                        }
+		} catch (RuntimeException re) {
+			log.error("persist failed", re);
+			throw re;
+		}
+	}
 
 	public void delete(ClientHistory persistentInstance) {
 		log.debug("deleting ClientHistory instance");
@@ -77,10 +114,15 @@ public class ClientHistoryHome {
 		}
 	}
 
-	public ClientHistory merge(ClientHistory detachedInstance) {
+	public ClientHistory merge(ClientHistory detachedInstance, Session session) {
+            Session sessionLoc = createRequieredSession(session);
+            
 		log.debug("merging ClientHistory instance");
 		try {
-			ClientHistory result = (ClientHistory) sessionFactory.getCurrentSession().merge(detachedInstance);
+			ClientHistory result = (ClientHistory) sessionLoc.merge(detachedInstance);
+                        if(session==null) {
+                            sessionLoc.getTransaction().commit();
+                        }
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -89,7 +131,7 @@ public class ClientHistoryHome {
 		}
 	}
 
-	public ClientHistory findById(ClientHistoryId id) {
+	public ClientHistory findById(ClientHistory id) {
 		log.debug("getting ClientHistory instance with id: " + id);
 		try {
 			ClientHistory instance = (ClientHistory) sessionFactory.getCurrentSession().get("ClientHistory", id);

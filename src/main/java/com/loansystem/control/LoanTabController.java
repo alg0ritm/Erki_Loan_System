@@ -102,7 +102,6 @@ public class LoanTabController {
 
         }
     }
-    
 
     private class removeLoanRequestListener implements ActionListener {
 
@@ -116,16 +115,27 @@ public class LoanTabController {
             loanService = new LoanServiceImpl();
 
             String[] opts = {"No", "Yes"};
-            PostponeRequest postponeRequst = loanTabModel.getLastLoan().getPostponeRequest();
-            /*int response = LoanUIutils.createQuestionPopup(opts, postponeRequest, "Are You sure you want to cancel initiated postpone request?");*/
-            loanService.removeExistingLoanRequest(loanTabModel, client);
 
-            loanTabView.removeExistingLoanTabControls(client);
+            int response = LoanUIutils.createQuestionPopup(opts, null, "Are You sure to cancel loan request?");
 
-            // loanTabView.removeExisitingLoanTab(client);
-            loanTabView.hideUnnecessaryButtons();
 
-            loanTabView.showNewLoanTab(client);
+            switch (response) {
+                case 1: //ok 
+                    loanService.removeExistingLoanRequest(loanTabModel, client);
+
+                    loanTabView.removeExistingLoanTabControls(client);
+
+                    // loanTabView.removeExisitingLoanTab(client);
+                    loanTabView.hideUnnecessaryButtons();
+
+                    loanTabView.showNewLoanTab(client);
+                    break;
+                default:
+                    break;
+
+            }
+
+
             //loanTabView.pack();
             //loanTabView.repaint();
 
@@ -225,14 +235,15 @@ public class LoanTabController {
         private void showNotification(String string, Loan lastLoan) {
         }
     }
-    
+
     private class ChooseOtherLoanOfferListener implements ActionListener {
+
         public ChooseOtherLoanOfferListener() {
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           log.info("RemoveLoanRequestListener actionPerformed");
+            log.info("RemoveLoanRequestListener actionPerformed");
 
             //loanService = new LoanServiceImpl();
 
@@ -251,8 +262,6 @@ public class LoanTabController {
             //loanTabView.repaint();
         }
     }
-    
-    
     NewLoanRequestPanel newLoanRequestPanel;
     ExistingLoanRequestPanel existingLoanRequestPanel;
     PostponeRequestPanel postponeRequestPanel;
@@ -293,18 +302,16 @@ public class LoanTabController {
         loanTabView.addChooseOtherLoanOfferListener(new ChooseOtherLoanOfferListener());
 
     }
-    
+
     private class LoanPostponeCancelListener implements ActionListener {
-        
+
         public LoanPostponeCancelListener() {
-            
         }
-        
+
         @Override
         public void actionPerformed(ActionEvent e) {
             loanTabView.hidePostponeControls();
         }
-        
     }
 
     private class LoanStateChangeToPendingListener implements ActionListener {
@@ -316,9 +323,9 @@ public class LoanTabController {
         public void actionPerformed(ActionEvent e) {
             //ask if sure to take the loan  
             int rowIndex = loanTabView.getNewLoanRequestPanel().getjTable1().getSelectedRow();
-            if(rowIndex<0) {
+            if (rowIndex < 0) {
                 JOptionPane.showMessageDialog(loanTabView.getNewLoanRequestPanel(), "Y've not chosen any loan offer");
-              return;  
+                return;
             }
 
             String s = loanTabView.getNewLoanRequestPanel().displayRowValues(rowIndex);
@@ -462,18 +469,38 @@ public class LoanTabController {
 
             log.info("RemoveLoanRequestListener actionPerformed");
 
-            loanService = new LoanServiceImpl();
-            //loanService.removeExistingLoanRequest(loanTabModel, client);
-            
-            loanService.updateLoanHistoryForLoan(loanTabModel, LoanStatusInterface.PAYED_BACK);
+            String[] opts = {"No", "Yes"};
 
-            loanTabView.removeExistingLoanTabControls(client);
+            Loan loan = loanTabModel.getLastLoan(); //create postpone reuqest in db
+            int response = LoanUIutils.createQuestionPopup(opts, loan, "Are You sure to cancel postpone request with next parameters?");
 
-            // loanTabView.removeExisitingLoanTab(client);
+            // postponeRequest.setComment("Postpone cancel is requested");
+            switch (response) {
+                case 1:
+                    // loan.setComment("Postpone cancel is rejected");
+                    // loanTabModel.getLastLoan().setPostponeRequest(postponeRequst);
+                    //loanTabView.hideUnnecessaryButtons();
+                    /*PostponeRequest postponeRequestUpd = loanService.updateLastPostponedLoan(loanTabModel, loanTabModel.getLastLoan().getDueDate(), loanTabModel.getLastLoan().getLoanOffer().getSum(), PostponeRequestStatus.CANCELED);
+                    loanTabModel.getLastLoan().setPostponeRequest(postponeRequestUpd);*/
 
-            loanTabView.showNewLoanTab(client);
-            //loanTabView.pack();
-            //loanTabView.repaint();
+                    loanService = new LoanServiceImpl();
+                    //loanService.removeExistingLoanRequest(loanTabModel, client);
+
+                    loanService.updateLoanHistoryForLoan(loanTabModel, LoanStatusInterface.PAYED_BACK);
+
+                    loanTabView.removeExistingLoanTabControls(client);
+
+                    // loanTabView.removeExisitingLoanTab(client);
+
+                    loanTabView.showNewLoanTab(client);
+                    break;
+                default:
+
+                    break;
+
+
+            }
+
         }
     }
 

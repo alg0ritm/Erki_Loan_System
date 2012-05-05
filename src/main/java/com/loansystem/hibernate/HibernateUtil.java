@@ -6,6 +6,7 @@ package com.loansystem.hibernate;
  */
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 /**
@@ -61,5 +62,16 @@ public class HibernateUtil {
         }
         sessionFactory = null;
 
+    }
+    
+    public static Session createRequieredSession(Session session) {
+        Session sessionLoc = null;
+        if (session == null) {
+            sessionLoc = sessionFactory.getCurrentSession();
+            Transaction transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
+        return sessionLoc;
     }
 }

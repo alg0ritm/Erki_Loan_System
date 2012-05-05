@@ -15,5 +15,6 @@ public interface LoanStatusInterface {
     public static final int OVERDUE = 4;
     public static final int ISSUED = 5;
     public static final int PAYED_BACK = 6;
-    public static final int SENT_TO_DEBT_COLLECTION = 8;
+    public static final int POSTPONED = 8;
+    public static final int SENT_TO_DEBT_COLLECTION = 7;
 }

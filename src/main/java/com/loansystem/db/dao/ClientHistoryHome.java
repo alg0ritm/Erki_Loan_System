@@ -165,8 +165,11 @@ public class ClientHistoryHome {
         ClientHistory clientHistory = null;
         log.debug("persisting ClientHistory instance");
         try {
-            clientHistory = (ClientHistory) session.createCriteria(ClientHistory.class).add(Restrictions.eq("client", client)).addOrder(Order.desc("date")).setMaxResults(1).uniqueResult();
+            clientHistory = (ClientHistory) sessionLoc.createCriteria(ClientHistory.class).add(Restrictions.eq("client", client)).addOrder(Order.desc("date")).setMaxResults(1).uniqueResult();
         } catch (RuntimeException re) {
+            if(session==null) {
+                sessionLoc.getTransaction().commit();
+            }
             log.error("persist failed", re);
             throw re;
         }

@@ -141,4 +141,25 @@ public class ClientGroupHome {
         return instance;
 
     }
+
+    public ClientGroup findByName(String name, Session session) {
+        Session sessionLoc = HibernateUtil.createRequieredSession(session);
+        ClientGroup instance = null;
+        try {
+            log.info("before save");
+            instance = (ClientGroup) sessionLoc.createCriteria("com.loansystem.model.ClientGroup").add(Restrictions.gt("name",name))
+                    //.addOrder(Order.asc("maxRating"))
+                    .setMaxResults(1).uniqueResult();
+            //session.close();
+            if(session==null) {
+                sessionLoc.getTransaction().commit();
+            }
+        } catch (Exception ex) {
+            log.error(ex);
+            return null;
+            //session.close();
+        }
+
+        return instance;
+    }
 }

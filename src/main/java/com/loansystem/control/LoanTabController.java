@@ -38,10 +38,14 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -85,9 +89,11 @@ public class LoanTabController {
                 case 1:
                     postponeRequst.setComment("Postpone cancel is rejected");
                     loanTabModel.getLastLoan().setPostponeRequest(postponeRequst);
-                    loanTabView.hideUnnecessaryButtons();
+                    
                     PostponeRequest postponeRequestUpd = loanService.updateLastPostponedLoan(loanTabModel, loanTabModel.getLastLoan().getDueDate(), loanTabModel.getLastLoan().getLoanOffer().getSum(), PostponeRequestStatus.CANCELED);
                     loanTabModel.getLastLoan().setPostponeRequest(postponeRequestUpd);
+                    
+                    loanTabView.hideUnnecessaryButtons();
                     break;
                 default:
 
@@ -160,8 +166,10 @@ public class LoanTabController {
             //PostponeRequestStatus
             PostponeRequestStatusHome postponeRequestStatusHome = new PostponeRequestStatusHome();
             com.loansystem.model.PostponeRequestStatus postponeRequestStatus = postponeRequestStatusHome.findById(PostponeRequestStatus.REQUESTED + "");
-            postponeRequest.setDate(dueDate);
+            
+            postponeRequest.setPeriodDays(DateUtil.getDaysDifference(loanTabModel.getLastLoan().getDueDate(), dueDate));
             postponeRequest.setStatusId(postponeRequestStatus);
+            postponeRequest.setDate(DateUtil.dateFormat.format(new Date()));
 
             String[] opts = {"No", "Yes"};
             int response = LoanUIutils.createQuestionPopup(opts, postponeRequest, "Are You sure to postpone request with next parameters?");
@@ -169,7 +177,7 @@ public class LoanTabController {
             postponeRequest.setComment("Postpone is requested");
             switch (response) {
                 case 1: //ok 
-                    loanService.createPostponeRequest(postponeRequest);
+                    loanService.createPostponeRequest(loanTabModel, postponeRequest);
                     loanTabView.hidePostponeControls();
                     /*this.loanId = id;
                     this.dueDate = dueDate;
@@ -186,7 +194,7 @@ public class LoanTabController {
                     loanTabModel.getLastLoan().setPostponeRequest(postponeRequest);
                     loanService.updateLastPostponedLoan(loanTabModel, dueDate, sum, PostponeRequestStatus.REQUESTED);
                     loanTabView.hideUnnecessaryButtons();
-                    loanTabView.updateExistingLoanPanel();
+                    //loanTabView.updateExistingLoanPanel();
 
 
                     /*jLabel8.setText(loan.getDebt());
@@ -508,6 +516,27 @@ public class LoanTabController {
 
         public SliderStateChangedListener() {
         }
+        
+        /*int fps = sliderOpts[1];
+        log.info("Current Days Selected: " + fps);
+
+        //String oldDueDate = lastLoan.getDueDate();
+        Date oldDate;
+        try {
+            oldDate = DateUtil.dateFormat.parse(initialDueDate);
+            Date newDueDate = DateUtil.getDatePlusDays(oldDate, fps);
+            String dueDateString = DateUtil.dateFormat.format(newDueDate);
+            log.info("Current Due  Date : " + newDueDate);
+            float newSum = initialSum * (1 + apr * (fps + days) / (100 * 365));
+            log.info("Current sum : " + newSum);
+
+            String dueDateAsString = String.valueOf(dueDateString);
+            String dueSumAsString = String.valueOf(newSum);
+
+            initComponents(sliderOpts, dueDateAsString, dueSumAsString);
+        } catch (ParseException ex) {
+            Logger.getLogger(PostponeRequestPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
 
         @Override
         public void stateChanged(ChangeEvent e) {
@@ -515,26 +544,44 @@ public class LoanTabController {
             JSlider source = (JSlider) e.getSource();
             Loan lastLoan = loanTabModel.getLastLoan();
             LoanOffer loanOffer = loanTabModel.getLastLoan().getLoanOffer();
-            float initialSum = Float.parseFloat(loanOffer.getSum());
-            float percentSum = initialSum / 100;
+            float apr = Float.parseFloat(loanOffer.getApr());
+            float initialSum = Float.parseFloat(loanTabModel.getLastLoan().getDebt());
+            
+           
             String initialDueDate = lastLoan.getDueDate();
+             String dueDateAsString = null; 
+             String dueSumAsString = null;
 
 
             if (!source.getValueIsAdjusting()) {
                 int fps = (int) source.getValue();
                 log.info("Current Days Selected: " + fps);
-
-                //String oldDueDate = lastLoan.getDueDate();
-                Date oldDate = new Date(initialDueDate);
-                log.info("Current old Date : " + oldDate);
+                
+                 Date oldDate;
+            try {
+                Calendar from = Calendar.getInstance();
+                Calendar to = Calendar.getInstance();
+                oldDate = DateUtil.dateFormat.parse(initialDueDate);
                 Date newDueDate = DateUtil.getDatePlusDays(oldDate, fps);
                 String dueDateString = DateUtil.dateFormat.format(newDueDate);
+                from.setTime(oldDate);
+                to.setTime(newDueDate);
                 log.info("Current Due  Date : " + newDueDate);
-                float newSum = initialSum + percentSum * (Float.parseFloat(loanOffer.getPeriod()) + fps);
+                int days = DateUtil.dayDifference(from, to);
+                float newSum = initialSum * (1 + apr * (fps + days) / (100 * 365));
                 log.info("Current sum : " + newSum);
 
-                loanTabModel.getPostponeRequestPanel().getjLabel3().setText(String.valueOf(dueDateString));
-                loanTabModel.getPostponeRequestPanel().getjLabel4().setText(String.valueOf(newSum));
+               dueDateAsString = String.valueOf(dueDateString);
+                dueSumAsString = String.valueOf(newSum);
+               
+            } catch (ParseException ex) {
+                Logger.getLogger(PostponeRequestPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+               
+                
+
+                loanTabModel.getPostponeRequestPanel().getjLabel3().setText(String.valueOf(dueDateAsString));
+                loanTabModel.getPostponeRequestPanel().getjLabel4().setText(String.valueOf(dueSumAsString));
 
             }
         }

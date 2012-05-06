@@ -18,8 +18,11 @@ import com.loansystem.model.LoanOffer;
 import com.loansystem.util.DateUtil;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -87,30 +90,37 @@ public class PostponeRequestPanel extends javax.swing.JPanel {
         sliderOpts[2] = Integer.parseInt(loanOffer.getPeriod()) / 2;
 
 
-        float initialSum = Float.parseFloat(loanOffer.getSum());
+        float initialSum = Float.parseFloat(lastLoan.getDebt());
         float apr = Float.parseFloat(loanOffer.getApr());
         int days = Integer.parseInt(loanOffer.getPeriod());
-        float percentSum = initialSum / 100;
         String initialDueDate = lastLoan.getDueDate();
 
-        int fps = (int) sliderOpts[1];
+        int fps = sliderOpts[1];
         log.info("Current Days Selected: " + fps);
 
         //String oldDueDate = lastLoan.getDueDate();
-        Date oldDate = new Date(initialDueDate);
-        log.info("Current old Date : " + oldDate);
-        Date newDueDate = DateUtil.getDatePlusDays(oldDate, fps);
-        String dueDateString = DateUtil.dateFormat.format(newDueDate);
-        log.info("Current Due  Date : " + newDueDate);
+        Date oldDate;
+        try {
+            oldDate = DateUtil.dateFormat.parse(initialDueDate);
+            Date newDueDate = DateUtil.getDatePlusDays(oldDate, fps);
+            String dueDateString = DateUtil.dateFormat.format(newDueDate);
+            log.info("Current Due  Date : " + newDueDate);
+            float newSum = initialSum * (1 + apr * (fps + days) / (100 * 365));
+            log.info("Current sum : " + newSum);
+
+            String dueDateAsString = String.valueOf(dueDateString);
+            String dueSumAsString = String.valueOf(newSum);
+
+            initComponents(sliderOpts, dueDateAsString, dueSumAsString);
+        } catch (ParseException ex) {
+            Logger.getLogger(PostponeRequestPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
 
         //Loan Offer.Sum * (1 + Loan Offer.APR* Loan Offer.periodDays/(100 * 365)
-        float newSum = initialSum * (1 + apr * (fps + days) / (100 * 365));
-        log.info("Current sum : " + newSum);
 
-        String dueDateAsString = String.valueOf(dueDateString);
-        String dueSumAsString = String.valueOf(newSum);
-
-        initComponents(sliderOpts, dueDateAsString, dueSumAsString);
 
         /*
         Hashtable labelTable = new Hashtable();
@@ -238,10 +248,8 @@ public class PostponeRequestPanel extends javax.swing.JPanel {
     }
 
     public void addPostponeCancelListener(ActionListener loanPostponeCancelListener) {
-       jButton2.addActionListener(loanPostponeCancelListener);
+        jButton2.addActionListener(loanPostponeCancelListener);
     }
-    
-   
 }// </editor-fold>
 // Variables declaration - do not modify
 /*@SuppressWarnings("unchecked")

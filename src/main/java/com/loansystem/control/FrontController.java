@@ -100,10 +100,28 @@ public class FrontController {
 
 
             LoanService loanService = new LoanServiceImpl();
-            loanService.saveLoanWithStatus(loanTabModel.getLastLoan(), LoanStatusInterface.OVERDUE);
+            loanService.saveLoanWithStatus(loanTabModel.getLastLoan(), LoanStatusInterface.OVERDUE, null, "Loan issued");
             Loan lastLoan = loanService.getLoanById(loanTabModel.getLastLoan());
             loanTabModel.setLastLoan(lastLoan);
 
+        }
+        
+        boolean debtCollection = checkIfDebtCollection(loanTabModel.getLastLoan());
+        
+        ///save all data that will tell that loan is overdue
+        if (debtCollection) {
+        
+        
+        LoanService loanService = new LoanServiceImpl();
+        loanService.saveLoanWithStatus(loanTabModel.getLastLoan(), LoanStatusInterface.SENT_TO_DEBT_COLLECTION, null, "sent to debt collection");
+        Loan lastLoan = loanService.getLoanById(loanTabModel.getLastLoan());
+        loanTabModel.setLastLoan(lastLoan);
+        
+        Client client = lastLoan.getClient();
+        loanService.saveClientWithStatus(client, ClientStatusClassificator.BLACKLISTED, null);
+        
+        //set client to blacklisted
+        
         }
         ArrayList<JPanel> loanRequestCTabPanels = new ArrayList<JPanel>();
 
@@ -215,7 +233,57 @@ public class FrontController {
     }
 
     private void createOverdueFrame() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        LoanTabModel loanTabModel = new LoanTabModel(loginClient);
+        boolean debtCollection = checkIfDebtCollection(loanTabModel.getLastLoan());
+        
+        ///save all data that will tell that loan is overdue
+        if (debtCollection) {
+        
+        
+        LoanService loanService = new LoanServiceImpl();
+        loanService.saveLoanWithStatus(loanTabModel.getLastLoan(), LoanStatusInterface.SENT_TO_DEBT_COLLECTION, null, "sent to debt collection");
+        Loan lastLoan = loanService.getLoanById(loanTabModel.getLastLoan());
+        loanTabModel.setLastLoan(lastLoan);
+        
+        Client client = lastLoan.getClient();
+        loanService.saveClientWithStatus(client, ClientStatusClassificator.BLACKLISTED, null);
+        
+        //set client to blacklisted
+        
+        }
+        ArrayList<JPanel> loanRequestCTabPanels = new ArrayList<JPanel>();
+
+
+        JPanel[] panels = new JPanel[2];
+
+        LoanUiService loanUiService = new LoanUiServiceImpl();
+        ExistingLoanRequestPanel existingLoanRequestPanel = loanUiService.createExistingLoanRequestPanel(loginClient, loanTabModel);
+
+
+        NewLoanRequestPanel newLoanRequestPanel = new NewLoanRequestPanel(loginClient, false);
+
+        loanTabModel.setNewLoanRequestPanel(newLoanRequestPanel);
+
+
+        LoanTabView loanTabView = new LoanTabView(existingLoanRequestPanel, newLoanRequestPanel, loanTabModel);
+        LoanTabController loanTabController = new LoanTabController(loanTabView, loanTabModel, loginClient);
+
+        loanRequestCTabPanels = loanTabModel.getCreatedPanels();
+
+        MyLoansTabModel myLoansTabModel = new MyLoansTabModel();
+        myLoansTabModel.setClient(loginClient);
+
+
+        MyLoansPanel myLoansPanel = new MyLoansPanel(myLoansTabModel, true);
+        myLoansTabModel.setMyLoansPanel(myLoansPanel);
+
+        ArrayList<JPanel> myLoansTabPanels = new ArrayList<JPanel>();
+        myLoansTabPanels = myLoansTabModel.getCreatedPanels();
+
+        panels[0] = new MyLoansTab(myLoansTabPanels);
+        panels[1] = new LoanRequestCTab(loanRequestCTabPanels);
+
+        ClientFrameBasic1 basicFrame = new ClientFrameBasic1(panels);
     }
 
     private boolean checkIfOverdue(Loan lastLoan) {
@@ -224,11 +292,27 @@ public class FrontController {
         try {
             loanDueDate = DateUtil.dateFormat.parse(lastLoan.getDueDate());
             Date now1 = DateUtil.getDatePlusDays(loanDueDate, 1);
-            if (loanDueDate.compareTo(now1) <= 0) {
+            if (now1.compareTo(now) <= 0) {
                 return true;
             }
         } catch (Exception e) {
             log.debug("checkIfOverdue() some error occured" + e);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkIfDebtCollection(Loan lastLoan) {
+        Date now = new Date();
+        Date loanDueDate = null;
+        try {
+            loanDueDate = DateUtil.dateFormat.parse(lastLoan.getDueDate());
+            Date now1 = DateUtil.getDatePlusDays(loanDueDate, 14); // after 2 weeks loan is sent to debt collection
+            if (now1.compareTo(now) <= 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            log.debug("checkIfDebtCollection() some error occured" + e);
             return true;
         }
         return false;
@@ -487,24 +571,33 @@ public class FrontController {
         PostponeRequest postponeRequest = loan.getPostponeRequest();
         int loanStatus = Integer.parseInt(loan.getLoanStatus().getLoanStatusId());
 
+
+
         if (postponeRequest != null) {
-            try {
-                switch (Integer.parseInt(postponeRequest.getPostponeRequestStatus().getId())) {
-                    case PostponeRequestStatus.ACCEPTED:
-                        break;
-                    case PostponeRequestStatus.CANCELED:
-                        createPostponeReuqestedFrame();
-                        break;
-                    case PostponeRequestStatus.REJECTED:
-                        break;
-                    case PostponeRequestStatus.REQUESTED:
-                        createPostponeReuqestedFrame();
-                        break;
+            if (loanStatus != LoanStatusInterface.PAYED_BACK) {
+                try {
+                    switch (Integer.parseInt(postponeRequest.getPostponeRequestStatus().getId())) {
+                        case PostponeRequestStatus.ACCEPTED:
+                            createIssuedFrame();
+                            break;
+                        case PostponeRequestStatus.CANCELED:
+                            createPostponeReuqestedFrame();
+                            break;
+                        case PostponeRequestStatus.REJECTED:
+                            createIssuedFrame();
+                            break;
+                        case PostponeRequestStatus.REQUESTED:
+                            createPostponeReuqestedFrame();
+                            break;
 
+                    }
+
+                } catch (Exception e) {
+                    log.error(e);
                 }
-
-            } catch (Exception e) {
-                log.error(e);
+            }
+            else {
+                createFrame(loanStatus);
             }
         } else {
             createFrame(loanStatus);

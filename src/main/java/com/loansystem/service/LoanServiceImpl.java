@@ -7,6 +7,7 @@ package com.loansystem.service;
 import com.loansystem.backend.model.LoanInsertRequest;
 
 import com.loansystem.backend.model.LoanTabModel;
+import com.loansystem.classificator.ClientStatusClassificator;
 import com.loansystem.db.dao.ClientGroupHome;
 import com.loansystem.db.dao.ClientHistoryHome;
 import com.loansystem.db.dao.ClientHome;
@@ -23,6 +24,7 @@ import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import com.loansystem.model.ClientGroup;
 import com.loansystem.model.ClientHistory;
+import com.loansystem.model.ClientStatus;
 import com.loansystem.model.Loan;
 import com.loansystem.model.LoanHistory;
 import com.loansystem.model.LoanHistoryCollection;
@@ -32,9 +34,12 @@ import com.loansystem.model.PostponeRequest;
 import com.loansystem.model.PostponeRequestStatus;
 import com.loansystem.util.DateUtil;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
@@ -151,11 +156,31 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public int createPostponeRequest(PostponeRequest postponeRequest) {
+    public int createPostponeRequest(LoanTabModel loanTabModel, PostponeRequest postponeRequest) {
+        int result = 0;
+        try {
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+            Transaction tx = session.beginTransaction();
 
-        PostponeRequestHome postponeRequestHome = new PostponeRequestHome();
-        int result = postponeRequestHome.savePostponeRequest(postponeRequest);
-        return result;
+            Loan lastLoan = loanTabModel.getLastLoan();
+            /*saveLoanWithStatus(lastLoan, LoanStatusInterface.POSTPONED, session, "Postpone requested created");*/
+
+            PostponeRequestHome postponeRequestHome = new PostponeRequestHome();
+            result = postponeRequestHome.savePostponeRequest(postponeRequest, session);
+
+            lastLoan.setPostponeRequest(postponeRequest);
+            mergeLoan(lastLoan, session);
+
+            //postponeRequest.setEmployeeId(null);
+
+
+            tx.commit();
+
+            return result;
+        } catch (Exception e) {
+            log.error("createPostponeRequest() " + e.getMessage());
+            return 0;
+        }
     }
 
     @Override
@@ -177,17 +202,20 @@ public class LoanServiceImpl implements LoanService {
         postponeRequestHome.merge(postponeRequest, session);
 
 
-        LoanStatusHome test = new LoanStatusHome();
         //LoanStatus lastStatus = test.findById(String.valueOf(statusId));
         //update loan in case of of postponeRequest.Requested
         if (dueDate != null && sum != null) {
-            loanTabModel.getLastLoan().setDueDate(dueDate);
-            loanTabModel.getLastLoan().setDebt(sum);
+            /* loanTabModel.getLastLoan().setDueDate(dueDate);
+            loanTabModel.getLastLoan().setDebt(sum);*/
             //loanTabModel.getLastLoan().setLoanStatus(lastStatus);
             LoanHome loanHome = new LoanHome();
             loanHome.merge(loanTabModel.getLastLoan(), session);
             result = 1;
         }
+
+        LoanHistory loanHistory = updateLoanHistory(loanTabModel.getLastLoan(), "Loan postpone staus change to " + postponeRequestStatusId);
+
+        saveLoanHistory(loanHistory, session);
         /*postponeRequest = null;
         int statusId = postponeRequest.getPostponeRequestId();*/
         tx.commit();
@@ -226,17 +254,25 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void saveLoanWithStatus(Loan selectedLoan, int loanStatus) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();
+    public void saveLoanWithStatus(Loan selectedLoan, int loanStatus, Session session, String comment) {
+        Session sessionLoc = null;
+        Transaction transaction = null;
+        if (session == null) {
+            sessionLoc = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
         LoanStatus selectedStatus = getStatusById(loanStatus);
         selectedLoan.setLoanStatus(selectedStatus);
-        LoanHistory loanHistory = updateLoanHistory(selectedLoan);
+        LoanHistory loanHistory = updateLoanHistory(selectedLoan, comment);
 
         try {
-            mergeLoan(selectedLoan, session);
-            saveLoanHistory(loanHistory, session);
-            transaction.commit();
+            mergeLoan(selectedLoan, sessionLoc);
+            saveLoanHistory(loanHistory, sessionLoc);
+            if (session == null) {
+                transaction.commit();
+            }
         } catch (Exception e) {
             log.fatal("saveLoanWithStatus : Failed to insert data");
             transaction.rollback();
@@ -246,9 +282,9 @@ public class LoanServiceImpl implements LoanService {
 
     }
 
-    private LoanHistory updateLoanHistory(Loan selectedLoan) {
+    private LoanHistory updateLoanHistory(Loan selectedLoan, String comment) {
         LoanHistory loanHistory = new LoanHistory();
-        loanHistory.setComment("");
+        loanHistory.setComment(comment);
         Date dateCreated = new Date();
         String dueDateString = DateUtil.dateFormat.format(dateCreated);
         loanHistory.setDate(dueDateString);
@@ -293,7 +329,7 @@ public class LoanServiceImpl implements LoanService {
         Transaction transaction = null;
         Loan lastLoan = loanTabModel.getLastLoan();
         Client client = lastLoan.getClient();
-        ClientHistory clientHistory1= null;
+        ClientHistory clientHistory1 = null;
 
         LoanStatus loanStatus = getStatusById(loanStatusId);
 
@@ -305,10 +341,10 @@ public class LoanServiceImpl implements LoanService {
         try {
             Session session = HibernateUtil.getSessionFactory().getCurrentSession();
             transaction = session.beginTransaction();
-            
-            
-            
-           
+
+
+
+
 
             if (loanStatusId == LoanStatusInterface.PAYED_BACK) {
 
@@ -316,7 +352,7 @@ public class LoanServiceImpl implements LoanService {
                 ClientHistory clientHistory = client.getClientHistory().get(0); //find last client history
                 LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
                 ArrayList<LoanHistory> loanHistory1 = loanHistoryHome.findByLoanId(lastLoan, session);
-                
+
 
                 double rating = calculateRating(loanHistory1, lastLoan);
 
@@ -325,39 +361,39 @@ public class LoanServiceImpl implements LoanService {
                 saveClientHistory(clientHistory, session);
                 String clientHistoryComment = "rating changed";
                 client.setRating(rating + "");
-               
-                
-                if(client.getClientGroup().getMaxRating()<rating) {
+
+
+                if (client.getClientGroup().getMaxRating() < rating) {
                     ClientGroup newClientGroup = new ClientGroup();
                     ClientGroupHome clientGroupHome = new ClientGroupHome();
                     newClientGroup = clientGroupHome.findByRating(rating, session);
-                    if(newClientGroup!=null) {
+                    if (newClientGroup != null) {
                         client.setClientGroup(newClientGroup);
-                        clientHistory1 = clientHistoryHome.findByClient(client, session); 
+                        clientHistory1 = clientHistoryHome.findByClient(client, session);
                         clientHistory1.setDate(DateUtil.dateFormat.format(new Date()));
-                        clientHistory1.setComment(clientHistoryComment+" group changed");
+                        clientHistory1.setComment(clientHistoryComment + " group changed");
 
                         clientHistory1.setClientGroup(newClientGroup);
                     }
-                                
+
                 }
-                
-                
+
+
 
             }
             mergeClient(client, session);
             lastLoan.setLoanStatus(loanStatus);
             saveLoanHistory(loanHistory, session);
             mergeLoan(lastLoan, session);
-            if(clientHistory1 != null) {
+            if (clientHistory1 != null) {
                 saveClientHistory(clientHistory1, session);
             }
-           /* if(loanStatusId == LoanStatusInterface.SENT_TO_DEBT_COLLECTION) {
-                
+            /* if(loanStatusId == LoanStatusInterface.SENT_TO_DEBT_COLLECTION) {
+            
             }*/
             /*saveClientHistory()
             mergeClient()*/
-           
+
 
             transaction.commit();
 
@@ -426,7 +462,7 @@ public class LoanServiceImpl implements LoanService {
 
             }
         } else {
-             newRating = calculateRatingAfterLoanStatus(loanHistory, lastLoan);
+            newRating = calculateRatingAfterLoanStatus(loanHistory, lastLoan);
         }
 
         return newRating;
@@ -448,4 +484,121 @@ public class LoanServiceImpl implements LoanService {
         }
         return newRating;
     }
+
+    @Override
+    public void savePostponedLoanWithStatus(Loan selectedLoan, int postponeStatusId, Session session) {
+
+        PostponeRequest postponeRequest = selectedLoan.getPostponeRequest();
+        Session sessionLoc = null;
+        Transaction transaction = null;
+        if (session == null) {
+            sessionLoc = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = sessionLoc.beginTransaction();
+        } else {
+            sessionLoc = session;
+        }
+        PostponeRequestStatus selectedStatus = getPostponeStatusById(postponeStatusId);
+
+
+        if (postponeStatusId == com.loansystem.classificator.PostponeRequestStatus.ACCEPTED) {
+            try {
+                //vqnesti v metod uze est'?
+                Date currenDueDate = DateUtil.dateFormat.parse(selectedLoan.getDueDate());
+                Date newDueDate = DateUtil.getDatePlusDays(currenDueDate, postponeRequest.getPeriodDays());
+                String newDueDateString = DateUtil.dateFormat.format(newDueDate);
+                selectedLoan.setDueDate(newDueDateString + "");
+                saveLoanWithStatus(selectedLoan, LoanStatusInterface.POSTPONED, sessionLoc, "Loan is postponed");
+            } catch (ParseException ex) {
+                Logger.getLogger(LoanServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (postponeStatusId == com.loansystem.classificator.PostponeRequestStatus.REJECTED) {
+            //vqnesti v metod uze est'?
+
+            saveLoanWithStatus(selectedLoan, LoanStatusInterface.ISSUED, sessionLoc, "Loan postpone is rejected");
+        }
+        selectedLoan.getPostponeRequest().setPostponeRequestStatus(selectedStatus);
+        PostponeRequestHome postponeRequestHome = new PostponeRequestHome();
+        postponeRequestHome.merge(selectedLoan.getPostponeRequest(), sessionLoc);
+
+
+        try {
+            //mergeLoan(selectedLoan, sessionLoc);
+            //saveLoanHistory(loanHistory, sessionLoc);
+            if (session == null) {
+                transaction.commit();
+            }
+        } catch (Exception e) {
+            log.fatal("savePostponedLoanWithStatus : Failed to insert data");
+            transaction.rollback();
+        }
+    }
+
+    private PostponeRequestStatus getPostponeStatusById(int postponeStatusId) {
+        PostponeRequestStatusHome postponeRequestStatusHome = new PostponeRequestStatusHome();
+        PostponeRequestStatus postponeRequestStatus = postponeRequestStatusHome.findById(postponeStatusId + "");
+        return postponeRequestStatus;
+    }
+
+    @Override
+    public void saveClientWithStatus(Client client, int statusId, Session session) {
+
+        Session sessionLoc = null;
+        Transaction transaction = null;
+        try {
+            if (session == null) {
+                sessionLoc = HibernateUtil.getSessionFactory().getCurrentSession();
+                transaction = sessionLoc.beginTransaction();
+            } else {
+                sessionLoc = session;
+            }
+            ClientHistory clientHistory = client.getClientHistory().get(0); //find last client history
+            ClientHistory clientHistory1 = new ClientHistory();
+            ClientHistoryHome clientHistoryHome = new ClientHistoryHome();
+               double rating = 0;
+            if(statusId==ClientStatusClassificator.BLACKLISTED)
+                 rating = -1;
+            
+            
+            clientHistory.setNewRating(rating);
+            clientHistory.setDate(DateUtil.dateFormat.format(new Date()));
+            String clientHistoryComment = "client status changed to blacklisted";
+            saveClientHistory(clientHistory, session);
+
+            client.setRating(rating + "");
+
+
+
+            ClientGroup newClientGroup = new ClientGroup();
+            ClientGroupHome clientGroupHome = new ClientGroupHome();
+            newClientGroup = clientGroupHome.findByName("Blacklisted", session);
+            if (newClientGroup != null) {
+                client.setClientGroup(newClientGroup);
+                clientHistory1 = clientHistoryHome.findByClient(client, session);
+                clientHistory1.setDate(DateUtil.dateFormat.format(new Date()));
+                clientHistory1.setComment(clientHistoryComment + " group changed");
+
+                clientHistory1.setClientGroup(newClientGroup);
+            }
+
+
+
+
+            if (session == null) {
+                transaction.commit();
+            }
+        } catch (Exception e) {
+            log.fatal("saveLoanWithStatus : Failed to insert data");
+            transaction.rollback();
+        }
+
+    }
+
+    private ClientStatus getClientStatusById(int statusId, Session session) {
+        ClientStatusHome clientStatusHome = new ClientStatusHome();
+        ClientStatus clientStatus = clientStatusHome.findById(statusId + "", session);
+        return clientStatus;
+    }
+
 }

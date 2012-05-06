@@ -33,7 +33,7 @@ public interface LoanService {
 
     public Loan getLastLoan(Client client);
 
-    public int createPostponeRequest(PostponeRequest postponeRequest);
+    public int createPostponeRequest(LoanTabModel loanTabModel, PostponeRequest postponeRequest);
 
     public PostponeRequest updateLastPostponedLoan(LoanTabModel loanTabModel, String dueDate, String sum, int postponeRequestStatus);
 
@@ -45,7 +45,7 @@ public interface LoanService {
 
     public void mergeLoan(Loan selectedLoan, Session session);
 
-    public void saveLoanWithStatus(Loan selectedLoan, int loanStatus);
+    public void saveLoanWithStatus(Loan selectedLoan, int loanStatus, Session session, String comment);
 
     public void saveLoanHistory(LoanHistory loanHistory, Session session);
 
@@ -56,4 +56,8 @@ public interface LoanService {
     public PostponeRequestStatus getPostponeRequestStatusById(int id);
 
     public void updateLoanHistoryForLoan(LoanTabModel loanTabModel, int loanStatusId);
+
+    public void savePostponedLoanWithStatus(Loan selectedLoan, int statusId, Session session);
+
+    public void saveClientWithStatus(Client client, int statusId, Session session);
 }

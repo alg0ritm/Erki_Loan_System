@@ -54,7 +54,7 @@ public class PostponeRequestedLoansTabController {
         public void actionPerformed(ActionEvent e) {
             Loan selectedLoan = postponeRequestedLoansTabModel.getSelectedLoan();
             LoanService loanService = new LoanServiceImpl();
-            loanService.saveLoanWithStatus(selectedLoan, LoanStatusInterface.ISSUED);
+            loanService.savePostponedLoanWithStatus(selectedLoan, com.loansystem.classificator.PostponeRequestStatus.ACCEPTED, null);
             ArrayList<Loan> pendingLoans = new ArrayList<Loan>();
             PostponeRequestStatus postponeRequestStatus = loanService.getPostponeRequestStatusById(com.loansystem.classificator.PostponeRequestStatus.REQUESTED);
             pendingLoans = loanService.getPostponedLoansByStatus(postponeRequestStatus);
@@ -75,8 +75,10 @@ public class PostponeRequestedLoansTabController {
         public void actionPerformed(ActionEvent e) {
             Loan selectedLoan = postponeRequestedLoansTabModel.getSelectedLoan();
             LoanService loanService = new LoanServiceImpl();
-            loanService.saveLoanWithStatus(selectedLoan, LoanStatusInterface.REJECTED);
+            //loanService.saveLoanWithStatus(selectedLoan, LoanStatusInterface.REJECTED, null);
+            loanService.savePostponedLoanWithStatus(selectedLoan, com.loansystem.classificator.PostponeRequestStatus.REJECTED, null);
             PostponeRequestStatus postponeRequestStatus = loanService.getPostponeRequestStatusById(com.loansystem.classificator.PostponeRequestStatus.REQUESTED);
+            
             ArrayList<Loan> pendingLoans = new ArrayList<Loan>();
             pendingLoans = loanService.getPostponedLoansByStatus(postponeRequestStatus);
             postponeRequestedLoansTabModel.setPostponeRequestedLoans(pendingLoans);

@@ -131,18 +131,20 @@ public class PostponeRequestHome {
         }
     }
 
-    public int savePostponeRequest(PostponeRequest postponeRequest) {
-        Session session = sessionFactory.getCurrentSession();
-        Transaction transaction = session.beginTransaction();
+    public int savePostponeRequest(PostponeRequest postponeRequest, Session session) {
+        Session sessionLoc = HibernateUtil.createRequieredSession(session);
+        
         //loginClient = (Client) session.createCriteria(Client.class).add(Restrictions.eq("mail", loginText)).add(Restrictions.eq("password", passwordText)).uniqueResult();
         try {
             //SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
             //Session session = sessionFactory.getCurrentSession();
             //Transaction tx = session.beginTransaction();
             log.info("save Postpone Request : before save");
-            session.save(postponeRequest);
+            sessionLoc.save(postponeRequest);
 
-            transaction.commit();
+            if (session == null) {
+                sessionLoc.getTransaction().commit();
+            }
             //session.close();
         } catch (Exception ex) {
             log.error(ex);

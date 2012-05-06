@@ -13,9 +13,18 @@ public class PostponeRequest implements java.io.Serializable {
 	private String date;
 	private String employeeId;
 	private String comment;
+        private int periodDays;
 
 	public PostponeRequest() {
 	}
+
+    public int getPeriodDays() {
+        return periodDays;
+    }
+
+    public void setPeriodDays(int periodDays) {
+        this.periodDays = periodDays;
+    }
 
     public PostponeRequestStatus getPostponeRequestStatus() {
         return postponeRequestStatus;
@@ -33,18 +42,20 @@ public class PostponeRequest implements java.io.Serializable {
         this.postponeRequestId = postponeRequestId;
     }
 
-	public PostponeRequest(int postponeRequestId, PostponeRequestStatus postponeRequestStatus, String date) {
+	public PostponeRequest(int postponeRequestId, PostponeRequestStatus postponeRequestStatus, String date, int periodDays) {
 		this.postponeRequestId = postponeRequestId;
 		this.postponeRequestStatus = postponeRequestStatus;
 		this.date = date;
+                this.periodDays = periodDays;
 	}
 
-	public PostponeRequest(int postponeRequestId, PostponeRequestStatus postponeRequestStatus, String date, String employeeId, String comment) {
+	public PostponeRequest(int postponeRequestId, PostponeRequestStatus postponeRequestStatus, String date, String employeeId, String comment, int periodDays) {
 		this.postponeRequestId = postponeRequestId;
 		this.postponeRequestStatus = postponeRequestStatus;
 		this.date = date;
 		this.employeeId = employeeId;
 		this.comment = comment;
+                this.periodDays = periodDays;
 	}
 
 	public PostponeRequestStatus getPostponeRequestStatusId() {

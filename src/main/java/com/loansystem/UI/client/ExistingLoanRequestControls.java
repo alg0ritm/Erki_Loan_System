@@ -147,9 +147,11 @@ public class ExistingLoanRequestControls extends javax.swing.JPanel {
             PostponeRequestStatus postponeRequestStatus = postponeRequest.getPostponeRequestStatus();
             switch (Integer.parseInt(postponeRequestStatus.getId())) {
                 case com.loansystem.classificator.PostponeRequestStatus.ACCEPTED:
+                     return true;
                 case com.loansystem.classificator.PostponeRequestStatus.CANCELED:
                     return true;
                 case com.loansystem.classificator.PostponeRequestStatus.REJECTED:
+                     return true;
                 case com.loansystem.classificator.PostponeRequestStatus.REQUESTED:
                     return false;
                 default:

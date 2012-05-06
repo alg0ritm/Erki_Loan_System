@@ -63,7 +63,7 @@ public class PendingLoansTabController {
         public void actionPerformed(ActionEvent e) {
              Loan selectedLoan = pendingLoansTabModel.getSelectedLoan();
              LoanService loanService = new LoanServiceImpl();
-             loanService.saveLoanWithStatus(selectedLoan, LoanStatusInterface.ISSUED);
+             loanService.saveLoanWithStatus(selectedLoan, LoanStatusInterface.ISSUED, null, "Loan is issued");
              ArrayList<Loan> pendingLoans = new ArrayList<Loan>();
              pendingLoans = loanService.getLoansByStatus(LoanStatusInterface.PENDING);
              pendingLoansTabModel.setPendingLoans(pendingLoans);
@@ -84,7 +84,7 @@ public class PendingLoansTabController {
         public void actionPerformed(ActionEvent e) {
              Loan selectedLoan = pendingLoansTabModel.getSelectedLoan();
              LoanService loanService = new LoanServiceImpl();
-             loanService.saveLoanWithStatus(selectedLoan, LoanStatusInterface.REJECTED);
+             loanService.saveLoanWithStatus(selectedLoan, LoanStatusInterface.REJECTED, null, "Loan is rejected");
               ArrayList<Loan> pendingLoans = new ArrayList<Loan>();
              pendingLoans = loanService.getLoansByStatus(LoanStatusInterface.PENDING);
              pendingLoansTabModel.setPendingLoans(pendingLoans);

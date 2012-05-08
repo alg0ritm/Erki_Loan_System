@@ -15,7 +15,7 @@ public class ClientStatus implements java.io.Serializable {
 	private String id;
 	private String name;
 	private String description;
-	private List<Client> clients;
+	
 
 	public ClientStatus() {
 	}
@@ -29,7 +29,7 @@ public class ClientStatus implements java.io.Serializable {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.clients = clients;
+		
 	}
 
 	public String getId() {
@@ -56,12 +56,6 @@ public class ClientStatus implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public List<Client> getClients() {
-		return this.clients;
-	}
-
-	public void setClients(List<Client> clients) {
-		this.clients = clients;
-	}
+	
 
 }

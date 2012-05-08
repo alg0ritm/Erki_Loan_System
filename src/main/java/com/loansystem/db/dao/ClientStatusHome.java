@@ -98,7 +98,7 @@ public class ClientStatusHome {
         
         log.debug("getting ClientStatus instance with id: " + id);
         try {
-            ClientStatus instance = (ClientStatus) sessionLoc.get("ClientStatus", id);
+            ClientStatus instance = (ClientStatus) sessionLoc.get("com.loansystem.model.ClientStatus", id);
             if (instance == null) {
                 log.debug("get successful, no instance found");
             } else {

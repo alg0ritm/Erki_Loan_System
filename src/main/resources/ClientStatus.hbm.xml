@@ -13,11 +13,5 @@
     <property name="description" type="string">
       <column length="2000000000" name="description"/>
     </property>
-    <bag name="clients" cascade="all" order-by="client_id" lazy="false">
-      <key>
-        <column length="2000000000" name="status_id" not-null="true"/>
-      </key>
-      <one-to-many class="com.loansystem.model.Client"/>
-    </bag>
   </class>
 </hibernate-mapping>

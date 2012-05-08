@@ -107,7 +107,7 @@ public class PendingLoansTabController {
             Loan selectedLoan = pendingLoansTabModel.getSelectedLoan(row);
             
             LoanService loanService = new LoanServiceImpl();
-            selectedLoan = loanService.getLoanById(selectedLoan);
+            selectedLoan = loanService.getLoanById(selectedLoan, null);
             pendingLoansTabModel.setSelectedLoan(selectedLoan);
             fillPendingLoanDetailedViewPanel();
             showPendingLoanDetailedViewPanel(true);

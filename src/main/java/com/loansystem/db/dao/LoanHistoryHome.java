@@ -148,7 +148,7 @@ public class LoanHistoryHome {
         }
         try {
             log.info("before save");
-            session.save(instance);
+            sessionLoc.save(instance);
             if (session == null) {
                 transaction.commit();
             }

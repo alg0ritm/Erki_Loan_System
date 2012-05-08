@@ -39,7 +39,7 @@ public interface LoanService {
 
     public void cancelExistingPostponeRequest(LoanTabModel loanTabModel, Client client);
 
-    public Loan getLoanById(Loan selectedLoan);
+    public Loan getLoanById(Loan selectedLoan, Session session);
 
     public LoanStatus getStatusById(int loanStatus);
 

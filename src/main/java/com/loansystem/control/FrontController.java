@@ -30,6 +30,7 @@ import com.loansystem.backend.model.UserLoginInput;
 import com.loansystem.classificator.ClientStatusClassificator;
 import com.loansystem.classificator.EmployeeType;
 import com.loansystem.classificator.PostponeRequestStatus;
+import com.loansystem.db.dao.ClientHome;
 import com.loansystem.db.dao.LoanHistoryHome;
 import com.loansystem.db.dao.LoanHome;
 import com.loansystem.db.dao.LoanStatusHome;
@@ -64,6 +65,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -97,32 +99,21 @@ public class FrontController {
 
         ///save all data that will tell that loan is overdue
         if (overdue) {
-
+            
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+          
+            //Transaction transaction = session.beginTransaction();
 
             LoanService loanService = new LoanServiceImpl();
-            loanService.saveLoanWithStatus(loanTabModel.getLastLoan(), LoanStatusInterface.OVERDUE, null, "Loan issued");
-            Loan lastLoan = loanService.getLoanById(loanTabModel.getLastLoan());
+            loanService.saveLoanWithStatus(loanTabModel.getLastLoan(), LoanStatusInterface.OVERDUE, session, "Loan issued");
+            session.getTransaction().commit();
+            Loan lastLoan = loanService.getLoanById(loanTabModel.getLastLoan(), null);
             loanTabModel.setLastLoan(lastLoan);
+            createOverdueFrame();
+            return;
+        }
 
-        }
         
-        boolean debtCollection = checkIfDebtCollection(loanTabModel.getLastLoan());
-        
-        ///save all data that will tell that loan is overdue
-        if (debtCollection) {
-        
-        
-        LoanService loanService = new LoanServiceImpl();
-        loanService.saveLoanWithStatus(loanTabModel.getLastLoan(), LoanStatusInterface.SENT_TO_DEBT_COLLECTION, null, "sent to debt collection");
-        Loan lastLoan = loanService.getLoanById(loanTabModel.getLastLoan());
-        loanTabModel.setLastLoan(lastLoan);
-        
-        Client client = lastLoan.getClient();
-        loanService.saveClientWithStatus(client, ClientStatusClassificator.BLACKLISTED, null);
-        
-        //set client to blacklisted
-        
-        }
         ArrayList<JPanel> loanRequestCTabPanels = new ArrayList<JPanel>();
 
 
@@ -235,21 +226,28 @@ public class FrontController {
     private void createOverdueFrame() {
         LoanTabModel loanTabModel = new LoanTabModel(loginClient);
         boolean debtCollection = checkIfDebtCollection(loanTabModel.getLastLoan());
-        
+
         ///save all data that will tell that loan is overdue
         if (debtCollection) {
+            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+            Transaction transaction = session.beginTransaction();
+
+            LoanService loanService = new LoanServiceImpl();
+            loanService.saveLoanWithStatus(loanTabModel.getLastLoan(), LoanStatusInterface.SENT_TO_DEBT_COLLECTION, session, "sent to debt collection");
+             Loan lastLoan = loanService.getLoanById(loanTabModel.getLastLoan(), null);
+                Client client = lastLoan.getClient();
+          
+               
+                
+            loanService.saveClientWithStatus(client, ClientStatusClassificator.BLACKLISTED, session);
+             session.getTransaction().commit();
+           
+            loanTabModel.setLastLoan(lastLoan);
+
         
-        
-        LoanService loanService = new LoanServiceImpl();
-        loanService.saveLoanWithStatus(loanTabModel.getLastLoan(), LoanStatusInterface.SENT_TO_DEBT_COLLECTION, null, "sent to debt collection");
-        Loan lastLoan = loanService.getLoanById(loanTabModel.getLastLoan());
-        loanTabModel.setLastLoan(lastLoan);
-        
-        Client client = lastLoan.getClient();
-        loanService.saveClientWithStatus(client, ClientStatusClassificator.BLACKLISTED, null);
-        
-        //set client to blacklisted
-        
+         
+            //set client to blacklisted
+
         }
         ArrayList<JPanel> loanRequestCTabPanels = new ArrayList<JPanel>();
 
@@ -420,6 +418,7 @@ public class FrontController {
                                 log.info("NO LOAN EXIST FOR THE CLIENT");
                                 loanStatus = LoanStatusInterface.PAYED_BACK;
                             }
+                             session.close();
                             createLoanStatusSpecificFrame(loan);
                             try {
                                 cview.getLoginView().setVisible(false);
@@ -574,7 +573,7 @@ public class FrontController {
 
 
         if (postponeRequest != null) {
-            if (loanStatus != LoanStatusInterface.PAYED_BACK) {
+            if (loanStatus != LoanStatusInterface.PAYED_BACK && loanStatus != LoanStatusInterface.OVERDUE /*&& loanStatus != LoanStatusInterface.SENT_TO_DEBT_COLLECTION*/) {
                 try {
                     switch (Integer.parseInt(postponeRequest.getPostponeRequestStatus().getId())) {
                         case PostponeRequestStatus.ACCEPTED:
@@ -595,8 +594,7 @@ public class FrontController {
                 } catch (Exception e) {
                     log.error(e);
                 }
-            }
-            else {
+            } else {
                 createFrame(loanStatus);
             }
         } else {
@@ -619,14 +617,14 @@ public class FrontController {
         if (loanStatus == LoanStatusInterface.ISSUED) {
             createIssuedFrame();
         }
-        if (loanStatus == LoanStatusInterface.PAYED_BACK || loanStatus == LoanStatusInterface.SENT_TO_DEBT_COLLECTION) {
+        if (loanStatus == LoanStatusInterface.PAYED_BACK) {
             createPayedBackFrame();
         }
         /*if (loanStatusEnum.equals(LoanStatusEnum.POSTPONED)) {
         createPostponedFrame();
-        }
-        if (loanStatusEnum.equals(LoanStatusEnum.SENT_TO_DEBT_COLLECTION)) {
-        createSentToDebtColletionFrame();
+        }*/
+        /*if (loanStatus == LoanStatusInterface.SENT_TO_DEBT_COLLECTION) {
+            createSentToDebtColletionFrame();
         }*/
 
     }

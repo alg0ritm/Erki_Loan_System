@@ -228,9 +228,9 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public Loan getLoanById(Loan selectedLoan) {
+    public Loan getLoanById(Loan selectedLoan, Session session) {
         LoanHome loanHome = new LoanHome();
-        Loan loan = loanHome.findById(selectedLoan.getLoanId(), null);
+        Loan loan = loanHome.findById(selectedLoan.getLoanId(), session);
         return loan;
     }
 
@@ -556,7 +556,12 @@ public class LoanServiceImpl implements LoanService {
             ClientHistory clientHistory = client.getClientHistory().get(0); //find last client history
             ClientHistory clientHistory1 = new ClientHistory();
             ClientHistoryHome clientHistoryHome = new ClientHistoryHome();
+            
+            ClientStatus clientStatus = getClientStatusById(statusId, sessionLoc);
+            client.setClientStatus(clientStatus);
                double rating = 0;
+               
+               
             if(statusId==ClientStatusClassificator.BLACKLISTED)
                  rating = -1;
             
@@ -583,7 +588,8 @@ public class LoanServiceImpl implements LoanService {
             }
 
 
-
+            ClientHome clientHome = new ClientHome();
+            clientHome.merge(client, sessionLoc);
 
             if (session == null) {
                 transaction.commit();

@@ -100,7 +100,7 @@ public class PostponeRequestedLoansTabController {
                 Loan selectedLoan = postponeRequestedLoansTabModel.getSelectedLoan(row);
 
                 LoanService loanService = new LoanServiceImpl();
-                selectedLoan = loanService.getLoanById(selectedLoan);
+                selectedLoan = loanService.getLoanById(selectedLoan, null);
                 postponeRequestedLoansTabModel.setSelectedLoan(selectedLoan);
                 ArrayList<Loan> clientLoans = new ArrayList<Loan>();
                 clientLoans.addAll(selectedLoan.getClient().getLoans());

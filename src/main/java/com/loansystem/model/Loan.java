@@ -73,9 +73,9 @@ public class Loan implements java.io.Serializable {
         float apr = Float.parseFloat(loanOffer.getApr());
         int days = Integer.parseInt(loanOffer.getPeriod());
        
-
+        int debt =  Math.round(initialSum * (1 + apr * days / (100 * 365)));
         //Loan Offer.Sum * (1 + Loan Offer.APR* Loan Offer.periodDays/(100 * 365)
-        float newSum = initialSum * (1 + apr * days / (100 * 365));
+        float newSum = debt;
 
         //setDateFormat(dateFormat);
         this.client = client;

@@ -19,11 +19,29 @@ public class LoanUIutils {
 
     private static final Log log = LogFactory.getLog(LoanUIutils.class);
 
+    public static int createQuestionPopup(String opts[], String question) {
+        int choiceResposne = 0;
+        String[] choices = opts;
+        choiceResposne = JOptionPane.showOptionDialog(
+                null // Center in window.
+                , question // Message
+                , "" // Title in titlebar
+                , JOptionPane.YES_NO_OPTION // Option type
+                , JOptionPane.PLAIN_MESSAGE // messageType
+                , null // Icon (none)
+                , choices // Button text as above.
+                , "Yes" // Default button's label
+                );
+
+        return choiceResposne;
+
+    }
+
     public static int createQuestionPopup(String[] opts, Object requestObject, String initialQuestion) {
 
         String s = initialQuestion + '\n';
         int choiceResposne = 0;
-        if(requestObject!=null) {
+        if (requestObject != null) {
             try {
                 Class cls = requestObject.getClass();
                 log.info(cls.toString());
@@ -57,10 +75,9 @@ public class LoanUIutils {
                     );
 
 
-            
-        }
-        else {
-             String[] choices = opts;
+
+        } else {
+            String[] choices = opts;
             choiceResposne = JOptionPane.showOptionDialog(
                     null // Center in window.
                     , initialQuestion // Message
@@ -71,7 +88,7 @@ public class LoanUIutils {
                     , choices // Button text as above.
                     , "Yes" // Default button's label
                     );
-            
+
         }
         return choiceResposne;
 
@@ -105,10 +122,10 @@ public class LoanUIutils {
         
         }*/
     }
-    
+
     public static void createWarningPopup(String title, String text) {
-           JOptionPane.showMessageDialog(null, text,
-				    title, JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null, text,
+                title, JOptionPane.WARNING_MESSAGE);
     }
 
     public static boolean isGetter(Method method) {

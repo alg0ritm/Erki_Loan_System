@@ -231,6 +231,6 @@ public class PendingLoanDetailedViewPanel extends javax.swing.JPanel {
         clientName.setText(selectedLoan.getClient().getUser().getName()+ " " +selectedLoan.getClient().getUser().getLastName());
         clientRating.setText(selectedLoan.getClient().getRating());
         loanId.setText(selectedLoan.getLoanId()+"");
-        loanSum.setText(selectedLoan.getLoanOffer().getSum());
+        loanSum.setText(selectedLoan.getDebt());
     }
 }

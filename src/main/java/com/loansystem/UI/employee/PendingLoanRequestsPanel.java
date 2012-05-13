@@ -168,7 +168,7 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
             } else {*/
                 tableObject[i][2] = "";
             //}
-            tableObject[i][3] = currentLoan.getLoanOffer().getSum();
+            tableObject[i][3] = currentLoan.getDebt();
             tableObject[i][4] = client.getRating();
             tableObject[i][5] = client.getClientGroup().getDescription();
 

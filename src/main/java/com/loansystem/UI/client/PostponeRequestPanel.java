@@ -105,7 +105,8 @@ public class PostponeRequestPanel extends javax.swing.JPanel {
             Date newDueDate = DateUtil.getDatePlusDays(oldDate, fps);
             String dueDateString = DateUtil.dateFormat.format(newDueDate);
             log.info("Current Due  Date : " + newDueDate);
-            float newSum = initialSum * (1 + apr * (fps + days) / (100 * 365));
+            int debt = Math.round(initialSum * (1 + apr * (fps + days) / (100 * 365)));
+            float newSum = debt;
             log.info("Current sum : " + newSum);
 
             String dueDateAsString = String.valueOf(dueDateString);

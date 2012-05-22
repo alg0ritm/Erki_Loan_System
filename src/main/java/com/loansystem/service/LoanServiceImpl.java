@@ -73,7 +73,7 @@ public class LoanServiceImpl implements LoanService {
         LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
 
         Loan insertLoan = new Loan(client, loanOffer1, loanStatus);
-        LoanHistory loanHistory = new LoanHistory(insertLoan, loanStatus, "Default comment");
+        LoanHistory loanHistory = new LoanHistory(insertLoan, loanStatus);
 
 
 
@@ -284,7 +284,6 @@ public class LoanServiceImpl implements LoanService {
 
     private LoanHistory updateLoanHistory(Loan selectedLoan, String comment) {
         LoanHistory loanHistory = new LoanHistory();
-        loanHistory.setComment(comment);
         Date dateCreated = new Date();
         String dueDateString = DateUtil.dateFormat.format(dateCreated);
         loanHistory.setDate(dueDateString);
@@ -334,7 +333,7 @@ public class LoanServiceImpl implements LoanService {
         LoanStatus loanStatus = getStatusById(loanStatusId);
 
 
-        LoanHistory loanHistory = new LoanHistory(lastLoan, loanStatus, "change to status " + loanStatus.getDescription());
+        LoanHistory loanHistory = new LoanHistory(lastLoan, loanStatus);
 
         //ClientHistory clientHistory = new ClientHistory();
 
@@ -371,7 +370,6 @@ public class LoanServiceImpl implements LoanService {
                         client.setClientGroup(newClientGroup);
                         clientHistory1 = clientHistoryHome.findByClient(client, session);
                         clientHistory1.setDate(DateUtil.dateFormat.format(new Date()));
-                        clientHistory1.setComment(clientHistoryComment + " group changed");
 
                         clientHistory1.setClientGroup(newClientGroup);
                     }
@@ -582,7 +580,6 @@ public class LoanServiceImpl implements LoanService {
                 client.setClientGroup(newClientGroup);
                 clientHistory1 = clientHistoryHome.findByClient(client, session);
                 clientHistory1.setDate(DateUtil.dateFormat.format(new Date()));
-                clientHistory1.setComment(clientHistoryComment + " group changed");
 
                 clientHistory1.setClientGroup(newClientGroup);
             }

@@ -9,7 +9,6 @@ public class ClientHistory implements java.io.Serializable {
 
     private int id;
     private String date;
-    private String comment;
     private Client client;
     private ClientGroup clientGroup;
     private ClientStatus clientStatus;
@@ -47,14 +46,6 @@ public class ClientHistory implements java.io.Serializable {
         this.clientStatus = clientStatus;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public String getDate() {
         return date;
     }
@@ -84,7 +75,6 @@ public class ClientHistory implements java.io.Serializable {
             double newRating) {
         this.id = id;
         this.date = date;
-        this.comment = comment;
         this.client = client;
         this.clientGroup = clientGroup;
         this.clientStatus = clientStatus;

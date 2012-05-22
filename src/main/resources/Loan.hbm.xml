@@ -4,7 +4,7 @@
 <hibernate-mapping default-lazy="false">
     <class name="com.loansystem.model.Loan" table="loan">
         <id name="loanId" type="int">
-            <column length="2000000000" name="id"/>
+            <column length="2000000000" name="loan_id"/>
             <generator class="increment"/>
         </id>
         <property name="dueDate" type="string">
@@ -13,13 +13,13 @@
         <property name="baseDueDate" type="string">
             <column length="2000000000" name="base_due_date" not-null="true"/>
         </property>
-        <property name="apr" type="string">
-            <column length="2000000000" name="apr" not-null="true"/>
-        </property>
         <property name="debt" type="string">
             <column length="2000000000" name="debt" not-null="true"/>
         </property>
-        <property name="employeeId" type="string">
+        <property name="comment" type="string">
+            <column length="2000000000" name="comment"/>
+        </property>
+        <property name="employeeId" type="int">
             <column length="2000000000" name="employee_id"/>
         </property>
         <many-to-one class="com.loansystem.model.PostponeRequest" fetch="select" name="postponeRequest">
@@ -29,7 +29,7 @@
             <column length="2000000000" name="client_id" not-null="true" unique="true"/>
         </many-to-one>
          <many-to-one class="com.loansystem.model.LoanStatus" fetch="select" name="loanStatus">
-            <column length="2000000000" name="status" not-null="true" unique="true"/>
+            <column length="2000000000" name="status_id" not-null="true" unique="true"/>
         </many-to-one>
         <many-to-one class="com.loansystem.model.LoanOffer" fetch="select" name="loanOffer">
             <column length="2000000000" name="offer_id" not-null="true" unique="true"/>

@@ -3,31 +3,31 @@
 <!-- Generated Feb 18, 2012 4:26:52 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping default-lazy="false">
     <class name="com.loansystem.model.User" table="user">
-        <id name="persCode" type="int">
-            <column name="pers_code"/>
-            <generator class="assigned"/>
+        <id name="userId" type="int">
+            <column name="user_id"/>
+            <generator class="increment"/>
         </id>
         <property name="name" type="string">
-            <column length="2000000000" name="name"/>
+            <column length="2000000000" name="first_name"/>
         </property>
         <property name="lastName" type="string">
             <column length="2000000000" name="last_name"/>
         </property>
-        <property name="userId" type="int">
-            <column name="user_id" unique="true" not-null="true"/>
+         <property name="persCode" type="string">
+            <column length="2000000000" name="pers_code" unique="true"/>
         </property>
         <property name="mail" type="string">
-            <column length="2000000000" name="mail" unique="true"/>
+            <column length="2000000000" name="username" unique="true"/>
         </property>
         <property name="password" type="string">
             <column length="2000000000" name="password" unique="true"/>
         </property>
         <bag name="clients" cascade="all" lazy="false">
-            <key column="pers_code"/>
+            <key column="user_id"/>
             <one-to-many class="com.loansystem.model.Client"/>
         </bag>
         <bag name="employees" cascade="all" lazy="false">
-            <key column="pers_code"/>
+            <key column="user_id"/>
             <one-to-many class="com.loansystem.model.Employee"/>
         </bag>
         <!--bag name="userDetail" cascade="all" lazy="false">

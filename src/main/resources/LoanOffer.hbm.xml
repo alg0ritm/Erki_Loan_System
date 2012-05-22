@@ -20,14 +20,11 @@
         <property name="ratingBonus" type="string">
             <column name="rating_bonus" length="2000000000" not-null="true" />
         </property>
-        <property name="ratingDrop" type="string">
-            <column name="rating_drop" length="2000000000" not-null="true" />
-        </property>
-        <property name="statusId" type="string">
-            <column name="status_id" length="2000000000" not-null="true" />
+        <property name="offerEnd" type="string">
+            <column name="offer_end" length="2000000000" not-null="true" />
         </property>
         <many-to-one class="com.loansystem.model.ClientGroup" fetch="select" name="clientGroup">
-            <column length="2000000000" name="client_group_id" not-null="true" unique="true"/>
+            <column length="2000000000" name="group_id" not-null="true" unique="true"/>
         </many-to-one>
     </class>
 </hibernate-mapping>

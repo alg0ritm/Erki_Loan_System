@@ -8,29 +8,29 @@ package com.loansystem.model;
  */
 public class EmployeeType implements java.io.Serializable {
 
-	private String id;
+	private int id;
 	private String name;
 	private String description;
 
 	public EmployeeType() {
 	}
 
-	public EmployeeType(String id, String name) {
+	public EmployeeType(int id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 
-	public EmployeeType(String id, String name, String description) {
+	public EmployeeType(int id, String name, String description) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 	}
 
-	public String getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

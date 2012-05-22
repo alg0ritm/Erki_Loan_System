@@ -18,24 +18,31 @@ public class Loan implements java.io.Serializable {
     private int loanId;
     private String dueDate;
     private String baseDueDate;
-    private String apr;
     private String debt;
     private Client client;
     private LoanStatus loanStatus;
-    private String employeeId;
+    private int employeeId;
     private PostponeRequest postponeRequest;
     private LoanOffer loanOffer;
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
     private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     
 
     public Loan() {
     }
 
-    public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId, LoanStatus loanStatus, LoanOffer loanOffer, PostponeRequest postponeRequest) {
+    public Loan(int id, String dueDate, String baseDueDate, String debt, int clientId, LoanStatus loanStatus, LoanOffer loanOffer, PostponeRequest postponeRequest) {
         this.loanId = id;
         this.dueDate = dueDate;
         this.baseDueDate = baseDueDate;
-        this.apr = apr;
         this.debt = debt;
         this.client = client;
         this.loanStatus = loanStatus;
@@ -44,18 +51,18 @@ public class Loan implements java.io.Serializable {
         this.postponeRequest = postponeRequest;
     }
 
-    public Loan(int id, String dueDate, String baseDueDate, String apr, String debt, int clientId,
-            String employeeId, LoanStatus loanStatus, LoanOffer loanOffer, PostponeRequest postponeRequest) {
+    public Loan(int id, String dueDate, String baseDueDate, String debt, int clientId,
+            int employeeId, LoanStatus loanStatus, LoanOffer loanOffer, PostponeRequest postponeRequest, String comment) {
         this.loanId = id;
         this.dueDate = dueDate;
         this.baseDueDate = baseDueDate;
-        this.apr = apr;
         this.debt = debt;
         this.client = client;
         this.employeeId = employeeId;
         this.loanStatus = loanStatus;
         this.loanOffer = loanOffer;
         this.postponeRequest = postponeRequest;
+        this.comment = comment;
       
     }
 
@@ -80,7 +87,6 @@ public class Loan implements java.io.Serializable {
         //setDateFormat(dateFormat);
         this.client = client;
         this.loanOffer = loanOffer;
-        this.apr = loanOffer.getApr();
         this.dueDate = dateFormat.format(insertDate);
         this.baseDueDate = dateFormat.format(insertDate);
         this.debt = newSum+"";
@@ -123,13 +129,6 @@ public class Loan implements java.io.Serializable {
         this.baseDueDate = baseDueDate;
     }
 
-    public String getApr() {
-        return this.apr;
-    }
-
-    public void setApr(String apr) {
-        this.apr = apr;
-    }
 
     public String getDebt() {
         return this.debt;
@@ -147,13 +146,6 @@ public class Loan implements java.io.Serializable {
         this.client = client;
     }
 
-    public String getEmployeeId() {
-        return this.employeeId;
-    }
-
-    public void setEmployeeId(String employeeId) {
-        this.employeeId = employeeId;
-    }
 
     public LoanStatus getLoanStatus() {
         return this.loanStatus;
@@ -165,6 +157,14 @@ public class Loan implements java.io.Serializable {
 
     public PostponeRequest getPostponeRequest() {
         return this.postponeRequest;
+    }
+
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
     public void setPostponeRequest(PostponeRequest postponeRequest) {

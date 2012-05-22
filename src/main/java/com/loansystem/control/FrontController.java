@@ -395,10 +395,6 @@ public class FrontController {
                                 log.error(ex);
 
                             }
-
-
-
-
                             if (loan != null) {
                                 lastLoanStatus = loan.getLoanStatus();
                             }
@@ -415,8 +411,10 @@ public class FrontController {
                                 }
 
                             } else { //loan doesn't exist
+                                
                                 log.info("NO LOAN EXIST FOR THE CLIENT");
                                 loanStatus = LoanStatusInterface.PAYED_BACK;
+                                createPayedBackFrame();
                             }
                              session.close();
                             createLoanStatusSpecificFrame(loan);
@@ -494,8 +492,6 @@ public class FrontController {
             PendingLoanRequestsTab pendingLoansTab = new PendingLoanRequestsTab(pendingLoansTabPanels);
 
             PendingLoansTabController pendingLoansTabController = new PendingLoansTabController(pendingLoansTabModel, pendingLoansTab);
-
-
 
             JPanel[] camPanels = new JPanel[1];
             camPanels[0] = pendingLoansTab;

@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class User implements java.io.Serializable {
 
-    private int persCode;
+    private String persCode;
     private int userId;
     private String name;
     private String lastName;
@@ -29,7 +29,7 @@ public class User implements java.io.Serializable {
     public User() {
     }
 
-    public User(int persCode, int userId, String name, String lastName, String mail, String password, List<Client> clients, List<Employee> employees) {
+    public User(String persCode, int userId, String name, String lastName, String mail, String password, List<Client> clients, List<Employee> employees) {
         this.persCode = persCode;
         this.userId = userId;
         this.name = name;
@@ -48,11 +48,11 @@ public class User implements java.io.Serializable {
         this.employees = employees;
     }
 
-    public int getPersCode() {
+    public String getPersCode() {
         return persCode;
     }
 
-    public void setPersCode(int persCode) {
+    public void setPersCode(String persCode) {
         this.persCode = persCode;
     }
 

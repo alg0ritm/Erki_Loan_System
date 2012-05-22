@@ -13,7 +13,6 @@ public class Client implements java.io.Serializable {
     private int clientId;
     private ClientGroup ClientGroup;
     private ClientStatus clientStatus;
-    
     private String rating;
     private List<Loan> loans;
     private User user;

@@ -13,43 +13,29 @@ import java.util.Date;
 public class LoanHistory implements java.io.Serializable {
 
     private int loanHistoryId;
-    private String comment;
     private String date; //Date decide sql or java
     private Loan loan;
     private LoanStatus loanStatus;
     private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-   
 
-    public LoanHistory(int loanHistoryId, String comment, String date, Loan loan, LoanStatus loanStatus) {
+    public LoanHistory(int loanHistoryId, String date, Loan loan, LoanStatus loanStatus) {
         this.loanHistoryId = loanHistoryId;
-        this.comment = comment;
+
         this.date = date;
         this.loan = loan;
         this.loanStatus = loanStatus;
     }
-    
-    public LoanHistory( Loan insertLoan, LoanStatus loanStatus, String comment) {
+
+    public LoanHistory(Loan insertLoan, LoanStatus loanStatus) {
         this.loan = insertLoan;
         this.loanStatus = loanStatus;
         Date insertDate = new Date();
-      //DateUtil.getDatePlusDays(new Date(), Integer.parseInt(loanOffer.getPeriod()));
+        //DateUtil.getDatePlusDays(new Date(), Integer.parseInt(loanOffer.getPeriod()));
         this.date = dateFormat.format(insertDate);
-        this.comment = comment;
-        
+
     }
-    
-   
 
     public LoanHistory() {
-        
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public int getLoanHistoryId() {

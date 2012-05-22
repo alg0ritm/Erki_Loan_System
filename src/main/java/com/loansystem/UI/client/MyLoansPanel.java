@@ -125,7 +125,7 @@ public class MyLoansPanel extends javax.swing.JPanel {
                 tableObject[i][2] = "";
             //}
             tableObject[i][3] = currentLoan.getBaseDueDate();
-            tableObject[i][4] = currentLoan.getApr();
+            tableObject[i][4] = currentLoan.getLoanOffer().getApr();
 
             i++;
         }

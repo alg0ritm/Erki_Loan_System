@@ -118,14 +118,17 @@ public class LoanServiceImpl implements LoanService {
         //log.info("LoanServiceImpl : removeExistingLoanRequest error occured " + lastLoan.getDueDate() );
 
         try {
-            Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+            HibernateUtil.getSessionFactory().getCurrentSession().close();
+            Session session = HibernateUtil.openNewSession();
             transaction = session.beginTransaction();
 
             //lastLoan.getLoanHistory().get(0).setLoan(null); works
             //lastLoan.setLoanHistory(null);
-
-            loanHistoryHome.delete(loanHistoryList.get(0), session);
+             loanHistoryHome.delete(loanHistoryList.get(0), session);
+            
             loanHome.delete(lastLoan, session);
+            
+           
 
             //loanHistoryLast.setLoan(null);
             //loanHistoryHome.delete(loanHistoryLast, session);
@@ -348,13 +351,22 @@ public class LoanServiceImpl implements LoanService {
             if (loanStatusId == LoanStatusInterface.PAYED_BACK) {
 
                 ClientHistoryHome clientHistoryHome = new ClientHistoryHome();
-                ClientHistory clientHistory = client.getClientHistory().get(0); //find last client history
+                ClientHistory clientHistory = null;
+                if(client.getClientHistory()!=null && client.getClientHistory().size()>0) {
+                    clientHistory = client.getClientHistory().get(0); //find last client history
+                }
+                else {
+                    clientHistory = new ClientHistory();
+                    clientHistory.setClient(client);
+                    clientHistory.setClientGroup(client.getClientGroup());
+                    clientHistory.setClientStatus(client.getClientStatus());
+                }
                 LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
                 ArrayList<LoanHistory> loanHistory1 = loanHistoryHome.findByLoanId(lastLoan, session);
 
 
                 double rating = calculateRating(loanHistory1, lastLoan);
-
+                
                 clientHistory.setNewRating(rating);
                 clientHistory.setDate(DateUtil.dateFormat.format(new Date()));
                 saveClientHistory(clientHistory, session);

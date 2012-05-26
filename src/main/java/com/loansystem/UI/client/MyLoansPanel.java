@@ -21,9 +21,12 @@ import com.loansystem.db.dao.LoanStatusHome;
 import com.loansystem.hibernate.HibernateUtil;
 import com.loansystem.model.Client;
 import com.loansystem.model.Loan;
+import com.loansystem.model.LoanHistory;
 import com.loansystem.model.LoanOffer;
 import com.loansystem.model.LoanStatus;
 import com.loansystem.model.PostponeRequest;
+import com.loansystem.service.LoanService;
+import com.loansystem.service.LoanServiceImpl;
 import com.loansystem.util.DateUtil;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -122,9 +125,11 @@ public class MyLoansPanel extends javax.swing.JPanel {
             /*if (currentLoan.getLoanHistory().size() > 0) {
                 //tableObject[i][2] = currentLoan.getLoanHistory().get(0).getDate();
             } else {*/
-                tableObject[i][2] = "";
+            tableObject[i][2] = currentLoan.getDueDate();;
             //}
-            tableObject[i][3] = currentLoan.getBaseDueDate();
+            LoanService loanService = new LoanServiceImpl();
+            ArrayList<LoanHistory> loanHistory  = loanService.getLoanHistory(currentLoan);
+            tableObject[i][3] = loanHistory.get(0).getDate();
             tableObject[i][4] = currentLoan.getLoanOffer().getApr();
 
             i++;

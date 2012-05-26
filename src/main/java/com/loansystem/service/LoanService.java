@@ -60,4 +60,6 @@ public interface LoanService {
     public void savePostponedLoanWithStatus(Loan selectedLoan, int statusId, Session session);
 
     public void saveClientWithStatus(Client client, int statusId, Session session);
+
+    public ArrayList<LoanHistory> getLoanHistory(Loan currentLoan);
 }

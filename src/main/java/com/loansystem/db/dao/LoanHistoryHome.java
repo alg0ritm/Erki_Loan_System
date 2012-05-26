@@ -201,8 +201,8 @@ public class LoanHistoryHome {
                 log.debug("get successful, instance found");
             }
             
-            if(session==null)
-                sessionLoc.getTransaction().commit();
+            /*if(session==null)
+                sessionLoc.getTransaction().commit();*/
             return loanHistoryList;
         } catch (RuntimeException re) {
             log.error("get failed", re);

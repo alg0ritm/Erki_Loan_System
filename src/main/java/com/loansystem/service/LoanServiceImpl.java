@@ -604,4 +604,11 @@ public class LoanServiceImpl implements LoanService {
         return clientStatus;
     }
 
+    @Override
+    public ArrayList<LoanHistory> getLoanHistory(Loan currentLoan) {
+       LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
+       ArrayList<LoanHistory> loanHistory = loanHistoryHome.findByLoanId(currentLoan, null);
+       return loanHistory;
+    }
+
 }

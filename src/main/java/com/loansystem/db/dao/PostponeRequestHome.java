@@ -21,7 +21,7 @@ import org.hibernate.criterion.Example;
  */
 public class PostponeRequestHome {
 
-    private static final Log log = LogFactory.getLog(PostponeRequestHome.class);
+    private static final Log log = LogFactory.getLog(LoanHome.class);
     private final SessionFactory sessionFactory = getSessionFactory();
 
     protected SessionFactory getSessionFactory() {
@@ -71,11 +71,16 @@ public class PostponeRequestHome {
         }
     }
 
-    public void delete(PostponeRequest persistentInstance) {
+    public void delete(PostponeRequest persistentInstance, Session session) {
+        Session sessionLoc = HibernateUtil.createRequieredSession(session);
         log.debug("deleting PostponeRequest instance");
         try {
-            sessionFactory.getCurrentSession().delete(persistentInstance);
+            sessionLoc.delete(persistentInstance);
+            if(session==null) {
+                sessionLoc.getTransaction().commit();
+            }
             log.debug("delete successful");
+            
         } catch (RuntimeException re) {
             log.error("delete failed", re);
             throw re;

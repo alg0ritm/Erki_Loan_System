@@ -82,16 +82,21 @@ public class LoanTabController {
             String[] opts = {"No", "Yes"};
 
             PostponeRequest postponeRequst = loanTabModel.getLastLoan().getPostponeRequest(); //create postpone reuqest in db
-            int response = LoanUIutils.createQuestionPopup(opts, postponeRequst, "Are You sure to cancel postpone request with next parameters?");
+            int response = LoanUIutils.createQuestionPopup(opts, "Are You sure to cancel postpone request?");
 
             // postponeRequest.setComment("Postpone cancel is requested");
             switch (response) {
                 case 1:
-                    postponeRequst.setComment("Postpone cancel is rejected");
-                    loanTabModel.getLastLoan().setPostponeRequest(postponeRequst);
+                    //postponeRequst.setComment("Postpone cancel is rejected");
+                    //loanTabModel.getLastLoan().setPostponeRequest(postponeRequst);
+                    
+                    loanService = new LoanServiceImpl();
+                    loanService.removeExistingPostponeRequest(loanTabModel, client);
 
-                    PostponeRequest postponeRequestUpd = loanService.updateLastPostponedLoan(loanTabModel, loanTabModel.getLastLoan().getDueDate(), loanTabModel.getLastLoan().getLoanOffer().getSum(), PostponeRequestStatus.CANCELED);
-                    loanTabModel.getLastLoan().setPostponeRequest(postponeRequestUpd);
+                    /*PostponeRequest postponeRequestUpd = loanService.updateLastPostponedLoan(loanTabModel, loanTabModel.getLastLoan().getDueDate(), loanTabModel.getLastLoan().getLoanOffer().getSum(), PostponeRequestStatus.CANCELED);*/
+                    
+                    
+                    loanTabModel.getLastLoan().setPostponeRequest(null);
 
                     loanTabView.hideUnnecessaryButtons();
                     break;
@@ -318,7 +323,27 @@ public class LoanTabController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            /*String[] opts = {"No", "Yes"};
+
+            Loan loan = loanTabModel.getLastLoan(); //create postpone reuqest in db
+            int response = LoanUIutils.createQuestionPopup(opts, "Are You sure to pay back the loan?");
+
+            // postponeRequest.setComment("Postpone cancel is requested");
+            switch (response) {
+                case 1:
+
+                    loanService = new LoanServiceImpl();
+                    loanService.removeExistingPostponeRequest(loanTabModel, client);
+
+                    
+                    break;
+                default:
+
+                    break;
+            }*/
             loanTabView.hidePostponeControls();
+            // remove loan postpone request
+           
         }
     }
 

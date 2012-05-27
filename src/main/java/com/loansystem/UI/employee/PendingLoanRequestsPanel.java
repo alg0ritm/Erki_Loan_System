@@ -149,10 +149,6 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
 
         Iterator loanRequests = loansList.iterator();
         while (loanRequests.hasNext()) {
-
-
-
-
             currentLoan = (Loan) loanRequests.next();
             User user = currentLoan.getClient().getUser();
             Client client = user.getClients().get(0);

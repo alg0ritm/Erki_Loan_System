@@ -124,11 +124,11 @@ public class LoanServiceImpl implements LoanService {
 
             //lastLoan.getLoanHistory().get(0).setLoan(null); works
             //lastLoan.setLoanHistory(null);
-             loanHistoryHome.delete(loanHistoryList.get(0), session);
-            
+            loanHistoryHome.delete(loanHistoryList.get(0), session);
+
             loanHome.delete(lastLoan, session);
-            
-           
+
+
 
             //loanHistoryLast.setLoan(null);
             //loanHistoryHome.delete(loanHistoryLast, session);
@@ -352,10 +352,9 @@ public class LoanServiceImpl implements LoanService {
 
                 ClientHistoryHome clientHistoryHome = new ClientHistoryHome();
                 ClientHistory clientHistory = null;
-                if(client.getClientHistory()!=null && client.getClientHistory().size()>0) {
+                if (client.getClientHistory() != null && client.getClientHistory().size() > 0) {
                     clientHistory = client.getClientHistory().get(0); //find last client history
-                }
-                else {
+                } else {
                     clientHistory = new ClientHistory();
                     clientHistory.setClient(client);
                     clientHistory.setClientGroup(client.getClientGroup());
@@ -366,7 +365,7 @@ public class LoanServiceImpl implements LoanService {
 
 
                 double rating = calculateRating(loanHistory1, lastLoan);
-                
+
                 clientHistory.setNewRating(rating);
                 clientHistory.setDate(DateUtil.dateFormat.format(new Date()));
                 saveClientHistory(clientHistory, session);
@@ -566,16 +565,17 @@ public class LoanServiceImpl implements LoanService {
             ClientHistory clientHistory = client.getClientHistory().get(0); //find last client history
             ClientHistory clientHistory1 = new ClientHistory();
             ClientHistoryHome clientHistoryHome = new ClientHistoryHome();
-            
+
             ClientStatus clientStatus = getClientStatusById(statusId, sessionLoc);
             client.setClientStatus(clientStatus);
-               double rating = 0;
-               
-               
-            if(statusId==ClientStatusClassificator.BLACKLISTED)
-                 rating = -1;
-            
-            
+            double rating = 0;
+
+
+            if (statusId == ClientStatusClassificator.BLACKLISTED) {
+                rating = -1;
+            }
+
+
             clientHistory.setNewRating(rating);
             clientHistory.setDate(DateUtil.dateFormat.format(new Date()));
             String clientHistoryComment = "client status changed to blacklisted";
@@ -618,9 +618,34 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public ArrayList<LoanHistory> getLoanHistory(Loan currentLoan) {
-       LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
-       ArrayList<LoanHistory> loanHistory = loanHistoryHome.findByLoanId(currentLoan, null);
-       return loanHistory;
+        LoanHistoryHome loanHistoryHome = new LoanHistoryHome();
+        ArrayList<LoanHistory> loanHistory = loanHistoryHome.findByLoanId(currentLoan, null);
+        return loanHistory;
     }
 
+    @Override
+    public void removeExistingPostponeRequest(LoanTabModel loanTabModel, Client client) {
+        Session sessionLoc = null;
+        Loan lastLoan = loanTabModel.getLastLoan();
+        PostponeRequest postponeRequest = lastLoan.getPostponeRequest();
+        try {
+            sessionLoc = HibernateUtil.createRequieredSession(sessionLoc);
+           
+            
+            removeExisitingPostponeRequest(postponeRequest, sessionLoc);
+            lastLoan.setPostponeRequest(null); //removing postpone request
+            mergeLoan(lastLoan, sessionLoc);
+            sessionLoc.getTransaction().commit();
+
+
+        } catch (Exception E) {
+            log.fatal("removeExistingPostponeRequest : Failed to remove postpone request " + E);
+            sessionLoc.getTransaction().rollback();
+        }
+    }
+
+    private void removeExisitingPostponeRequest(PostponeRequest postponeRequest, Session sessionLoc) {
+        PostponeRequestHome postponeRequestHome = new PostponeRequestHome();
+        postponeRequestHome.delete(postponeRequest, sessionLoc);
+    }
 }

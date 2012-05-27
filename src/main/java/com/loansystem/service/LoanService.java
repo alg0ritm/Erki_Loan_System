@@ -62,4 +62,6 @@ public interface LoanService {
     public void saveClientWithStatus(Client client, int statusId, Session session);
 
     public ArrayList<LoanHistory> getLoanHistory(Loan currentLoan);
+
+    public void removeExistingPostponeRequest(LoanTabModel loanTabModel, Client client);
 }

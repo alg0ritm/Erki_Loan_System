@@ -86,17 +86,17 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
 
         PendingLoansTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Loan id", "Client", "Date requeted", "Sum", "Client rating", "Client group"
+                "Loan id", "Client", "Sum", "Client rating", "Client group"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -114,7 +114,6 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 659, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 639, Short.MAX_VALUE)
@@ -122,7 +121,6 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 114, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -142,7 +140,7 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
     private Object[][] createTableData(ArrayList<Loan> loansList) {
         Loan currentLoan;
         int i = 0;
-        Object[][] tableObject = new Object[loansList.size()][6];
+        Object[][] tableObject = new Object[loansList.size()][5];
 
         PendingLoansTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -162,11 +160,11 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
             /*if (currentLoan.getLoanHistory().size() > 0) {
                 //tableObject[i][2] = currentLoan.getLoanHistory().get(0).getDate();
             } else {*/
-                tableObject[i][2] = "";
+                
             //}
-            tableObject[i][3] = currentLoan.getDebt();
-            tableObject[i][4] = client.getRating();
-            tableObject[i][5] = client.getClientGroup().getDescription();
+            tableObject[i][2] = currentLoan.getDebt();
+            tableObject[i][3] = client.getRating();
+            tableObject[i][4] = client.getClientGroup().getDescription();
 
             i++;
         }
@@ -177,7 +175,7 @@ public class PendingLoanRequestsPanel extends javax.swing.JPanel {
         PendingLoansTable.setModel(new javax.swing.table.DefaultTableModel(
                 tableObject,
                 new String[]{
-                    "Loan id", "Client", "Date requested", "Sum", "Client rating", "Client group"
+                    "Loan id", "Client", "Sum", "Client rating", "Client group"
                 }));
     }
 

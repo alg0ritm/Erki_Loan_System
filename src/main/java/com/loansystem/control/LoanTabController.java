@@ -593,8 +593,8 @@ public class LoanTabController {
                     log.info("Current Due  Date : " + newDueDate);
                     //int days = DateUtil.dayDifference(from, to);
                     int days = Integer.parseInt(loanOffer.getPeriod());
-                    Math.round(initialSum * (1 + apr * (fps + days) / (100 * 365)));
-
+                    //Math.round(initialSum * (1 + apr * (fps + days) / (100 * 365)));
+                    
                     int debt = Math.round(initialSum * (1 + apr * (fps + days) / (100 * 365)));
                     float newSum = debt;
                     log.info("Current sum : " + newSum);

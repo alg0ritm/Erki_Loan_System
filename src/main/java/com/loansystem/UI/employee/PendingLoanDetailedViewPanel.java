@@ -51,13 +51,13 @@ public class PendingLoanDetailedViewPanel extends javax.swing.JPanel {
         this.clientRating = clientRating;
     }
 
-    public JLabel getDateOfRequest() {
+    /*public JLabel getDateOfRequest() {
         return dateOfRequest;
     }
 
     public void setDateOfRequest(JLabel dateOfRequest) {
         this.dateOfRequest = dateOfRequest;
-    }
+    }*/
 
     public JLabel getLoanId() {
         return loanId;
@@ -69,6 +69,22 @@ public class PendingLoanDetailedViewPanel extends javax.swing.JPanel {
 
     public JLabel getLoanSum() {
         return loanSum;
+    }
+    
+    public JLabel getjLabel7() {
+        return jLabel7;
+    }
+
+    public void setjLabel7(JLabel jLabel7) {
+        this.jLabel7 = jLabel7;
+    }
+
+    public JLabel getjLabel8() {
+        return jLabel8;
+    }
+
+    public void setjLabel8(JLabel jLabel8) {
+        this.jLabel8 = jLabel8;
     }
 
     public void setLoanSum(JLabel loanSum) {
@@ -98,19 +114,18 @@ public class PendingLoanDetailedViewPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel11 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         loanId = new javax.swing.JLabel();
-        dateOfRequest = new javax.swing.JLabel();
         loanSum = new javax.swing.JLabel();
         clientRating = new javax.swing.JLabel();
         clientGroup = new javax.swing.JLabel();
         clientName = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         jLabel11.setText("jLabel11");
         jLabel11.setName("jLabel11"); // NOI18N
@@ -118,13 +133,8 @@ public class PendingLoanDetailedViewPanel extends javax.swing.JPanel {
         setMaximumSize(new java.awt.Dimension(800, 150));
         setPreferredSize(new java.awt.Dimension(800, 136));
 
-        jSeparator1.setName("jSeparator1"); // NOI18N
-
         jLabel1.setText("Loan Id");
         jLabel1.setName("loanIdLabel"); // NOI18N
-
-        jLabel2.setText("Date of request");
-        jLabel2.setName("dateOfRequestLabel"); // NOI18N
 
         jLabel3.setText("Loan Sum");
         jLabel3.setName("loanSumLabel"); // NOI18N
@@ -140,8 +150,6 @@ public class PendingLoanDetailedViewPanel extends javax.swing.JPanel {
 
         loanId.setName("loanId"); // NOI18N
 
-        dateOfRequest.setName("dateOfRequest"); // NOI18N
-
         loanSum.setName("loanSum"); // NOI18N
 
         clientRating.setName("clientRating"); // NOI18N
@@ -150,42 +158,46 @@ public class PendingLoanDetailedViewPanel extends javax.swing.JPanel {
 
         clientName.setName("clientName"); // NOI18N
 
+        jLabel7.setText("Days to postpone");
+        jLabel7.setName("jLabel7"); // NOI18N
+
+        jLabel8.setName("jLabel8"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 627, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jLabel6))
-                        .addGap(29, 29, 29)
+                        .addGap(49, 49, 49)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(clientName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(clientGroup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(loanSum, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(loanId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(dateOfRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                            .addComponent(clientRating, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                            .addComponent(clientRating, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(603, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(26, 26, 26)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
@@ -193,9 +205,7 @@ public class PendingLoanDetailedViewPanel extends javax.swing.JPanel {
                         .addComponent(jLabel5))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(loanId, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dateOfRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(26, 26, 26)
                         .addComponent(loanSum, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clientRating, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,22 +216,23 @@ public class PendingLoanDetailedViewPanel extends javax.swing.JPanel {
                     .addComponent(jLabel6)
                     .addComponent(clientName, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel clientGroup;
     private javax.swing.JLabel clientName;
     private javax.swing.JLabel clientRating;
-    private javax.swing.JLabel dateOfRequest;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel loanId;
     private javax.swing.JLabel loanSum;
     // End of variables declaration//GEN-END:variables
@@ -232,5 +243,15 @@ public class PendingLoanDetailedViewPanel extends javax.swing.JPanel {
         clientRating.setText(selectedLoan.getClient().getRating());
         loanId.setText(selectedLoan.getLoanId()+"");
         loanSum.setText(selectedLoan.getDebt());
+        if(selectedLoan.getPostponeRequest()==null) {
+            jLabel7.setVisible(false);
+            jLabel8.setVisible(false);
+        }
+        else {
+            jLabel7.setVisible(true);
+            jLabel8.setText(selectedLoan.getPostponeRequest().getPeriodDays()+"");
+            jLabel8.setVisible(true);
+            
+        }
     }
 }

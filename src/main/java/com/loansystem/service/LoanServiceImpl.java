@@ -516,17 +516,24 @@ public class LoanServiceImpl implements LoanService {
                 Date newDueDate = DateUtil.getDatePlusDays(currenDueDate, postponeRequest.getPeriodDays());
                 String newDueDateString = DateUtil.dateFormat.format(newDueDate);
                 selectedLoan.setDueDate(newDueDateString + "");
+                float initialSum = Float.parseFloat(selectedLoan.getDebt());
+                float apr = Float.parseFloat(selectedLoan.getLoanOffer().getApr());
+                int days = postponeRequest.getPeriodDays(); 
+                int fps = Integer.parseInt(selectedLoan.getLoanOffer().getPeriod());
+                //Math.round(initialSum * (1 + apr * (fps + days) / (100 * 365)));
+                float debt =  Math.round(initialSum * (1 + apr * (fps+days) / (100 * 365)));
+                selectedLoan.setDebt(debt+"");
                 saveLoanWithStatus(selectedLoan, LoanStatusInterface.POSTPONED, sessionLoc, "Loan is postponed");
             } catch (ParseException ex) {
                 Logger.getLogger(LoanServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
-        if (postponeStatusId == com.loansystem.classificator.PostponeRequestStatus.REJECTED) {
+        /*if (postponeStatusId == com.loansystem.classificator.PostponeRequestStatus.REJECTED) {
             //vqnesti v metod uze est'?
 
             saveLoanWithStatus(selectedLoan, LoanStatusInterface.ISSUED, sessionLoc, "Loan postpone is rejected");
-        }
+        }*/
         selectedLoan.getPostponeRequest().setPostponeRequestStatus(selectedStatus);
         PostponeRequestHome postponeRequestHome = new PostponeRequestHome();
         postponeRequestHome.merge(selectedLoan.getPostponeRequest(), sessionLoc);
@@ -539,7 +546,7 @@ public class LoanServiceImpl implements LoanService {
                 transaction.commit();
             }
         } catch (Exception e) {
-            log.fatal("savePostponedLoanWithStatus : Failed to insert data");
+            log.fatal("savePostponedLoanWithStatus : Failed to insert data" + e);
             transaction.rollback();
         }
     }

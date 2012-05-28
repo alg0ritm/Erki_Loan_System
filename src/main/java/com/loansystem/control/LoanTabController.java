@@ -89,13 +89,13 @@ public class LoanTabController {
                 case 1:
                     //postponeRequst.setComment("Postpone cancel is rejected");
                     //loanTabModel.getLastLoan().setPostponeRequest(postponeRequst);
-                    
+
                     loanService = new LoanServiceImpl();
                     loanService.removeExistingPostponeRequest(loanTabModel, client);
 
                     /*PostponeRequest postponeRequestUpd = loanService.updateLastPostponedLoan(loanTabModel, loanTabModel.getLastLoan().getDueDate(), loanTabModel.getLastLoan().getLoanOffer().getSum(), PostponeRequestStatus.CANCELED);*/
-                    
-                    
+
+
                     loanTabModel.getLastLoan().setPostponeRequest(null);
 
                     loanTabView.hideUnnecessaryButtons();
@@ -324,26 +324,26 @@ public class LoanTabController {
         @Override
         public void actionPerformed(ActionEvent e) {
             /*String[] opts = {"No", "Yes"};
-
+            
             Loan loan = loanTabModel.getLastLoan(); //create postpone reuqest in db
             int response = LoanUIutils.createQuestionPopup(opts, "Are You sure to pay back the loan?");
-
+            
             // postponeRequest.setComment("Postpone cancel is requested");
             switch (response) {
-                case 1:
-
-                    loanService = new LoanServiceImpl();
-                    loanService.removeExistingPostponeRequest(loanTabModel, client);
-
-                    
-                    break;
-                default:
-
-                    break;
+            case 1:
+            
+            loanService = new LoanServiceImpl();
+            loanService.removeExistingPostponeRequest(loanTabModel, client);
+            
+            
+            break;
+            default:
+            
+            break;
             }*/
             loanTabView.hidePostponeControls();
             // remove loan postpone request
-           
+
         }
     }
 
@@ -591,7 +591,10 @@ public class LoanTabController {
                     from.setTime(oldDate);
                     to.setTime(newDueDate);
                     log.info("Current Due  Date : " + newDueDate);
-                    int days = DateUtil.dayDifference(from, to);
+                    //int days = DateUtil.dayDifference(from, to);
+                    int days = Integer.parseInt(loanOffer.getPeriod());
+                    Math.round(initialSum * (1 + apr * (fps + days) / (100 * 365)));
+
                     int debt = Math.round(initialSum * (1 + apr * (fps + days) / (100 * 365)));
                     float newSum = debt;
                     log.info("Current sum : " + newSum);

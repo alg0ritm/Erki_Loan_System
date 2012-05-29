@@ -447,7 +447,7 @@ public class LoanTabController {
 
 
 
-                    JOptionPane.showMessageDialog(loanTabView.getNewLoanRequestPanel(), "Thanks, your request has been recorded for confirmation" + rowIndex);
+                    JOptionPane.showMessageDialog(loanTabView.getNewLoanRequestPanel(), "Thanks, your request has been recorded for confirmation");
                     break;
                 case -1:
                     //... Both the quit button (3) and the close box(-1) handled here.

@@ -137,7 +137,7 @@ public class MyLoansPanel extends javax.swing.JPanel {
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 tableObject,
                 new String[]{
-                    MyLoansTabConstants.COL_SUM, MyLoansTabConstants.COL_STATUS, MyLoansTabConstants.COL_DUE_DATE, MyLoansTabConstants.COL_LAST_EVENT_DATE, MyLoansTabConstants.COL_RATING_CHANGE
+                    MyLoansTabConstants.COL_SUM, MyLoansTabConstants.COL_STATUS, MyLoansTabConstants.COL_DUE_DATE, MyLoansTabConstants.COL_LAST_EVENT_DATE, "APR"
                 }));
 
 

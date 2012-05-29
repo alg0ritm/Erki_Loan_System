@@ -29,10 +29,10 @@
             <column length="2000000000" name="client_id" not-null="true" unique="true"/>
         </many-to-one>
          <many-to-one class="com.loansystem.model.LoanStatus" fetch="select" name="loanStatus">
-            <column length="2000000000" name="status_id" not-null="true" unique="true"/>
+            <column length="2000000000" name="loan_status_id" not-null="true" unique="true"/>
         </many-to-one>
         <many-to-one class="com.loansystem.model.LoanOffer" fetch="select" name="loanOffer">
-            <column length="2000000000" name="offer_id" not-null="true" unique="true"/>
+            <column length="2000000000" name="loan_offer_id" not-null="true" unique="true"/>
         </many-to-one>
     </class>
 </hibernate-mapping>

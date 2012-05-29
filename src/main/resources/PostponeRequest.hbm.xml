@@ -20,7 +20,7 @@
             <column length="2000000000" name="comment"/>
         </property>
         <many-to-one class="com.loansystem.model.PostponeRequestStatus" fetch="select" name="postponeRequestStatus">
-            <column length="2000000000" name="status_id" not-null="false" unique="true"/>
+            <column length="2000000000" name="postpone_request_status_id" not-null="false" unique="true"/>
         </many-to-one>
     </class>
 </hibernate-mapping>

@@ -11,7 +11,7 @@
             <column length="2000000000" name="date"/>
         </property>
         <many-to-one name="loanStatus" class="com.loansystem.model.LoanStatus" fetch="select">
-            <column name="status_id" not-null="true" />
+            <column name="loan_status_id" not-null="true" />
         </many-to-one>
         <many-to-one name="loan" class="com.loansystem.model.Loan" fetch="select">
             <column name="loan_id" not-null="false" />

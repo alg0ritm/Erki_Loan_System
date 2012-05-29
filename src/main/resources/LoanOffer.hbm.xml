@@ -5,7 +5,7 @@
 <hibernate-mapping default-lazy="false">
     <class name="com.loansystem.model.LoanOffer" table="loan_offer">
         <id name="offerId" type="string">
-            <column name="offer_id" length="2000000000" />
+            <column name="loan_offer_id" length="2000000000" />
             <generator class="assigned" />
         </id>
         <property name="sum" type="string">
@@ -24,7 +24,7 @@
             <column name="offer_end" length="2000000000" not-null="true" />
         </property>
         <many-to-one class="com.loansystem.model.ClientGroup" fetch="select" name="clientGroup">
-            <column length="2000000000" name="group_id" not-null="true" unique="true"/>
+            <column length="2000000000" name="client_group_id" not-null="true" unique="true"/>
         </many-to-one>
     </class>
 </hibernate-mapping>

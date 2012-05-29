@@ -11,10 +11,10 @@
             <column length="2000000000" name="user_id" not-null="true"/>
         </many-to-one>
         <many-to-one class="com.loansystem.model.ClientGroup" fetch="select" name="ClientGroup">
-            <column length="2000000000" name="group_id" not-null="true"/>
+            <column length="2000000000" name="client_group_id" not-null="true"/>
         </many-to-one>
         <many-to-one class="com.loansystem.model.ClientStatus" fetch="select" name="clientStatus">
-            <column length="2000000000" name="status_id" not-null="true"/>
+            <column length="2000000000" name="client_status_id" not-null="true"/>
         </many-to-one>
         <property name="rating" type="string">
             <column length="2000000000" name="rating" not-null="true"/>

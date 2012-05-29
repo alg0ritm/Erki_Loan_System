@@ -4,7 +4,7 @@
 <hibernate-mapping default-lazy="false">
     <class name="com.loansystem.model.LoanStatus" table="loan_status">
         <id name="loanStatusId" type="string">
-            <column length="2000000000" name="id"/>
+            <column length="2000000000" name="loan_status_id"/>
             <generator class="assigned"/>
         </id>
         <property name="name" type="string">

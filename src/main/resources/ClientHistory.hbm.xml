@@ -29,13 +29,13 @@
             <column length="2000000000" name="new_rating"/>
         </property>
         <many-to-one name="clientStatus" class="com.loansystem.model.ClientStatus" fetch="select">
-            <column name="status_id" not-null="true" />
+            <column name="client_status_id" not-null="true" />
         </many-to-one>
         <many-to-one name="client" class="com.loansystem.model.Client" fetch="select">
             <column name="client_id" not-null="true" />
         </many-to-one>
         <many-to-one name="clientGroup" class="com.loansystem.model.ClientGroup" fetch="select">
-            <column name="group_id" not-null="true" />
+            <column name="client_group_id" not-null="true" />
         </many-to-one>
     </class>
 </hibernate-mapping>

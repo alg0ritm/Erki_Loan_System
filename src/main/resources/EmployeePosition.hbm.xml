@@ -5,7 +5,7 @@
 <hibernate-mapping default-lazy="false">
     <class name="com.loansystem.model.EmployeeType" table="employee_position">
         <id name="id" type="int">
-            <column name="id" length="2000000000" />
+            <column name="employee_position_id" length="2000000000" />
             <generator class="assigned" />
         </id>
         <property name="name" type="string">

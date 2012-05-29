@@ -5,7 +5,7 @@
 <hibernate-mapping default-lazy="false">
     <class name="com.loansystem.model.ClientGroup" table="client_group">
         <id name="groupId" type="string">
-            <column name="group_id" length="2000000000" />
+            <column name="client_group_id" length="2000000000" />
             <generator class="assigned" />
         </id>
         <property name="name" type="string">
@@ -22,13 +22,13 @@
         </property>
         <bag name="clients" cascade="all" order-by="client_id" lazy="false">
             <key>
-                <column name="group_id" length="2000000000" not-null="true" />
+                <column name="client_group_id" length="2000000000" not-null="true" />
             </key>
             <one-to-many class="com.loansystem.model.Client" />
         </bag>
-        <bag name="loanOffers" cascade="all" order-by="offer_id" lazy="false">
+        <bag name="loanOffers" cascade="all" order-by="loan_offer_id" lazy="false">
             <key>
-                <column name="group_id" length="2000000000" not-null="true" />
+                <column name="client_group_id" length="2000000000" not-null="true" />
             </key>
             <one-to-many class="com.loansystem.model.LoanOffer" />
         </bag>
